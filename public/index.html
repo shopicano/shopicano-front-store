@@ -1,17 +1,62 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
+<html lang="zxx">
+
+<head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <title>shopicano-front-store</title>
-  </head>
-  <body>
-    <noscript>
-      <strong>We're sorry but shopicano-front-store doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-    </noscript>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
-  </body>
+    <title>Shopicano Front Store</title>
+
+    <!-- mobile responsive meta -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!-- ** Plugins Needed for the Project ** -->
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="<%= BASE_URL %>plugins/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="<%= BASE_URL %>plugins/themify-icons/themify-icons.css">
+    <link rel="stylesheet" href="<%= BASE_URL %>plugins/slick/slick.css">
+    <link rel="stylesheet" href="<%= BASE_URL %>plugins/venobox/venobox.css">
+    <link rel="stylesheet" href="<%= BASE_URL %>plugins/animate/animate.css">
+    <link rel="stylesheet" href="<%= BASE_URL %>plugins/aos/aos.css">
+    <link rel="stylesheet" href="<%= BASE_URL %>plugins/bootstrap-touchspin-master/jquery.bootstrap-touchspin.min.css">
+    <link rel="stylesheet" href="<%= BASE_URL %>plugins/nice-select/nice-select.css">
+    <link rel="stylesheet" href="<%= BASE_URL %>plugins/bootstrap-slider/bootstrap-slider.min.css">
+
+    <!-- Main Stylesheet -->
+    <link href="<%= BASE_URL %>css/style.css" rel="stylesheet">
+
+    <!--Favicon-->
+    <link rel="shortcut icon" href="<%= BASE_URL %>images/favicon.png" type="image/x-icon">
+    <link rel="icon" href="<%= BASE_URL %>images/favicon.png" type="image/x-icon">
+
+</head>
+
+<body>
+
+<div id="app">
+    <!-- preloader start -->
+    <div class="preloader">
+        <img src="images/preloader.gif" alt="preloader">
+    </div>
+    <!-- preloader end -->
+</div>
+
+<!-- jQuery -->
+<script src="<%= BASE_URL %>plugins/jQuery/jquery.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="<%= BASE_URL %>plugins/bootstrap/bootstrap.min.js"></script>
+<script src="<%= BASE_URL %>plugins/slick/slick.min.js"></script>
+<script src="<%= BASE_URL %>plugins/venobox/venobox.min.js"></script>
+<script src="<%= BASE_URL %>plugins/aos/aos.js"></script>
+<script src="<%= BASE_URL %>plugins/syotimer/jquery.syotimer.js"></script>
+<script src="<%= BASE_URL %>plugins/instafeed/instafeed.min.js"></script>
+<script src="<%= BASE_URL %>plugins/zoom-master/jquery.zoom.min.js"></script>
+<script src="<%= BASE_URL %>plugins/bootstrap-touchspin-master/jquery.bootstrap-touchspin.min.js"></script>
+<script src="<%= BASE_URL %>plugins/nice-select/jquery.nice-select.min.js"></script>
+<script src="<%= BASE_URL %>plugins/bootstrap-slider/bootstrap-slider.min.js"></script>
+<!-- google map -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcABaamniA6OL5YvYSpB3pFMNrXwXnLwU&libraries=places"></script>
+<script src="<%= BASE_URL %>plugins/google-map/gmap.js"></script>
+<!-- Main Script -->
+<script src="<%= BASE_URL %>js/script.js"></script>
+</body>
 </html>

@@ -5,6 +5,7 @@ import Index from "@/components/Index";
 import Shop from "@/components/Shop";
 import Login from "@/components/Login";
 import SignUp from "@/components/SignUp";
+import Cart from "@/components/Cart";
 
 Vue.config.productionTip = false;
 
@@ -22,6 +23,10 @@ const routes = [
     {
         path: '/signup',
         component: SignUp,
+    },
+    {
+        path: '/cart',
+        component: Cart,
     },
     {
         path: '/shop',

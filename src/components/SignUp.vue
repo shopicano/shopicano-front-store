@@ -8,7 +8,7 @@
                             <img src="images/logo.png" alt="logo">
                         </a>
                         <h2 class="text-center">Create Your Account</h2>
-                        <form class="text-left clearfix" action="index.html">
+                        <form class="text-left clearfix">
                             <div class="form-group">
                                 <input v-model="name" type="text" class="form-control"  placeholder="Name">
                             </div>

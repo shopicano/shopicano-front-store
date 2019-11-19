@@ -58,8 +58,8 @@
                             <span class="float-right">$79.00</span>
                         </div>
                         <div class="text-center">
-                            <a href="/cart" class="btn btn-dark btn-mobile rounded-0">view cart</a>
-                            <a href="shipping.html" class="btn btn-dark btn-mobile rounded-0">check out</a>
+                            <router-link to="/cart" class="btn btn-dark btn-mobile rounded-0">view cart</router-link>
+                            <router-link to="/shipping" class="btn btn-dark btn-mobile rounded-0">check out</router-link>
                         </div>
                     </div>
                 </div>

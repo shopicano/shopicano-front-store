@@ -6,6 +6,7 @@ import Shop from "@/components/Shop";
 import Login from "@/components/Login";
 import SignUp from "@/components/SignUp";
 import Cart from "@/components/Cart";
+import Shipping from "@/components/Shipping";
 
 Vue.config.productionTip = false;
 
@@ -30,8 +31,12 @@ const routes = [
     },
     {
         path: '/shop',
-        component: Shop
-    }
+        component: Shop,
+    },
+    {
+        path: '/shipping',
+        component: Shipping,
+    },
 ];
 
 const router = new VueRouter({

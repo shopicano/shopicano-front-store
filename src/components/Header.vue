@@ -9,7 +9,9 @@
                 </div>
                 <div class="col-lg-6 text-center text-lg-right">
                     <ul class="list-inline">
-                        <li class="list-inline-item"><a href="/login">My Accounts</a></li>
+                        <li class="list-inline-item">
+                            <router-link to="/login">My Accounts</router-link>
+                        </li>
                         <li class="list-inline-item">
                             <select class="country" name="country">
                                 <option value="USD">USD</option>

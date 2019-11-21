@@ -20,7 +20,7 @@
             <div id="quickView" class="quickview">
                 <div class="row w-100">
                     <div class="col-lg-6 col-md-6 mb-5 mb-md-0 pl-5 pt-4 pt-lg-0 pl-lg-0">
-                        <img src="../../public/images/feature/product.png" alt="product-img" class="img-fluid">
+                        <img src="images/feature/product.png" alt="product-img" class="img-fluid">
                     </div>
                     <div class="col-lg-5 col-md-6 text-center text-md-left align-self-center pl-5">
                         <h3 class="mb-lg-2 mb-2">Woven Crop Cami</h3>
@@ -57,15 +57,15 @@
                             <!-- product image slider -->
                             <div class="product-slider">
                                 <div data-image="images/product-single/product-sm-1.jpg">
-                                    <img class="img-fluid w-100 image-zoom" src="../../public/images/product-single/product-sm-1.jpg" alt="product-img"
+                                    <img class="img-fluid w-100 image-zoom" src="images/product-single/product-sm-1.jpg" alt="product-img"
                                          data-zoom="images/product-single/product-sm-1.jpg">
                                 </div>
                                 <div data-image="images/product-single/product-sm-2.jpg">
-                                    <img class="img-fluid w-100 image-zoom" src="../../public/images/product-single/product-sm-2.jpg" alt="product-img"
+                                    <img class="img-fluid w-100 image-zoom" src="images/product-single/product-sm-2.jpg" alt="product-img"
                                          data-zoom="images/product-single/product-sm-2.jpg">
                                 </div>
                                 <div data-image="images/product-single/product-sm-3.jpg">
-                                    <img class="img-fluid w-100 image-zoom" src="../../public/images/product-single/product-sm-3.jpg" alt="product-img"
+                                    <img class="img-fluid w-100 image-zoom" src="images/product-single/product-sm-3.jpg" alt="product-img"
                                          data-zoom="images/product-single/product-sm-3.jpg">
                                 </div>
                             </div>
@@ -87,6 +87,7 @@
                             <h6 class="mb-4">You save: <span class="text-primary">$25.00 USD (30%)</span></h6>
                             <div class="d-flex flex-column flex-sm-row justify-content-between mb-4">
                                 <input id="quantity" class="quantity mr-sm-2 mb-3 mb-sm-0" type="text" value="" name="quantity">
+
                                 <select class="form-control mx-sm-2 mb-3 mb-sm-0" name="color">
                                     <option value="brown">Brown Color</option>
                                     <option value="gray">Gray Color</option>
@@ -108,7 +109,7 @@
                             <hr>
                             <div class="payment-option border border-primary mt-5 mb-4">
                                 <h5 class="bg-white">Guaranted Safe Checkout</h5>
-                                <img class="img-fluid w-100 p-3" src="../../public/images/payment-card/all-card.png" alt="payment-card">
+                                <img class="img-fluid w-100 p-3" src="images/payment-card/all-card.png" alt="payment-card">
                             </div>
                             <h5 class="mb-3">4 Great Reason to Buy From Us</h5>
                             <div class="row">
@@ -181,7 +182,7 @@
                         <div class="col-lg-4 col-sm-6 mb-5 mb-lg-0">
                             <div class="d-flex">
                                 <div>
-                                    <img class="rounded-circle mr-4" src="../../public/images/customer/customer-1.jpg" alt="customer-img">
+                                    <img class="rounded-circle mr-4" src="images/customer/customer-1.jpg" alt="customer-img">
                                 </div>
                                 <div>
                                     <ul class="list-inline">
@@ -202,7 +203,7 @@
                         <div class="col-lg-4 col-sm-6 mb-5 mb-lg-0">
                             <div class="d-flex">
                                 <div>
-                                    <img class="rounded-circle mr-4" src="../../public/images/customer/customer-2.jpg" alt="customer-img">
+                                    <img class="rounded-circle mr-4" src="images/customer/customer-2.jpg" alt="customer-img">
                                 </div>
                                 <div>
                                     <ul class="list-inline">
@@ -223,7 +224,7 @@
                         <div class="col-lg-4 col-sm-6 mb-5 mb-lg-0">
                             <div class="d-flex">
                                 <div>
-                                    <img class="rounded-circle mr-4" src="../../public/images/customer/customer-3.jpg" alt="customer-img">
+                                    <img class="rounded-circle mr-4" src="images/customer/customer-3.jpg" alt="customer-img">
                                 </div>
                                 <div>
                                     <ul class="list-inline">
@@ -258,8 +259,8 @@
                                 <div class="product-thumb">
                                     <div class="overflow-hidden position-relative">
                                         <a href="product-single.html">
-                                            <img class="img-fluid w-100 mb-3 img-first" src="../../public/images/collection/product-2.jpg" alt="product-img">
-                                            <img class="img-fluid w-100 mb-3 img-second" src="../../public/images/collection/product-5.jpg" alt="product-img">
+                                            <img class="img-fluid w-100 mb-3 img-first" src="images/collection/product-2.jpg" alt="product-img">
+                                            <img class="img-fluid w-100 mb-3 img-second" src="images/collection/product-5.jpg" alt="product-img">
                                         </a>
                                         <div class="btn-cart">
                                             <a href="#" class="btn btn-primary btn-sm">Add To Cart</a>
@@ -291,8 +292,8 @@
                                 <div class="product-thumb">
                                     <div class="overflow-hidden position-relative">
                                         <a href="product-single.html">
-                                            <img class="img-fluid w-100 mb-3 img-first" src="../../public/images/collection/product-3.jpg" alt="product-img">
-                                            <img class="img-fluid w-100 mb-3 img-second" src="../../public/images/collection/product-6.jpg" alt="product-img">
+                                            <img class="img-fluid w-100 mb-3 img-first" src="images/collection/product-3.jpg" alt="product-img">
+                                            <img class="img-fluid w-100 mb-3 img-second" src="images/collection/product-6.jpg" alt="product-img">
                                         </a>
                                         <div class="btn-cart">
                                             <a href="#" class="btn btn-primary btn-sm">Add To Cart</a>
@@ -324,8 +325,8 @@
                                 <div class="product-thumb">
                                     <div class="overflow-hidden position-relative">
                                         <a href="product-single.html">
-                                            <img class="img-fluid w-100 mb-3 img-first" src="../../public/images/collection/product-4.jpg" alt="product-img">
-                                            <img class="img-fluid w-100 mb-3 img-second" src="../../public/images/collection/product-2.jpg" alt="product-img">
+                                            <img class="img-fluid w-100 mb-3 img-first" src="images/collection/product-4.jpg" alt="product-img">
+                                            <img class="img-fluid w-100 mb-3 img-second" src="images/collection/product-2.jpg" alt="product-img">
                                         </a>
                                         <div class="btn-cart">
                                             <a href="#" class="btn btn-primary btn-sm">Add To Cart</a>
@@ -357,8 +358,8 @@
                                 <div class="product-thumb">
                                     <div class="overflow-hidden position-relative">
                                         <a href="product-single.html">
-                                            <img class="img-fluid w-100 mb-3 img-first" src="../../public/images/collection/product-6.jpg" alt="product-img">
-                                            <img class="img-fluid w-100 mb-3 img-second" src="../../public/images/collection/product-1.jpg" alt="product-img">
+                                            <img class="img-fluid w-100 mb-3 img-first" src="images/collection/product-6.jpg" alt="product-img">
+                                            <img class="img-fluid w-100 mb-3 img-second" src="images/collection/product-1.jpg" alt="product-img">
                                         </a>
                                         <div class="btn-cart">
                                             <a href="#" class="btn btn-primary btn-sm">Add To Cart</a>
@@ -398,7 +399,50 @@
 
     export default {
         name: "ProductView",
-        components: {Footer, Navigation, Header}
+        components: {Footer, Navigation, Header},
+        mounted() {
+
+            //  collection item quick view
+            $('.venobox').venobox({
+                framewidth: '80%',
+                frameheight: '100%'
+            });
+
+            // product Slider
+            $('.product-slider').slick({
+                autoplay: false,
+                infinite: true,
+                arrows: true,
+                prevArrow: '<button type=\'button\' class=\'prevArrow\'><i class=\'ti-arrow-left\'></i></button>',
+                nextArrow: '<button type=\'button\' class=\'nextArrow\'><i class=\'ti-arrow-right\'></i></button>',
+                dots: true,
+                customPaging: function (slider, i) {
+                    var image = $(slider.$slides[i]).data('image');
+                    return '<img class="img-fluid" src="' + image + '" alt="product-img">';
+                }
+            });
+
+            // image zoom
+            $('.image-zoom')
+                .wrap('<span></span>')
+                .css('display', 'block')
+                .parent()
+                .zoom({
+                    on: 'click',
+                    url: $(this).find('img').attr('data-zoom')
+                });
+
+            // touchspin
+            $('input[name=\'quantity\']').TouchSpin({
+                verticalbuttons: true,
+                initval: 1,
+                verticalupclass: 'angle-up',
+                verticaldownclass: 'angle-down'
+            });
+            $('input[name=\'cart-quantity\']').TouchSpin({
+                initval: 40
+            });
+        }
     }
 </script>
 

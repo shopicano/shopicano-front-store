@@ -100,7 +100,7 @@
                                     <div class="product text-center">
                                         <div class="product-thumb">
                                             <div class="overflow-hidden position-relative">
-                                                <router-link to="/products/1">
+                                                <router-link to="/products">
                                                     <img class="img-fluid w-100 mb-3 img-first"
                                                          src="images/collection/product-1.jpg" alt="product-img">
                                                     <img class="img-fluid w-100 mb-3 img-second"
@@ -121,7 +121,7 @@
                                             </div>
                                         </div>
                                         <div class="product-info">
-                                            <h3 class="h5"><router-link class="text-color" to="/products/1">Leather
+                                            <h3 class="h5"><router-link class="text-color" to="/products">Leather
                                                 Backpack</router-link></h3>
                                             <span class="h5">$320.79</span>
                                         </div>

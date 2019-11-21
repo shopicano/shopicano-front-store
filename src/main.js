@@ -4,13 +4,13 @@ import VueRouter from "vue-router";
 import App from './App.vue';
 import Index from "@/components/Index";
 import Shop from "@/components/Shop";
-import Login from "@/components/Login";
-import SignUp from "@/components/SignUp";
-import Cart from "@/components/Cart";
-import Shipping from "@/components/Shipping";
-import Payment from "@/components/Payment";
-import Review from "@/components/Review";
-import Confirmation from "@/components/Confirmation";
+import Login from "@/components/userForms/Login";
+import SignUp from "@/components/userForms/SignUp";
+import Cart from "@/components/cart/Cart";
+import Shipping from "@/components/cart/Shipping";
+import Payment from "@/components/cart/Payment";
+import Review from "@/components/cart/Review";
+import Confirmation from "@/components/cart/Confirmation";
 
 Vue.config.productionTip = false;
 

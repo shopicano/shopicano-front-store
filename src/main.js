@@ -11,6 +11,7 @@ import Shipping from "@/components/cart/Shipping";
 import Payment from "@/components/cart/Payment";
 import Review from "@/components/cart/Review";
 import Confirmation from "@/components/cart/Confirmation";
+import ProductView from "@/components/ProductView";
 
 Vue.config.productionTip = false;
 
@@ -52,6 +53,10 @@ const routes = [
     {
         path: '/confirmation',
         component: Confirmation,
+    },
+    {
+        path: '/products/:id',
+        component: ProductView,
     },
 ];
 

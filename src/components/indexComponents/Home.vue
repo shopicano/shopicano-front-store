@@ -18,21 +18,21 @@
                         </div>
                         <ul class="d-flex list-unstyled pl-0 categories-list">
                             <li class="m-0 hover-zoom-img">
-                                <a href="shop.html"><img src="images/categories/product-sm-1.jpg"
-                                                         class="img-fluid w-100" alt="product-img"></a>
+                                <router-link to="/shop"><img src="images/categories/product-sm-1.jpg"
+                                                         class="img-fluid w-100" alt="product-img"></router-link>
                             </li>
                             <li class="m-0 hover-zoom-img">
-                                <a href="shop.html"><img src="images/categories/product-sm-2.jpg"
-                                                         class="img-fluid w-100" alt="product-img"></a>
+                                <router-link to="/shop"><img src="images/categories/product-sm-2.jpg"
+                                                         class="img-fluid w-100" alt="product-img"></router-link>
                             </li>
                             <li class="m-0 hover-zoom-img">
-                                <a href="shop.html"><img src="images/categories/product-sm-3.jpg"
-                                                         class="img-fluid w-100" alt="product-img"></a>
+                                <router-link to="/shop"><img src="images/categories/product-sm-3.jpg"
+                                                         class="img-fluid w-100" alt="product-img"></router-link>
                             </li>
                         </ul>
                         <div class="px-4 py-3 border-top">
                             <h4 class="d-inline-block mb-0 mt-1">{{ category.name }}</h4>
-                            <a href="shop.html" class="btn btn-sm btn-outline-primary float-right">view more</a>
+                            <router-link to="/shop" class="btn btn-sm btn-outline-primary float-right">view more</router-link>
                         </div>
                     </div>
                 </div>

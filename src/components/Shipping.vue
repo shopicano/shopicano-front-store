@@ -10,7 +10,7 @@
             <nav class="bg-gray py-3">
                 <div class="container">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                        <li class="breadcrumb-item"><router-link to="/">Home</router-link></li>
                         <li class="breadcrumb-item active" aria-current="page">Shipping Information</li>
                     </ol>
                 </div>
@@ -25,18 +25,18 @@
                             <div class="inner-wrapper border-box">
                                 <!-- navbar -->
                                 <div class="justify-content-between nav mb-5">
-                                    <a href="shipping.html" class="text-center d-inline-block active nav-item">
+                                    <router-link to="/shipping" class="text-center d-inline-block active nav-item">
                                         <i class="ti-truck d-block mb-2"></i>
                                         <span class="d-block h4">Shipping Method</span>
-                                    </a>
-                                    <a href="payment.html" class="text-center d-inline-block nav-item">
+                                    </router-link>
+                                    <router-link to="/payment" class="text-center d-inline-block nav-item">
                                         <i class="ti-wallet d-block mb-2"></i>
                                         <span class="d-block h4">Payment Method</span>
-                                    </a>
-                                    <a href="review.html" class="text-center d-inline-block nav-item">
+                                    </router-link>
+                                    <router-link to="/review" class="text-center d-inline-block nav-item">
                                         <i class="ti-eye d-block mb-2"></i>
                                         <span class="d-block h4">Review</span>
-                                    </a>
+                                    </router-link>
                                 </div>
                                 <!-- /navbar -->
 
@@ -366,7 +366,7 @@
                                 </form>
                                 <!-- /shipping-address -->
                                 <div class="p-4 bg-gray text-right">
-                                    <a href="payment.html" class="btn btn-primary">Continue</a>
+                                    <router-link to="/payment" class="btn btn-primary">Continue</router-link>
                                 </div>
                             </div>
                         </div>

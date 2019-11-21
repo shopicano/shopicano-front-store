@@ -12,13 +12,13 @@
         <div class="collapse navbar-collapse order-1 order-lg-2" id="navbarSupportedContent">
             <ul class="navbar-nav mx-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="/">Home</a>
+                    <router-link class="nav-link" to="/">Home</router-link>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/shop">Shop</a>
+                    <router-link class="nav-link" to="/shop">Shop</router-link>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/contact">Contact Us</a>
+                    <router-link class="nav-link" to="/contact">Contact Us</router-link>
                 </li>
             </ul>
         </div>

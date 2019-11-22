@@ -258,10 +258,10 @@
                             <div class="product text-center">
                                 <div class="product-thumb">
                                     <div class="overflow-hidden position-relative">
-                                        <a href="product-single.html">
+                                        <router-link to="/products">
                                             <img class="img-fluid w-100 mb-3 img-first" src="images/collection/product-2.jpg" alt="product-img">
                                             <img class="img-fluid w-100 mb-3 img-second" src="images/collection/product-5.jpg" alt="product-img">
-                                        </a>
+                                        </router-link>
                                         <div class="btn-cart">
                                             <a href="#" class="btn btn-primary btn-sm">Add To Cart</a>
                                         </div>
@@ -269,14 +269,12 @@
                                     <div class="product-hover-overlay">
                                         <a href="#" class="product-icon favorite" data-toggle="tooltip" data-placement="left" title="Wishlist"><i
                                                 class="ti-heart"></i></a>
-                                        <a href="#" class="product-icon cart" data-toggle="tooltip" data-placement="left" title="Compare"><i
-                                                class="ti-direction-alt"></i></a>
                                         <a data-vbtype="inline" href="#quickView" class="product-icon view venobox" data-toggle="tooltip"
                                            data-placement="left" title="Quick View"><i class="ti-search"></i></a>
                                     </div>
                                 </div>
                                 <div class="product-info">
-                                    <h3 class="h5"><a class="text-color" href="product-single.html">Box Leather Shoulder Bag</a></h3>
+                                    <h3 class="h5"><router-link class="text-color" to="/products">Box Leather Shoulder Bag</router-link></h3>
                                     <span class="h5">$520.79</span>
                                 </div>
                                 <!-- product label badge -->
@@ -286,15 +284,16 @@
                             </div>
                         </div>
                         <!-- //end of product -->
+
                         <!-- product -->
                         <div class="col-lg-3 col-sm-6 mb-5 mb-lg-0">
                             <div class="product text-center">
                                 <div class="product-thumb">
                                     <div class="overflow-hidden position-relative">
-                                        <a href="product-single.html">
+                                        <router-link to="/products">
                                             <img class="img-fluid w-100 mb-3 img-first" src="images/collection/product-3.jpg" alt="product-img">
                                             <img class="img-fluid w-100 mb-3 img-second" src="images/collection/product-6.jpg" alt="product-img">
-                                        </a>
+                                        </router-link>
                                         <div class="btn-cart">
                                             <a href="#" class="btn btn-primary btn-sm">Add To Cart</a>
                                         </div>
@@ -302,14 +301,12 @@
                                     <div class="product-hover-overlay">
                                         <a href="#" class="product-icon favorite" data-toggle="tooltip" data-placement="left" title="Wishlist"><i
                                                 class="ti-heart"></i></a>
-                                        <a href="#" class="product-icon cart" data-toggle="tooltip" data-placement="left" title="Compare"><i
-                                                class="ti-direction-alt"></i></a>
                                         <a data-vbtype="inline" href="#quickView" class="product-icon view venobox" data-toggle="tooltip"
                                            data-placement="left" title="Quick View"><i class="ti-search"></i></a>
                                     </div>
                                 </div>
                                 <div class="product-info">
-                                    <h3 class="h5"><a class="text-color" href="product-single.html">Sneaky Leather Sneakers</a></h3>
+                                    <h3 class="h5"><router-link class="text-color" to="/products">Sneaky Leather Sneakers</router-link></h3>
                                     <span class="h5">$270.79</span>
                                 </div>
                                 <!-- product label badge -->
@@ -319,6 +316,7 @@
                             </div>
                         </div>
                         <!-- //end of product -->
+
                         <!-- product -->
                         <div class="col-lg-3 col-sm-6 mb-5 mb-lg-0">
                             <div class="product text-center">
@@ -401,6 +399,11 @@
         name: "ProductView",
         components: {Footer, Navigation, Header},
         mounted() {
+
+            // tooltip
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip();
+            });
 
             //  collection item quick view
             $('.venobox').venobox({

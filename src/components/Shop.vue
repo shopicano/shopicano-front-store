@@ -73,7 +73,10 @@
                             <!-- search product -->
                             <div class="position-relative mb-5">
                                 <form action="#">
-                                    <input type="search" class="form-control rounded-0" id="search-product"
+                                    <input type="search"
+                                           v-model="query"
+                                           @keyup="onSearchProducts"
+                                           class="form-control rounded-0" id="search-product"
                                            placeholder="Search...">
                                     <button type="submit" class="search-icon pr-3 r-0"><i
                                             class="ti-search text-color"></i></button>
@@ -98,6 +101,14 @@
                         <div class="col-lg-9">
                             <div class="row">
                                 <!-- product -->
+                                <div class="col-lg-4 col-sm-6 mb-4"></div>
+                                <div class="col-lg-4 col-sm-6 mb-4">
+                                    <div v-if="fetchIsEmpty" class="text-center">
+                                        <h4 class="py-1 bg-dark text-white">Found no item.</h4>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-6 mb-4"></div>
+
                                 <div v-for="product in productsList" v-bind:key="product.id" class="col-lg-4 col-sm-6 mb-4">
                                     <div class="product text-center">
                                         <div class="product-thumb">
@@ -191,6 +202,8 @@
                 catID: '',
                 categoryItemes: [],
                 categorySelected: false,
+                fetchIsEmpty: false,
+                query: '',
             }
         },
         mounted() {
@@ -251,6 +264,15 @@
             },
             getFullImagePath(subPath) {
                 return Settings.GetMediaUrl() + subPath;
+            },
+            onSearchProducts: function() {
+                axios.get(Settings.GetApiUrl() + '/products/search?query=' + this.query
+                    + '&limit=' + this.perPage + '&page=' + this.currentPage).then(resp => {
+                    this.fetchIsEmpty = resp.data.data.length === 0;
+                    this.productsList = resp.data.data;
+                }).catch(err => {
+                    console.log(err);
+                })
             },
             loadjQueryScripts: function () {
                 // tooltip

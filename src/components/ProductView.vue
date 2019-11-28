@@ -57,22 +57,22 @@
                             <!-- product image slider -->
                             <div class="product-slider">
                                 <div data-image="images/product-single/product-sm-1.jpg">
-                                    <img class="img-fluid w-100 image-zoom" src="images/product-single/product-sm-1.jpg" alt="product-img"
-                                         data-zoom="images/product-single/product-sm-1.jpg">
+                                    <img class="img-fluid w-100 image-zoom" v-bind:src="getFullImagePath(product.image)" alt="product-img"
+                                         v-bind:data-zoom="getFullImagePath(product.image)">
                                 </div>
                                 <div data-image="images/product-single/product-sm-2.jpg">
-                                    <img class="img-fluid w-100 image-zoom" src="images/product-single/product-sm-2.jpg" alt="product-img"
-                                         data-zoom="images/product-single/product-sm-2.jpg">
+                                    <img class="img-fluid w-100 image-zoom" v-bind:src="getFullImagePath(product.image)" alt="product-img"
+                                         v-bind:data-zoom="getFullImagePath(product.image)">
                                 </div>
                                 <div data-image="images/product-single/product-sm-3.jpg">
-                                    <img class="img-fluid w-100 image-zoom" src="images/product-single/product-sm-3.jpg" alt="product-img"
-                                         data-zoom="images/product-single/product-sm-3.jpg">
+                                    <img class="img-fluid w-100 image-zoom" v-bind:src="getFullImagePath(product.image)"  alt="product-img"
+                                         v-bind:data-zoom="getFullImagePath(product.image)">
                                 </div>
                             </div>
                         </div>
                         <!-- produt details -->
                         <div class="col-lg-6 mb-100">
-                            <h2>Box Leather Shoulder Bag</h2>
+                            <h2>{{ product.name }}</h2>
                             <i class="ti-check-box text-success"></i>
                             <span class="text-success">Instock</span>
                             <ul class="list-inline mb-4">
@@ -83,7 +83,7 @@
                                 <li class="list-inline-item mx-0"><a href="#" class="rated"><i class="ti-star"></i></a></li>
                                 <li class="list-inline-item"><a href="#" class="text-gray ml-3">( 3 Reviews )</a></li>
                             </ul>
-                            <h4 class="text-primary h3">$65.00 <s class="text-color ml-2">$90.00</s></h4>
+                            <h4 class="text-primary h3">${{ product.price }} <s class="text-color ml-2">$90.00</s></h4>
                             <h6 class="mb-4">You save: <span class="text-primary">$25.00 USD (30%)</span></h6>
                             <div class="d-flex flex-column flex-sm-row justify-content-between mb-4">
                                 <input id="quantity" class="quantity mr-sm-2 mb-3 mb-sm-0" type="text" value="" name="quantity">
@@ -153,12 +153,7 @@
                         </div>
                         <div class="col-lg-12">
                             <h3 class="mb-3">Product Description</h3>
-                            <p class="text-gray mb-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                                laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
-                                esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
-                                qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit
-                                voluptatem accusantium doloremque laudantium.</p>
+                            <p class="text-gray mb-4">{{ product.description }}</p>
                             <h4>Product Features</h4>
                             <ul class="features-list">
                                 <li>Mapped with 3M™ Thinsulate™ Insulation [40G Body / Sleeves / Hood]</li>
@@ -391,15 +386,22 @@
 </template>
 
 <script>
+    import axios from "axios";
+
     import Header from "@/components/indexComponents/Header";
     import Navigation from "@/components/indexComponents/Navigation";
     import Footer from "@/components/indexComponents/Footer";
+    import Settings from "@/common/settings";
 
     export default {
         name: "ProductView",
         components: {Footer, Navigation, Header},
+        data() {
+            return {
+                product: [],
+            };
+        },
         mounted() {
-
             // tooltip
             $(function () {
                 $('[data-toggle="tooltip"]').tooltip();
@@ -445,6 +447,21 @@
             $('input[name=\'cart-quantity\']').TouchSpin({
                 initval: 40
             });
+
+
+            this.getProduct();
+        },
+        methods: {
+            getProduct: function () {
+                axios.get(Settings.GetApiUrl() + '/products/' + this.$route.params.id).then(resp => {
+                    this.product = resp.data.data;
+                }).catch(err => {
+                    console.log(err);
+                })
+            },
+            getFullImagePath(subPath) {
+                return Settings.GetMediaUrl() + subPath;
+            },
         }
     }
 </script>

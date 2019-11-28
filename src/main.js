@@ -56,7 +56,7 @@ const routes = [
         component: Confirmation,
     },
     {
-        path: '/products',
+        path: '/products/:id',
         component: ProductView,
     },
 ];

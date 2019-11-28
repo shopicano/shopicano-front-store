@@ -135,7 +135,7 @@
                                     <div class="product text-center">
                                         <div class="product-thumb">
                                             <div class="overflow-hidden position-relative">
-                                                <router-link to="/products">
+                                                <router-link :to="`/products/${product.id}`">
                                                     <img class="img-fluid w-100 mb-3 img-first imageDim"
                                                          v-bind:src="getFullImagePath(product.image)" alt="product-img">
                                                     <img class="img-fluid w-100 mb-3 img-second imageDim"
@@ -157,9 +157,8 @@
                                             </div>
                                         </div>
                                         <div class="product-info">
-                                            <h3 class="h5"><router-link class="text-color" to="/products">Leather
-                                                Backpack</router-link></h3>
-                                            <span class="h5">$320.79</span>
+                                            <h3 class="h5"><router-link class="text-color" to="/products">{{ product.name }}</router-link></h3>
+                                            <span class="h5">${{ product.price }}</span>
                                         </div>
                                         <!-- product label badge -->
                                         <div class="product-label sale">
@@ -216,6 +215,7 @@
         components: {Services, NewsLetter, Footer, Navigation, Header, BPagination},
         data() {
             return{
+                /*this.$route.params.id*/
                 rows: 100,
                 currentPage: 1,
                 perPage: 20,
@@ -256,7 +256,7 @@
                     framewidth: '80%',
                     frameheight: '100%'
                 });
-            }
+            },
         },
     }
 </script>
@@ -266,4 +266,10 @@
     .imageDim {
         height: 330px!important;
     }
+
+    /*input[type=number]::-webkit-inner-spin-button,*/
+    /*input[type=number]::-webkit-outer-spin-button {*/
+    /*    -webkit-appearance: none;*/
+    /*    margin: 0;*/
+    /*}*/
 </style>

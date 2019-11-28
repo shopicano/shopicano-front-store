@@ -1,7 +1,7 @@
 <template>
     <div>
         <Header/>
-        <Navigation/>
+        <Navigation @changeValue="categorySelected=false"/>
 
         <!-- main wrapper -->
         <div class="main-wrapper">
@@ -67,6 +67,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <!-- sidebar -->
                         <div class="col-lg-3">
                             <!-- search product -->
@@ -78,48 +79,14 @@
                                             class="ti-search text-color"></i></button>
                                 </form>
                             </div>
+
                             <!-- categories -->
                             <div class="mb-30">
                                 <h4 class="mb-3">Shop by Categories</h4>
                                 <ul class="pl-0 shop-list list-unstyled">
-                                    <li>
-                                        <a href="#" class="d-flex py-2 text-gray justify-content-between">
-                                            <span>Women’s Clothing</span><span>9</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="d-flex py-2 text-gray justify-content-between">
-                                            <span>Man Fashion</span><span>5</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="d-flex py-2 text-gray justify-content-between">
-                                            <span>Kid’s Clothing</span><span>3</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="d-flex py-2 text-gray justify-content-between">
-                                            <span>Watches & Jewelry</span><span>2</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="d-flex py-2 text-gray justify-content-between">
-                                            <span>Bags & Shoes</span><span>7</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="d-flex py-2 text-gray justify-content-between">
-                                            <span>Toys & Kids</span><span>1</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="d-flex py-2 text-gray justify-content-between">
-                                            <span>Electronics</span><span>8</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="d-flex py-2 text-gray justify-content-between">
-                                            <span>Computers</span><span>11</span>
+                                    <li v-for="category in categories" :key="category.id" v-on:click="setCategoryId(category.id)">
+                                        <a class="d-flex py-2 text-gray justify-content-between">
+                                            <span>{{ category.name }}</span><span>9</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -131,7 +98,7 @@
                         <div class="col-lg-9">
                             <div class="row">
                                 <!-- product -->
-                                <div v-for="product in productsList" class="col-lg-4 col-sm-6 mb-4">
+                                <div v-for="product in productsList" v-bind:key="product.id" class="col-lg-4 col-sm-6 mb-4">
                                     <div class="product text-center">
                                         <div class="product-thumb">
                                             <div class="overflow-hidden position-relative">
@@ -200,6 +167,7 @@
 </template>
 
 <script>
+    /* eslint-disable */
     import { BPagination } from 'bootstrap-vue';
     import axios from 'axios';
 
@@ -219,16 +187,24 @@
                 currentPage: 1,
                 perPage: 20,
                 productsList: [],
+                categories: [],
+                catID: '',
+                categoryItemes: [],
+                categorySelected: false,
             }
         },
         mounted() {
             this.getProducts();
             this.loadjQueryScripts();
+            this.getCategories();
         },
         computed: {
             getData: function () {
-                console.log(this.currentPage);
-                return this.getProducts();
+                if (!this.categorySelected) {
+                    return this.getProducts();
+                } else if (this.categorySelected) {
+                    return this.getCategoryItems();
+                }
             }
         },
         methods: {
@@ -236,6 +212,39 @@
                 axios.get( Settings.GetApiUrl() + "/products?page=" + this.currentPage + "&limit="
                     + this.perPage,).then(resp => {
                     this.productsList = resp.data.data;
+                    this.categorySelected = false;
+                }).catch(err => {
+                    console.log(err);
+                })
+            },
+            setCategoryId: function (id) {
+                this.catID = id;
+                this.categorySelected = true;
+
+                this.getCategoryItems();
+            },
+            getCategoryItems: function () {
+                axios.get( Settings.GetApiUrl() + "/products?page=" + this.currentPage + "&limit="
+                    + this.perPage,).then(resp => {
+
+                    this.categoryItemes = [];
+                    for (let key in resp.data.data) {
+                        if (resp.data.data[key].category_id === this.catID) {
+                            var obj = resp.data.data[key];
+                            this.categoryItemes.push(obj);
+                        }
+                    }
+
+                    this.productsList = this.categoryItemes;
+
+                    console.log(this.categoryItemes)
+                }).catch(err => {
+                    console.log(err);
+                })
+            },
+            getCategories: function () {
+                axios.get( Settings.GetApiUrl() + '/categories?&limit=15').then(resp => {
+                    this.categories = resp.data.data;
                 }).catch(err => {
                     console.log(err);
                 })

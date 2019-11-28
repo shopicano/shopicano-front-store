@@ -14,7 +14,7 @@
                 <li class="nav-item">
                     <router-link class="nav-link" to="/">Home</router-link>
                 </li>
-                <li class="nav-item">
+                <li @click="emitToShop" class="nav-item">
                     <router-link class="nav-link" to="/shop">Shop</router-link>
                 </li>
                 <li class="nav-item">
@@ -83,6 +83,9 @@
             },
             onCartClose: function () {
                 this.isCartOpen = false;
+            },
+            emitToShop: function () {
+                this.$emit('changeValue', false)
             }
         }
     }

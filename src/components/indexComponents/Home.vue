@@ -6,7 +6,7 @@
                     <h2 class="section-title">Top Categories</h2>
                 </div>
                 <!-- categories item -->
-                <div v-for="category in categories"
+                <div v-for="category in topCategories"
                      v-bind:key="category.id"
                      class="col-lg-4 col-md-6 mb-50">
                     <div class="card p-0">
@@ -85,7 +85,7 @@
         components: {  },
         data() {
             return {
-                categories: [],
+                topCategories: [],
                 topProducts: [],
             };
         },
@@ -96,7 +96,7 @@
         methods: {
             getCategories: function () {
                 axios.get( Settings.GetApiUrl() + '/categories?limit=3').then(resp => {
-                    this.categories = resp.data.data;
+                    this.topCategories = resp.data.data;
                 }).catch(err => {
                     console.log(err);
                 })

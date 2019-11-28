@@ -56,15 +56,15 @@
                         <div class="col-lg-6 mb-4 mb-lg-0">
                             <!-- product image slider -->
                             <div class="product-slider">
-                                <div data-image="images/product-single/product-sm-1.jpg">
+                                <div v-bind:data-image="getFullImagePath(product.image)">
                                     <img class="img-fluid w-100 image-zoom" v-bind:src="getFullImagePath(product.image)" alt="product-img"
                                          v-bind:data-zoom="getFullImagePath(product.image)">
                                 </div>
-                                <div data-image="images/product-single/product-sm-2.jpg">
+                                <div v-bind:data-image="getFullImagePath(product.image)">
                                     <img class="img-fluid w-100 image-zoom" v-bind:src="getFullImagePath(product.image)" alt="product-img"
                                          v-bind:data-zoom="getFullImagePath(product.image)">
                                 </div>
-                                <div data-image="images/product-single/product-sm-3.jpg">
+                                <div v-bind:data-image="getFullImagePath(product.image)">
                                     <img class="img-fluid w-100 image-zoom" v-bind:src="getFullImagePath(product.image)"  alt="product-img"
                                          v-bind:data-zoom="getFullImagePath(product.image)">
                                 </div>
@@ -86,7 +86,7 @@
                             <h4 class="text-primary h3">${{ product.price }} <s class="text-color ml-2">$90.00</s></h4>
                             <h6 class="mb-4">You save: <span class="text-primary">$25.00 USD (30%)</span></h6>
                             <div class="d-flex flex-column flex-sm-row justify-content-between mb-4">
-                                <input id="quantity" class="quantity mr-sm-2 mb-3 mb-sm-0" type="text" value="" name="quantity">
+                                <input id="quantity" class="quantity mr-sm-2 mb-3 mb-sm-0" type="number" value="" name="quantity">
 
                                 <select class="form-control mx-sm-2 mb-3 mb-sm-0" name="color">
                                     <option value="brown">Brown Color</option>
@@ -109,7 +109,7 @@
                             <hr>
                             <div class="payment-option border border-primary mt-5 mb-4">
                                 <h5 class="bg-white">Guaranted Safe Checkout</h5>
-                                <img class="img-fluid w-100 p-3" src="images/payment-card/all-card.png" alt="payment-card">
+                                <img class="img-fluid w-100 p-3" src="../../public/images/payment-card/all-card.png" alt="payment-card">
                             </div>
                             <h5 class="mb-3">4 Great Reason to Buy From Us</h5>
                             <div class="row">
@@ -402,6 +402,8 @@
             };
         },
         mounted() {
+            this.getProduct();
+
             // tooltip
             $(function () {
                 $('[data-toggle="tooltip"]').tooltip();
@@ -447,9 +449,6 @@
             $('input[name=\'cart-quantity\']').TouchSpin({
                 initval: 40
             });
-
-
-            this.getProduct();
         },
         methods: {
             getProduct: function () {
@@ -467,5 +466,9 @@
 </script>
 
 <style scoped>
-
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
 </style>

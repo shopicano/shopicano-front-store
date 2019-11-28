@@ -215,7 +215,6 @@
         components: {Services, NewsLetter, Footer, Navigation, Header, BPagination},
         data() {
             return{
-                /*this.$route.params.id*/
                 rows: 100,
                 currentPage: 1,
                 perPage: 20,
@@ -266,10 +265,4 @@
     .imageDim {
         height: 330px!important;
     }
-
-    /*input[type=number]::-webkit-inner-spin-button,*/
-    /*input[type=number]::-webkit-outer-spin-button {*/
-    /*    -webkit-appearance: none;*/
-    /*    margin: 0;*/
-    /*}*/
 </style>

@@ -34,12 +34,36 @@
                         <i id="cartClose" class="ti-close cart-close" v-on:click="onCartClose"></i>
                         <h4 class="mb-4">Your Cart</h4>
 
-                        <ul class="pl-0 mb-3">
+                        <ul class="pl-0 mb-3 cart-dimension">
                             <li class="d-flex border-bottom">
                                 <img src="images/cart/product-1.jpg" alt="product-img">
                                 <div class="mx-3">
                                     <h6>Eleven Paris Skinny Jeans</h6>
                                     <span>1</span> X <span>$79.00</span>
+                                </div>
+                                <i class="ti-close"></i>
+                            </li>
+                            <li class="d-flex border-bottom">
+                                <img src="images/cart/product-2.jpg" alt="product-img">
+                                <div class="mx-3">
+                                    <h6>Eleven Paris Skinny Jeans top</h6>
+                                    <span>1 X</span> <span>$79.00</span>
+                                </div>
+                                <i class="ti-close"></i>
+                            </li>
+                            <li class="d-flex border-bottom">
+                                <img src="images/cart/product-2.jpg" alt="product-img">
+                                <div class="mx-3">
+                                    <h6>Eleven Paris Skinny Jeans top</h6>
+                                    <span>1 X</span> <span>$79.00</span>
+                                </div>
+                                <i class="ti-close"></i>
+                            </li>
+                            <li class="d-flex border-bottom">
+                                <img src="images/cart/product-2.jpg" alt="product-img">
+                                <div class="mx-3">
+                                    <h6>Eleven Paris Skinny Jeans top</h6>
+                                    <span>1 X</span> <span>$79.00</span>
                                 </div>
                                 <i class="ti-close"></i>
                             </li>
@@ -90,3 +114,10 @@
         }
     }
 </script>
+
+<style scoped>
+    .cart-dimension{
+        height: 235px;
+        overflow: auto;
+    }
+</style>

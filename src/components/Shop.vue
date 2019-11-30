@@ -120,7 +120,7 @@
                                                          v-bind:src="getFullImagePath(product.image)" alt="product-img">
                                                 </router-link>
                                                 <div class="btn-cart">
-                                                    <a href="#" class="btn btn-primary btn-sm">Add To Cart</a>
+                                                    <button class="btn btn-primary btn-sm">Add To Cart</button>
                                                 </div>
                                             </div>
                                             <div class="product-hover-overlay">

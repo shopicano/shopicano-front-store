@@ -135,7 +135,7 @@
                                             </div>
                                         </div>
                                         <div class="product-info">
-                                            <h3 class="h5"><router-link class="text-color" to="/products">{{ product.name }}</router-link></h3>
+                                            <h3 class="h5"><router-link class="text-color" :to="`/products/${product.id}`">{{ product.name }}</router-link></h3>
                                             <span class="h5">${{ product.price }}</span>
                                         </div>
                                         <!-- product label badge -->

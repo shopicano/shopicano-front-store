@@ -46,22 +46,22 @@
                      class="col-lg-4 col-md-6 mb-50">
                     <div class="card p-0">
                         <div class="border-bottom text-center hover-zoom-img">
-                            <router-link to="/shop">
+                            <router-link :to="`/products/${tp.id}`">
                                 <img class="rounded-top img-fluid imageDim" alt="product-img"
                                      v-bind:src="getFullImagePath(tp.image)" >
                             </router-link>
                         </div>
                         <ul class="d-flex list-unstyled pl-0 categories-list">
                             <li class="m-0 hover-zoom-img">
-                                <router-link to="/shop"><img v-bind:src="getFullImagePath(tp.image)"
+                                <router-link :to="`/products/${tp.id}`"><img v-bind:src="getFullImagePath(tp.image)"
                                                          class="img-fluid w-100" alt="product-img"></router-link>
                             </li>
                             <li class="m-0 hover-zoom-img">
-                                <router-link to="/shop"><img v-bind:src="getFullImagePath(tp.image)"
+                                <router-link :to="`/products/${tp.id}`"><img v-bind:src="getFullImagePath(tp.image)"
                                                          class="img-fluid w-100" alt="product-img"></router-link>
                             </li>
                             <li class="m-0 hover-zoom-img">
-                                <router-link to="/shop"><img v-bind:src="getFullImagePath(tp.image)"
+                                <router-link :to="`/products/${tp.id}`"><img v-bind:src="getFullImagePath(tp.image)"
                                                          class="img-fluid w-100" alt="product-img"></router-link>
                             </li>
                         </ul>

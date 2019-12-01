@@ -120,18 +120,21 @@
                                                          v-bind:src="getFullImagePath(product.image)" alt="product-img">
                                                 </router-link>
                                                 <div class="btn-cart">
-                                                    <button class="btn btn-primary btn-sm">Add To Cart</button>
+                                                    <button @click="addToCart(product.id, getFullImagePath(product.image), product.name, 1, product.price)"
+                                                            class="btn btn-primary btn-sm">Add To Cart</button>
                                                 </div>
                                             </div>
                                             <div class="product-hover-overlay">
                                                 <a href="#" class="product-icon favorite" data-toggle="tooltip"
-                                                   data-placement="left" title="Wishlist"><i
-                                                        class="ti-heart"></i></a>
+                                                   data-placement="left" title="Wishlist">
+                                                    <i class="ti-heart"/>
+                                                </a>
                                                 <a data-vbtype="inline" href="#quickView"
                                                    v-on:click="onClikView"
                                                    class="product-icon view venobox" data-toggle="tooltip"
-                                                   data-placement="left" title="Quick View"><i
-                                                        class="ti-search"></i></a>
+                                                   data-placement="left" title="Quick View">
+                                                    <i class="ti-search"/>
+                                                </a>
                                             </div>
                                         </div>
                                         <div class="product-info">
@@ -273,6 +276,9 @@
                 }).catch(err => {
                     console.log(err);
                 })
+            },
+            addToCart: function (id, imgUrl, itemName, quantity, price ) {
+                this.$store.dispatch('addItemToCartAction', {itemID: id, itemThumbnail: imgUrl, itemName: itemName, itemQuantity: quantity, itemPrice: price})
             },
             loadjQueryScripts: function () {
                 // tooltip

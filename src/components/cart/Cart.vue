@@ -23,73 +23,38 @@
                             <div class="col-md-10 mx-auto">
                                 <div class="block">
                                     <div class="product-list">
-                                        <form method="#">
+                                        <form>
                                             <div class="table-responsive">
                                                 <table class="table cart-table">
                                                     <thead>
                                                     <tr>
-                                                        <th></th>
+                                                        <th/>
                                                         <th>Product Name</th>
                                                         <th>Price</th>
                                                         <th>Quantity</th>
                                                         <th>Sub Total</th>
                                                     </tr>
                                                     </thead>
+
+                                                    <div v-if="isCartNil">
+                                                        <h4 class="my-3 text-center text-danger">You have no selected item in cart.</h4>
+                                                    </div>
+
                                                     <tbody>
-                                                    <tr>
+                                                    <tr v-for="item in getFullCart">
                                                         <td>
-                                                            <a class="product-remove" href="">&times;</a>
+                                                            <a @click="onClickRemoveItem(item.itemID)" class="product-remove">&times;</a>
                                                         </td>
                                                         <td>
                                                             <div class="product-info">
-                                                                <img class="img-fluid" src="images/cart/product-1.jpg" alt="product-img" />
-                                                                <a href="">Tops</a>
+                                                                <img class="img-fluid w-25" :src="item.itemThumbnail" alt="product-img" />
+                                                                <a class="ml-4">{{ item.itemName }}</a>
                                                             </div>
                                                         </td>
-                                                        <td>$200.00</td>
-                                                        <td><input type="text" value="1" name="cart-quantity"></td>
-                                                        <td>$200.00</td>
-                                                    </tr>
-                                                    <tr>
+                                                        <td>${{ item.itemPrice }}</td>
                                                         <td>
-                                                            <a class="product-remove" href="">&times;</a>
+                                                            <input type="text" v-bind:value="item.itemQuantity" name="cart-quantity">
                                                         </td>
-                                                        <td>
-                                                            <div class="product-info">
-                                                                <img class="img-fluid" src="images/cart/product-2.jpg" alt="product-img" />
-                                                                <a href="">Jacket</a>
-                                                            </div>
-                                                        </td>
-                                                        <td>$200.00</td>
-                                                        <td><input type="text" value="1" name="cart-quantity"></td>
-                                                        <td>$200.00</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <a class="product-remove" href="">&times;</a>
-                                                        </td>
-                                                        <td>
-                                                            <div class="product-info">
-                                                                <img class="img-fluid" src="images/cart/product-1.jpg" alt="product-img" />
-                                                                <a href="">Scarf</a>
-                                                            </div>
-                                                        </td>
-                                                        <td>$200.00</td>
-                                                        <td><input type="text" value="1" name="cart-quantity"></td>
-                                                        <td>$200.00</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <a class="product-remove" href="">&times;</a>
-                                                        </td>
-                                                        <td>
-                                                            <div class="product-info">
-                                                                <img class="img-fluid" src="images/cart/product-2.jpg" alt="product-img" />
-                                                                <a href="">Tops</a>
-                                                            </div>
-                                                        </td>
-                                                        <td>$200.00</td>
-                                                        <td><input type="text" value="1" name="cart-quantity"></td>
                                                         <td>$200.00</td>
                                                     </tr>
                                                     </tbody>
@@ -105,14 +70,14 @@
                                             <div class="row">
                                                 <div class="col-12">
                                                     <ul class="list-unstyled text-right">
-                                                        <li>Sub Total <span class="d-inline-block w-100px">$800.00</span></li>
-                                                        <li>UK Vat <span class="d-inline-block w-100px">$10.00</span></li>
-                                                        <li>Grand Total <span class="d-inline-block w-100px">$10.00</span></li>
+                                                        <!--<li>Sub Total <span class="d-inline-block w-100px">$800.00</span></li>
+                                                        <li>UK Vat <span class="d-inline-block w-100px">$10.00</span></li>-->
+                                                        <li>Grand Total <span class="d-inline-block w-100px">${{ grandTotalPrice }}</span></li>
                                                     </ul>
                                                 </div>
                                             </div>
                                             <hr>
-                                            <router-link to="/shipping" class="btn btn-primary float-right">Checkout</router-link>
+                                            <router-link to="/shipping" tag="button" :disabled="isCartNil" class="btn btn-primary float-right">Checkout</router-link>
                                         </form>
                                     </div>
                                 </div>
@@ -135,7 +100,29 @@
 
     export default {
         name: "Cart",
-        components: {Footer, Navigation, Header}
+        components: {Footer, Navigation, Header},
+        data(){
+            return {
+                isCartNil: true,
+            };
+        },
+        computed: {
+            getFullCart(){
+                this.isCartNil = this.$store.getters.cartItemCount < 1;
+                return this.$store.getters.getCart;
+            },
+            grandTotalPrice() {
+                return this.$store.getters.cartTotalPrice;
+            }
+        },
+        methods: {
+            onClickRemoveItem: function (id) {
+                this.removeFromCart(id)
+            },
+            removeFromCart: function (itemId) {
+                this.$store.dispatch('removeItemFromAction', itemId)
+            },
+        }
     }
 </script>
 

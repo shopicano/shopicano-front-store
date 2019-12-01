@@ -5,16 +5,44 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
     state: {
-        cartProducts: [
-            {itemID: '111111', itemThumbnail: '', itemName: 'RRrrrrr', itemQuantity: null, itemPrice: null},
-            {itemID: '222222', itemThumbnail: '', itemName: 'Nnnnommk', itemQuantity: null, itemPrice: null}
-        ],
+        cartProducts: [],
+        cartTotal: 0,
     },
     mutations: {
         addItemToCart: (state, payload) => {
-            state.cartProducts.push(payload)
+            state.cartProducts.push(payload);
+
+            state.cartTotal += payload.itemPrice;
+        },
+        removeItemFromCart: (state, payloadID) => {
+            state.cartProducts.forEach( element => {
+                if (element.itemID === payloadID) {
+                    state.cartProducts.splice(state.cartProducts.indexOf(element), 1);
+                    state.cartTotal -= element.itemPrice;
+                }
+            })
+        },
+        calculateTotal: (state) => {
+
         }
     },
-    actions: {},
-    getters: {},
+    actions: {
+        addItemToCartAction: (context, payload) => {
+            context.commit('addItemToCart', payload)
+        },
+        removeItemFromAction: (context, payloadId) => {
+            context.commit('removeItemFromCart', payloadId)
+        },
+    },
+    getters: {
+        getCart: (state) => {
+            return state.cartProducts
+        },
+        cartItemCount: (state) => {
+            return state.cartProducts.length
+        },
+        cartTotalPrice: (state) => {
+            return state.cartTotal
+        }
+    },
 });

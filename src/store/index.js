@@ -22,9 +22,6 @@ export const store = new Vuex.Store({
                 }
             })
         },
-        calculateTotal: (state) => {
-
-        }
     },
     actions: {
         addItemToCartAction: (context, payload) => {

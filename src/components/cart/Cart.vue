@@ -41,7 +41,7 @@
                                                     </div>
 
                                                     <tbody>
-                                                    <tr v-for="item in getFullCart">
+                                                    <tr v-for="item in getFullCart" v-bind:key="item.id">
                                                         <td>
                                                             <a @click="onClickRemoveItem(item.itemID)" class="product-remove">&times;</a>
                                                         </td>

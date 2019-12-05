@@ -35,7 +35,7 @@
                         <h4 class="mb-4">Your Cart</h4>
 
                         <ul class="pl-0 mb-3 cart-dimension">
-                            <li v-for="item in getFullCart" class="d-flex border-bottom">
+                            <li v-for="item in getFullCart" v-bind:key="item.id" class="d-flex border-bottom">
                                 <img :src="item.itemThumbnail" class="cart-imgsize" alt="product-img">
                                 <div class="mx-3">
                                     <h6>{{ item.itemName }}</h6>

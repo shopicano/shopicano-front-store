@@ -26,15 +26,15 @@
                                 <!-- navbar -->
                                 <div class="justify-content-between nav mb-5">
                                     <router-link to="/shipping" class="text-center d-inline-block active nav-item">
-                                        <i class="ti-truck d-block mb-2"></i>
+                                        <i class="ti-truck d-block mb-2"/>
                                         <span class="d-block h4">Shipping Method</span>
                                     </router-link>
                                     <router-link to="/payment" class="text-center d-inline-block nav-item">
-                                        <i class="ti-wallet d-block mb-2"></i>
+                                        <i class="ti-wallet d-block mb-2"/>
                                         <span class="d-block h4">Payment Method</span>
                                     </router-link>
                                     <router-link to="/review" class="text-center d-inline-block nav-item">
-                                        <i class="ti-eye d-block mb-2"></i>
+                                        <i class="ti-eye d-block mb-2"/>
                                         <span class="d-block h4">Review</span>
                                     </router-link>
                                 </div>
@@ -45,31 +45,31 @@
                                 <form action="#" class="row">
                                     <div class="col-sm-6">
                                         <label for="firstName">First Name</label>
-                                        <input class="form-control" type="text" id="firstName" name="firstName" required>
+                                        <input v-model="firstName" class="form-control" type="text" id="firstName" name="firstName" required>
                                     </div>
                                     <div class="col-sm-6">
                                         <label for="lastName">Last Name</label>
-                                        <input class="form-control" type="text" id="lastName" name="lastName" required>
+                                        <input v-model="lastName" class="form-control" type="text" id="lastName" name="lastName" required>
                                     </div>
                                     <div class="col-sm-6">
                                         <label for="email">Email</label>
-                                        <input class="form-control" type="email" id="email" name="email" required>
+                                        <input v-model="email" class="form-control" type="email" id="email" name="email" required>
                                     </div>
                                     <div class="col-sm-6">
                                         <label for="company">Company</label>
-                                        <input class="form-control" type="text" id="company" name="company" required>
+                                        <input v-model="company" class="form-control" type="text" id="company" name="company" required>
                                     </div>
                                     <div class="col-sm-6">
                                         <label for="address">Address</label>
-                                        <input class="form-control" type="text" id="address" name="address" required>
+                                        <input v-model="address" class="form-control" type="text" id="address" name="address" required>
                                     </div>
                                     <div class="col-sm-6">
                                         <label for="phone">Phone</label>
-                                        <input class="form-control" type="text" id="phone" name="phone" required>
+                                        <input v-model="phone" class="form-control" type="tel" id="phone" name="phone" required>
                                     </div>
                                     <div class="col-sm-6">
                                         <label >Country</label>
-                                        <select class="form-control" name="country">
+                                        <select v-model="country" class="form-control" name="country">
                                             <option value="Afghanistan">Afghanistan</option>
                                             <option value="Åland Islands">Åland Islands</option>
                                             <option value="Albania">Albania</option>
@@ -323,7 +323,7 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <label >City</label>
-                                        <select class="form-control" name="city">
+                                        <select v-model="city" class="form-control" name="city">
                                             <option value="brown">Dhaka</option>
                                             <option value="gray">Newyork</option>
                                             <option value="black">Delhi</option>
@@ -331,34 +331,34 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <label for="zip-code">Zip Code</label>
-                                        <input class="form-control" type="text" id="zip-code" name="zip-code" required>
+                                        <input v-model="zipCode" class="form-control" type="text" id="zip-code" name="zip-code" required>
                                     </div>
-                                    <div class="col-sm-6">
+                                    <!--<div class="col-sm-6">
                                         <label for="fax">Fax</label>
                                         <input class="form-control" type="text" id="fax" name="fax" required>
-                                    </div>
+                                    </div>-->
 
                                     <!-- select shipping method -->
                                     <div class="col-12">
                                         <h3 class="mb-5 border-bottom pb-2">Select A Shipping Method</h3>
                                     </div>
                                     <div class="col-sm-6 mb-4">
-                                        <input id="standard" class="custom-checkbox" type="radio" name="checkbox" value="1" checked="checked">
+                                        <input v-model="shippingMethod" id="standard" class="custom-checkbox" type="radio" name="checkbox" value="1" checked="checked">
                                         <label for="standard">Standard Ground (USPS) - $7.50</label>
                                         <small class="d-block ml-3">Delivered in 8-12 business days.</small>
                                     </div>
                                     <div class="col-sm-6 mb-4">
-                                        <input id="premium" type="radio" name="checkbox" value="2">
+                                        <input v-model="shippingMethod" id="premium" type="radio" name="checkbox" value="2">
                                         <label for="premium">Premium Ground (UPS) - $12.50</label>
                                         <small class="d-block ml-3">Delivered in 4-7 business days.</small>
                                     </div>
                                     <div class="col-sm-6 mb-4">
-                                        <input id="ups2" type="radio" name="checkbox" value="3">
+                                        <input v-model="shippingMethod" id="ups2" type="radio" name="checkbox" value="3">
                                         <label for="ups2">UPS 2 Business Day - $15.00</label>
                                         <small class="d-block ml-3">Orders placed by 9:45AM PST will ship same day.</small>
                                     </div>
                                     <div class="col-sm-6 mb-4">
-                                        <input id="ups1" type="radio" name="checkbox" value="4">
+                                        <input v-model="shippingMethod" id="ups1" type="radio" name="checkbox" value="4">
                                         <label for="ups1">UPS 1 Business Day - $35.00</label>
                                         <small class="d-block ml-3">Orders placed by 9:45AM PST will ship same day.</small>
                                     </div>
@@ -413,7 +413,22 @@
 
     export default {
         name: "Shipping",
-        components: {Footer, Navigation, Header}
+        components: {Footer, Navigation, Header},
+        data() {
+            return {
+                fullName: '',
+                firstName: '',
+                lastName: '',
+                email: '',
+                company: '',
+                address: '',
+                phone: '',
+                country: '',
+                city: '',
+                zipCode: '',
+                shippingMethod: ''
+            };
+        }
     }
 </script>
 

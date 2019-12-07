@@ -26,15 +26,15 @@
                                 <!-- navbar -->
                                 <div class="justify-content-between nav mb-5">
                                     <router-link to="/shipping" class="text-center d-inline-block nav-item">
-                                        <i class="ti-truck d-block mb-2"></i>
+                                        <i class="ti-truck d-block mb-2"/>
                                         <span class="d-block h4">Shipping Method</span>
                                     </router-link>
                                     <router-link to="/payment" class="text-center d-inline-block nav-item">
-                                        <i class="ti-wallet d-block mb-2"></i>
+                                        <i class="ti-wallet d-block mb-2"/>
                                         <span class="d-block h4">Payment Method</span>
                                     </router-link>
                                     <router-link to="/review" class="text-center d-inline-block nav-item active">
-                                        <i class="ti-eye d-block mb-2"></i>
+                                        <i class="ti-eye d-block mb-2"/>
                                         <span class="d-block h4">Review</span>
                                     </router-link>
                                 </div>
@@ -53,30 +53,13 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr>
-                                            <td class="align-middle"><img class="img-fluid" src="images/cart/product-1.jpg" alt="product-img" /></td>
-                                            <td class="align-middle">Tops</td>
+                                        <tr v-for="item in getFullCart" v-bind:key="item.id">
+                                            <td class="align-middle"><img class="img-fluid w-25" :src="item.itemThumbnail" alt="product-img" /></td>
+                                            <td class="align-middle">{{ item.itemName }}</td>
                                             <td class="align-middle">1</td>
-                                            <td class="align-middle">$220.00</td>
+                                            <td class="align-middle">${{ item.itemPrice }}</td>
                                         </tr>
-                                        <tr>
-                                            <td class="align-middle"><img class="img-fluid" src="images/cart/product-2.jpg" alt="product-img" /></td>
-                                            <td class="align-middle">Jacket</td>
-                                            <td class="align-middle">1</td>
-                                            <td class="align-middle">$520.00</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="align-middle"><img class="img-fluid" src="images/cart/product-1.jpg" alt="product-img" /></td>
-                                            <td class="align-middle">Tops</td>
-                                            <td class="align-middle">1</td>
-                                            <td class="align-middle">$220.00</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="align-middle"><img class="img-fluid" src="images/cart/product-2.jpg" alt="product-img" /></td>
-                                            <td class="align-middle">Jacket</td>
-                                            <td class="align-middle">1</td>
-                                            <td class="align-middle">$520.00</td>
-                                        </tr>
+
                                         </tbody>
                                     </table>
                                 </div>
@@ -154,13 +137,36 @@
 </template>
 
 <script>
+    /* eslint-disable */
     import Header from "@/components/indexComponents/Header";
     import Navigation from "@/components/indexComponents/Navigation";
     import Footer from "@/components/indexComponents/Footer";
 
     export default {
         name: "Review",
-        components: {Footer, Navigation, Header}
+        components: {Footer, Navigation, Header},
+        data(){
+            return {
+                isCartNil: true,
+            };
+        },
+        computed: {
+            getFullCart(){
+                this.isCartNil = this.$store.getters.cartItemCount < 1;
+                return this.$store.getters.getCart;
+            },
+            grandTotalPrice() {
+                return this.$store.getters.cartTotalPrice;
+            }
+        },
+        methods: {
+            onClickRemoveItem: function (id) {
+                this.removeFromCart(id)
+            },
+            removeFromCart: function (itemId) {
+                this.$store.dispatch('removeItemFromAction', itemId)
+            },
+        }
     }
 </script>
 

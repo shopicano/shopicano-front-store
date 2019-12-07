@@ -26,15 +26,15 @@
                                 <!-- navbar -->
                                 <div class="justify-content-between nav mb-5">
                                     <router-link to="/shipping" class="text-center d-inline-block nav-item">
-                                        <i class="ti-truck d-block mb-2"></i>
+                                        <i class="ti-truck d-block mb-2"/>
                                         <span class="d-block h4">Shipping Method</span>
                                     </router-link>
                                     <router-link to="/payment" class="text-center d-inline-block nav-item active">
-                                        <i class="ti-wallet d-block mb-2"></i>
+                                        <i class="ti-wallet d-block mb-2"/>
                                         <span class="d-block h4">Payment Method</span>
                                     </router-link>
                                     <router-link to="/review" class="text-center d-inline-block nav-item">
-                                        <i class="ti-eye d-block mb-2"></i>
+                                        <i class="ti-eye d-block mb-2"/>
                                         <span class="d-block h4">Review</span>
                                     </router-link>
                                 </div>
@@ -64,11 +64,11 @@
                                 <h3 class="mb-5 border-bottom pb-2">Billing Information</h3>
 
                                 <div class="mb-4">
-                                    <input id="checkbox1" type="radio" name="checkbox" value="1" checked="checked">
+                                    <input v-model="cardType" id="checkbox1" type="radio" name="checkbox" value="1" checked="checked">
                                     <label for="checkbox1" class="h4">Pay with Paypal</label>
                                 </div>
                                 <div class="mb-4">
-                                    <input id="checkbox2" type="radio" name="checkbox" value="2">
+                                    <input v-model="cardType" id="checkbox2" type="radio" name="checkbox" value="2">
                                     <label for="checkbox2" class="h4">Credit Card</label>
                                     <small class="mb-2 d-block ml-3">We accept following credit card</small>
                                     <div class="form-group ml-3 row">
@@ -82,19 +82,19 @@
                                         </div>
                                         <div class="col-sm-6">
                                             <label for="cardName">Name on Card</label>
-                                            <input type="text" name="cardName" id="cardName" class="form-control">
+                                            <input v-model="cardName" type="text" name="cardName" id="cardName" class="form-control">
                                         </div>
                                         <div class="col-sm-6">
                                             <label for="cardNumber">Card Number</label>
-                                            <input type="text" name="cardNumber" id="cardNumber" class="form-control">
+                                            <input v-model="cardNumber" type="text" name="cardNumber" id="cardNumber" class="form-control">
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="row">
                                                 <div class="col-12">
-                                                    <label for="exDate">Expiration Date</label>
+                                                    <label>Expiration Date</label>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <select class="form-control" name="exDate">
+                                                    <select v-model="exDateYear" class="form-control" name="exDate">
                                                         <option value="">Year</option>
                                                         <option value="2018">2018</option>
                                                         <option value="2019">2019</option>
@@ -102,7 +102,7 @@
                                                     </select>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <select class="form-control" name="exDate">
+                                                    <select v-model="exDateMonth" class="form-control" name="exDate">
                                                         <option value="">Month</option>
                                                         <option value="jan">Jan</option>
                                                         <option value="feb">Feb</option>
@@ -122,7 +122,7 @@
                                         </div>
                                         <div class="col-sm-6">
                                             <label for="cvc">CVC/CVV</label>
-                                            <input type="text" name="cvc" id="cvc" class="form-control" placeholder="1234">
+                                            <input v-model="cvc" type="text" name="cvc" id="cvc" class="form-control" >
                                         </div>
                                     </div>
                                 </div>
@@ -177,7 +177,17 @@
 
     export default {
         name: "Payment",
-        components: {Footer, Navigation, Header}
+        components: {Footer, Navigation, Header},
+        data() {
+            return {
+                cardType: '',
+                cardName: '',
+                cardNumber: '',
+                exDateYear: '',
+                exDateMonth: '',
+                cvc: '',
+            };
+        }
     }
 </script>
 

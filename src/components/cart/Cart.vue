@@ -94,6 +94,7 @@
 </template>
 
 <script>
+    /* eslint-disable */
     import Header from "@/components/indexComponents/Header";
     import Navigation from "@/components/indexComponents/Navigation";
     import Footer from "@/components/indexComponents/Footer";

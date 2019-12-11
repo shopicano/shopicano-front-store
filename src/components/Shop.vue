@@ -29,10 +29,10 @@
                             <button class="btn btn-primary w-100 mb-lg-4 mb-3">add to cart</button>
                         </form>
                         <ul class="list-inline social-icon-alt">
-                            <li class="list-inline-item"><a href="#"><i class="ti-facebook"></i></a></li>
-                            <li class="list-inline-item"><a href="#"><i class="ti-twitter-alt"></i></a></li>
-                            <li class="list-inline-item"><a href="#"><i class="ti-vimeo-alt"></i></a></li>
-                            <li class="list-inline-item"><a href="#"><i class="ti-google"></i></a></li>
+                            <li class="list-inline-item"><a href="#"><i class="ti-facebook"/></a></li>
+                            <li class="list-inline-item"><a href="#"><i class="ti-twitter-alt"/></a></li>
+                            <li class="list-inline-item"><a href="#"><i class="ti-vimeo-alt"/></a></li>
+                            <li class="list-inline-item"><a href="#"><i class="ti-google"/></a></li>
                         </ul>
                     </div>
                 </div>
@@ -78,8 +78,8 @@
                                            @keyup="onSearchProducts"
                                            class="form-control rounded-0" id="search-product"
                                            placeholder="Search...">
-                                    <button type="submit" class="search-icon pr-3 r-0"><i
-                                            class="ti-search text-color"></i></button>
+                                    <button type="submit" class="search-icon pr-3 r-0">
+                                        <i class="ti-search text-color"/></button>
                                 </form>
                             </div>
 

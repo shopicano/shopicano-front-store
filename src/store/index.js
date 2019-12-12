@@ -10,7 +10,17 @@ export const store = new Vuex.Store({
     },
     mutations: {
         addItemToCart: (state, payload) => {
-            state.cartProducts.push(payload);
+            if (state.cartProducts.length!==0 && state.cartProducts.some(item => item.itemID === payload.itemID)){
+                const index = state.cartProducts.findIndex(x => x.itemID === payload.itemID);
+
+                state.cartProducts[index].itemQuantity += payload.itemQuantity;
+                const subTolat = state.cartProducts[index].itemPrice * state.cartProducts[index].itemQuantity;
+
+                Object.assign(state.cartProducts[index], {subTotal: subTolat});
+            } else {
+                Object.assign(payload, {subTotal: payload.itemPrice});
+                state.cartProducts.push(payload);
+            }
 
             state.cartTotal += payload.itemPrice;
         },
@@ -22,6 +32,18 @@ export const store = new Vuex.Store({
                 }
             })
         },
+        updateQuantity: (state, payload) => {
+            const index = state.cartProducts.findIndex(x => x.itemID === payload.itemId);
+
+            state.cartProducts[index].itemQuantity = parseInt(payload.qntt);
+            state.cartProducts[index].subTotal = state.cartProducts[index].itemPrice * state.cartProducts[index].itemQuantity;
+
+            state.cartTotal = 0;
+            state.cartProducts.forEach( element => {
+
+                state.cartTotal = state.cartTotal + element.subTotal;
+            })
+        },
     },
     actions: {
         addItemToCartAction: (context, payload) => {
@@ -30,6 +52,9 @@ export const store = new Vuex.Store({
         removeItemFromAction: (context, payloadId) => {
             context.commit('removeItemFromCart', payloadId)
         },
+        changeQuantityAction: (context, payload) => {
+            context.commit('updateQuantity', payload)
+        }
     },
     getters: {
         getCart: (state) => {

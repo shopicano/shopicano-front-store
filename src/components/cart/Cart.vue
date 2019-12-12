@@ -41,7 +41,7 @@
                                                     </div>
 
                                                     <tbody>
-                                                    <tr v-for="item in getFullCart" v-bind:key="item.id">
+                                                    <tr v-for="item in getFullCart" v-bind:key="item.itemID">
                                                         <td>
                                                             <a @click="onClickRemoveItem(item.itemID)" class="product-remove">&times;</a>
                                                         </td>
@@ -53,9 +53,13 @@
                                                         </td>
                                                         <td>${{ item.itemPrice }}</td>
                                                         <td>
-                                                            <input type="text" v-bind:value="item.itemQuantity" name="cart-quantity">
+                                                            <input type="number"
+                                                                   v-bind:value="item.itemQuantity"
+                                                                   @keydown="$event.key === '-' ? $event.preventDefault() : null"
+                                                                   @keyup="changeQuantity(item.itemID, $event.target.value)"
+                                                                   min="0">
                                                         </td>
-                                                        <td>$200.00</td>
+                                                        <td>${{ item.subTotal }}</td>
                                                     </tr>
                                                     </tbody>
                                                 </table>
@@ -63,7 +67,7 @@
                                             <hr>
                                             <div class="d-flex flex-column flex-md-row align-items-center">
                                                 <input type="text" class="form-control text-md-left text-center mb-3 mb-md-0" name="coupon" id="coupon" placeholder="I have a discout coupon">
-                                                <button class="btn btn-outline-primary ml-md-3 w-100 mb-3 mb-md-0">Apply Coupon</button>
+                                                <a class="btn btn-outline-primary ml-md-3 w-100 mb-3 mb-md-0">Apply Coupon</a>
                                                 <a href="#" class="btn ml-md-4 btn-dark w-100">Update Cart</a>
                                             </div>
                                             <hr>
@@ -105,6 +109,7 @@
         data(){
             return {
                 isCartNil: true,
+                quantity: []
             };
         },
         computed: {
@@ -123,10 +128,22 @@
             removeFromCart: function (itemId) {
                 this.$store.dispatch('removeItemFromAction', itemId)
             },
+            changeQuantity: function (itemId, qntt) {
+                console.log(itemId, qntt);
+                if (qntt === "") {
+                    qntt = 0;
+                }
+                this.$store.dispatch('changeQuantityAction', {itemId, qntt});
+                console.log(itemId, qntt);
+            }
         }
     }
 </script>
 
 <style scoped>
-
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
 </style>

@@ -10,7 +10,7 @@
             <nav class="bg-gray py-3">
                 <div class="container">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><router-link to="/index">Home</router-link></li>
+                        <li class="breadcrumb-item"><router-link to="/">Home</router-link></li>
                         <li class="breadcrumb-item active" aria-current="page">Contact Us</li>
                     </ol>
                 </div>

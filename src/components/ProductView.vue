@@ -10,7 +10,7 @@
             <nav class="bg-gray py-3">
                 <div class="container">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><router-link to="/index">Home</router-link></li>
+                        <li class="breadcrumb-item"><router-link to="/">Home</router-link></li>
                         <li class="breadcrumb-item active" aria-current="page">Product Single</li>
                     </ol>
                 </div>
@@ -40,10 +40,10 @@
                             <button class="btn btn-primary w-100 mb-lg-4 mb-3">add to cart</button>
                         </form>
                         <ul class="list-inline social-icon-alt">
-                            <li class="list-inline-item"><a href="#"><i class="ti-facebook"></i></a></li>
-                            <li class="list-inline-item"><a href="#"><i class="ti-twitter-alt"></i></a></li>
-                            <li class="list-inline-item"><a href="#"><i class="ti-vimeo-alt"></i></a></li>
-                            <li class="list-inline-item"><a href="#"><i class="ti-google"></i></a></li>
+                            <li class="list-inline-item"><a href="#"><i class="ti-facebook"/></a></li>
+                            <li class="list-inline-item"><a href="#"><i class="ti-twitter-alt"/></a></li>
+                            <li class="list-inline-item"><a href="#"><i class="ti-vimeo-alt"/></a></li>
+                            <li class="list-inline-item"><a href="#"><i class="ti-google"/></a></li>
                         </ul>
                     </div>
                 </div>
@@ -73,20 +73,34 @@
                         <!-- produt details -->
                         <div class="col-lg-6 mb-100">
                             <h2>{{ product.name }}</h2>
-                            <i class="ti-check-box text-success"></i>
+                            <i class="ti-check-box text-success"/>
                             <span class="text-success">Instock</span>
                             <ul class="list-inline mb-4">
-                                <li class="list-inline-item mx-0"><a href="#" class="rated"><i class="ti-star"></i></a></li>
-                                <li class="list-inline-item mx-0"><a href="#" class="rated"><i class="ti-star"></i></a></li>
-                                <li class="list-inline-item mx-0"><a href="#" class="rated"><i class="ti-star"></i></a></li>
-                                <li class="list-inline-item mx-0"><a href="#" class="rated"><i class="ti-star"></i></a></li>
-                                <li class="list-inline-item mx-0"><a href="#" class="rated"><i class="ti-star"></i></a></li>
+                                <li class="list-inline-item mx-0"><a href="#" class="rated"><i class="ti-star"/></a></li>
+                                <li class="list-inline-item mx-0"><a href="#" class="rated"><i class="ti-star"/></a></li>
+                                <li class="list-inline-item mx-0"><a href="#" class="rated"><i class="ti-star"/></a></li>
+                                <li class="list-inline-item mx-0"><a href="#" class="rated"><i class="ti-star"/></a></li>
+                                <li class="list-inline-item mx-0"><a href="#" class="rated"><i class="ti-star"/></a></li>
                                 <li class="list-inline-item"><a href="#" class="text-gray ml-3">( 3 Reviews )</a></li>
                             </ul>
                             <h4 class="text-primary h3">${{ product.price }} <s class="text-color ml-2">$90.00</s></h4>
                             <h6 class="mb-4">You save: <span class="text-primary">$25.00 USD (30%)</span></h6>
                             <div class="d-flex flex-column flex-sm-row justify-content-between mb-4">
-                                <input id="quantity" class="quantity mr-sm-2 mb-3 mb-sm-0" type="number" value="" name="quantity">
+                                <div class="input-group  bootstrap-touchspin bootstrap-touchspin-injected">
+                                    <input id="quantity" class="quantity mr-sm-2 mb-3 mb-sm-0 form-control"
+                                           v-model.number="quantity"
+                                           @keydown="$event.key === '-' ? $event.preventDefault() : null"
+                                           min="0"
+                                           type="number">
+
+                                    <span class="input-group-btn-vertical">
+                                        <button @click="onQuantityUp"
+                                                class="btn btn-primary bootstrap-touchspin-up angle-up">+</button>
+                                        <button @click="onQuantityDown"
+                                                class="btn btn-primary bootstrap-touchspin-down angle-down">-</button>
+                                    </span>
+                                </div>
+
 
                                 <select class="form-control mx-sm-2 mb-3 mb-sm-0" name="color">
                                     <option value="brown">Brown Color</option>
@@ -100,7 +114,8 @@
                                     <option value="large">Large Size</option>
                                 </select>
                             </div>
-                            <a href="#" class="btn btn-primary mb-4">add to cart</a>
+                            <button @click="addToCart(product.id, getFullImagePath(product.image), product.name, 1, product.price)"
+                                    class="btn btn-primary mb-4">add to cart</button>
                             <h4 class="mb-3"><span class="text-primary">Harry up!</span> Sale ends in</h4>
                             <!-- syo-timer -->
                             <div class="syotimer dark">
@@ -116,7 +131,7 @@
                                 <!-- service item -->
                                 <div class="col-lg-3 col-6 mb-4 mb-lg-0">
                                     <div class="d-flex">
-                                        <i class="ti-truck icon-md mr-3"></i>
+                                        <i class="ti-truck icon-md mr-3"/>
                                         <div class="align-items-center">
                                             <h6>Free Shipping</h6>
                                         </div>
@@ -125,7 +140,7 @@
                                 <!-- service item -->
                                 <div class="col-lg-3 col-6 mb-4 mb-lg-0">
                                     <div class="d-flex">
-                                        <i class="ti-shield icon-md mr-3"></i>
+                                        <i class="ti-shield icon-md mr-3"/>
                                         <div class="align-items-center">
                                             <h6>Secure Payment</h6>
                                         </div>
@@ -134,7 +149,7 @@
                                 <!-- service item -->
                                 <div class="col-lg-3 col-6 mb-4 mb-lg-0">
                                     <div class="d-flex">
-                                        <i class="ti-money icon-md mr-3"></i>
+                                        <i class="ti-money icon-md mr-3"/>
                                         <div class="align-items-center">
                                             <h6>Lowest Price</h6>
                                         </div>
@@ -143,7 +158,7 @@
                                 <!-- service item -->
                                 <div class="col-lg-3 col-6 mb-4 mb-lg-0">
                                     <div class="d-flex">
-                                        <i class="ti-reload icon-md mr-3"></i>
+                                        <i class="ti-reload icon-md mr-3"/>
                                         <div class="align-items-center">
                                             <h6>30 Days Return</h6>
                                         </div>
@@ -154,12 +169,12 @@
                         <div class="col-lg-12">
                             <h3 class="mb-3">Product Description</h3>
                             <p class="text-gray mb-4">{{ product.description }}</p>
-                            <h4>Product Features</h4>
+                            <!--<h4>Product Features</h4>
                             <ul class="features-list">
                                 <li>Mapped with 3M™ Thinsulate™ Insulation [40G Body / Sleeves / Hood]</li>
                                 <li>Embossed Taffeta Lining</li>
                                 <li>DRYRIDE Durashell™ 2-Layer Oxford Fabric [10,000MM, 5,000G]</li>
-                            </ul>
+                            </ul>-->
                         </div>
                     </div>
                 </div>
@@ -167,13 +182,13 @@
             <!-- /product-single -->
 
             <!-- testimonial -->
-            <section class="section bg-gray">
+            <!--<section class="section bg-gray">
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-12">
                             <h3 class="mb-4">What Our Customers Think?</h3>
                         </div>
-                        <!-- testimonial-item -->
+                        &lt;!&ndash; testimonial-item &ndash;&gt;
                         <div class="col-lg-4 col-sm-6 mb-5 mb-lg-0">
                             <div class="d-flex">
                                 <div>
@@ -194,7 +209,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- testimonial-item -->
+                        &lt;!&ndash; testimonial-item &ndash;&gt;
                         <div class="col-lg-4 col-sm-6 mb-5 mb-lg-0">
                             <div class="d-flex">
                                 <div>
@@ -215,7 +230,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- testimonial-item -->
+                        &lt;!&ndash; testimonial-item &ndash;&gt;
                         <div class="col-lg-4 col-sm-6 mb-5 mb-lg-0">
                             <div class="d-flex">
                                 <div>
@@ -238,7 +253,7 @@
                         </div>
                     </div>
                 </div>
-            </section>
+            </section>-->
             <!-- /testimonial -->
 
             <!-- related products -->
@@ -400,6 +415,7 @@
         data() {
             return {
                 product: [],
+                quantity: 1,
             };
         },
         mounted() {
@@ -439,17 +455,6 @@
                     on: 'click',
                     url: $(this).find('img').attr('data-zoom')
                 });
-
-            // touchspin
-            $('input[name=\'quantity\']').TouchSpin({
-                verticalbuttons: true,
-                initval: 1,
-                verticalupclass: 'angle-up',
-                verticaldownclass: 'angle-down'
-            });
-            $('input[name=\'cart-quantity\']').TouchSpin({
-                initval: 40
-            });
         },
         methods: {
             getProduct: function () {
@@ -462,6 +467,17 @@
             getFullImagePath(subPath) {
                 return Settings.GetMediaUrl() + subPath;
             },
+            addToCart: function (id, imgUrl, itemName, quantity, price ) {
+                this.$store.dispatch('addItemToCartAction', {itemID: id, itemThumbnail: imgUrl, itemName: itemName, itemQuantity: quantity, itemPrice: price, subTotal:price})
+            },
+            onQuantityUp: function () {
+                this.quantity += 1;
+            },
+            onQuantityDown: function () {
+                if (this.quantity > 0) {
+                    this.quantity -= 1;
+                }
+            }
         }
     }
 </script>

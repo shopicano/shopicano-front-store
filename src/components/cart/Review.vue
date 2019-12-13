@@ -25,18 +25,18 @@
                             <div class="inner-wrapper border-box">
                                 <!-- navbar -->
                                 <div class="justify-content-between nav mb-5">
-                                    <router-link to="/shipping" class="text-center d-inline-block nav-item">
+                                    <span class="text-center d-inline-block nav-item">
                                         <i class="ti-truck d-block mb-2"/>
                                         <span class="d-block h4">Shipping Method</span>
-                                    </router-link>
-                                    <router-link to="/payment" class="text-center d-inline-block nav-item">
+                                    </span>
+                                    <span  class="text-center d-inline-block nav-item">
                                         <i class="ti-wallet d-block mb-2"/>
                                         <span class="d-block h4">Payment Method</span>
-                                    </router-link>
-                                    <router-link to="/review" class="text-center d-inline-block nav-item active">
+                                    </span>
+                                    <span  class="text-center d-inline-block nav-item active">
                                         <i class="ti-eye d-block mb-2"/>
                                         <span class="d-block h4">Review</span>
-                                    </router-link>
+                                    </span>
                                 </div>
                                 <!-- /navbar -->
 
@@ -56,8 +56,8 @@
                                         <tr v-for="item in getFullCart" v-bind:key="item.id">
                                             <td class="align-middle"><img class="img-fluid w-25" :src="item.itemThumbnail" alt="product-img" /></td>
                                             <td class="align-middle">{{ item.itemName }}</td>
-                                            <td class="align-middle">1</td>
-                                            <td class="align-middle">${{ item.itemPrice }}</td>
+                                            <td class="align-middle">{{ item.itemQuantity }}</td>
+                                            <td class="align-middle">${{ item.subTotal }}</td>
                                         </tr>
 
                                         </tbody>
@@ -71,23 +71,23 @@
                                     <div class="col-md-4">
                                         <h4 class="mb-3">Shipping Address</h4>
                                         <ul class="list-unstyled">
-                                            <li>Somrat</li>
-                                            <li>Mohammadpur, Dhaka 120, Bangladesh </li>
-                                            <li>248-321-5879 </li>
-                                            <li>example.site@email.com</li>
+                                            <li>{{ shippingInfo.firstName + ' ' + shippingInfo.lastName }}</li>
+                                            <li>{{ shippingInfo.address }} </li>
+                                            <li>{{ shippingInfo.phone }} </li>
+                                            <li>{{ shippingInfo.email }}</li>
                                         </ul>
                                     </div>
                                     <div class="col-md-4">
                                         <h4 class="mb-3">Shipping Method</h4>
                                         <ul class="list-unstyled">
-                                            <li>Standard Ground (USPS) - $9.50 </li>
-                                            <li>Delivered in 8-10 business days. </li>
+                                            <li>{{ getShippingMethod(shippingInfo.shippingMethod) }}</li>
+                                            <li>{{ deliveryTime }}</li>
                                         </ul>
                                     </div>
                                     <div class="col-md-4">
                                         <h4 class="mb-3">Payment Method</h4>
                                         <ul class="list-unstyled">
-                                            <li>Credit Card: </li>
+                                            <li>{{ getCartType(paymentInfo.cardType) }}: </li>
                                             <li>**** **** **** 2637</li>
                                         </ul>
                                     </div>
@@ -107,7 +107,7 @@
                                 <ul class="list-unstyled">
                                     <li class="d-flex justify-content-between">
                                         <span>Subtotal</span>
-                                        <span>$237.00</span>
+                                        <span>${{ getCartTotalPrice }}</span>
                                     </li>
                                     <li class="d-flex justify-content-between">
                                         <span>Shipping & Handling</span>
@@ -148,24 +148,60 @@
         data(){
             return {
                 isCartNil: true,
+                shippingInfo: [],
+                deliveryTime: '',
+                paymentInfo: [],
             };
+        },
+        mounted() {
+            this.setInfo();
         },
         computed: {
             getFullCart(){
                 this.isCartNil = this.$store.getters.cartItemCount < 1;
                 return this.$store.getters.getCart;
             },
-            grandTotalPrice() {
+            getCartTotalPrice() {
                 return this.$store.getters.cartTotalPrice;
             }
         },
         methods: {
-            onClickRemoveItem: function (id) {
-                this.removeFromCart(id)
+            setInfo: function () {
+                this.shippingInfo = this.getShippingInfo();
+                this.paymentInfo = this.getPaymentInfo();
             },
-            removeFromCart: function (itemId) {
-                this.$store.dispatch('removeItemFromAction', itemId)
+            getShippingInfo: function() {
+                return this.$store.getters.getterShippingInfo;
             },
+            getShippingMethod(method) {
+                if (method === 'standard') {
+                    method = 'Standard Ground (USPS) - $7.50';
+                    this.deliveryTime = 'Delivered in 8-12 business days.';
+                } else if (method === 'premium') {
+                    method = 'Premium Ground (UPS) - $12.50';
+                    this.deliveryTime = 'Delivered in 4-7 business days.';
+                } else if (method === 'ups2') {
+                    method = 'UPS 2 Business Day - $15.00';
+                    this.deliveryTime = 'Orders placed by 9:45AM PST will ship same day.';
+                }else if (method === 'ups1') {
+                    method = 'UPS 1 Business Day - $35.00';
+                    this.deliveryTime = 'Orders placed by 9:45AM PST will ship same day.';
+                }
+
+                return method;
+            },
+            getPaymentInfo: function() {
+                return this.$store.getters.getterPaymentInfo;
+            },
+            getCartType: function (type) {
+                if (type === 'paypal') {
+                    type = 'Paypal';
+                } else if (type === 'creditcard') {
+                    type = 'Credit Card';
+                }
+
+                return type;
+            }
         }
     }
 </script>

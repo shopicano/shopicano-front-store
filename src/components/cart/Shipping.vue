@@ -25,18 +25,18 @@
                             <div class="inner-wrapper border-box">
                                 <!-- navbar -->
                                 <div class="justify-content-between nav mb-5">
-                                    <router-link to="/shipping" class="text-center d-inline-block active nav-item">
+                                    <span class="text-center d-inline-block active nav-item">
                                         <i class="ti-truck d-block mb-2"/>
                                         <span class="d-block h4">Shipping Method</span>
-                                    </router-link>
-                                    <router-link to="/payment" class="text-center d-inline-block nav-item">
+                                    </span>
+                                    <span  class="text-center d-inline-block nav-item">
                                         <i class="ti-wallet d-block mb-2"/>
                                         <span class="d-block h4">Payment Method</span>
-                                    </router-link>
-                                    <router-link to="/review" class="text-center d-inline-block nav-item">
+                                    </span>
+                                    <span  class="text-center d-inline-block nav-item">
                                         <i class="ti-eye d-block mb-2"/>
                                         <span class="d-block h4">Review</span>
-                                    </router-link>
+                                    </span>
                                 </div>
                                 <!-- /navbar -->
 
@@ -70,6 +70,7 @@
                                     <div class="col-sm-6">
                                         <label >Country</label>
                                         <select v-model="country" class="form-control" name="country">
+                                            <option disabled value="">Please select one</option>
                                             <option value="Afghanistan">Afghanistan</option>
                                             <option value="Åland Islands">Åland Islands</option>
                                             <option value="Albania">Albania</option>
@@ -324,6 +325,7 @@
                                     <div class="col-sm-6">
                                         <label >City</label>
                                         <select v-model="city" class="form-control" name="city">
+                                            <option disabled value="">Your City</option>
                                             <option value="brown">Dhaka</option>
                                             <option value="gray">Newyork</option>
                                             <option value="black">Delhi</option>
@@ -343,30 +345,36 @@
                                         <h3 class="mb-5 border-bottom pb-2">Select A Shipping Method</h3>
                                     </div>
                                     <div class="col-sm-6 mb-4">
-                                        <input v-model="shippingMethod" id="standard" class="custom-checkbox" type="radio" name="checkbox" value="1" checked="checked">
-                                        <label for="standard">Standard Ground (USPS) - $7.50</label>
+                                        <input v-model="shippingMethod" id="standard" class="custom-checkbox" type="radio"
+                                               value="standard" checked="checked">
+                                        <label class="ml-2" for="standard">Standard Ground (USPS) - $7.50</label>
                                         <small class="d-block ml-3">Delivered in 8-12 business days.</small>
                                     </div>
                                     <div class="col-sm-6 mb-4">
-                                        <input v-model="shippingMethod" id="premium" type="radio" name="checkbox" value="2">
-                                        <label for="premium">Premium Ground (UPS) - $12.50</label>
+                                        <input v-model="shippingMethod" id="premium" type="radio" name="checkbox"
+                                               value="premium">
+                                        <label class="ml-2" for="premium">Premium Ground (UPS) - $12.50</label>
                                         <small class="d-block ml-3">Delivered in 4-7 business days.</small>
                                     </div>
                                     <div class="col-sm-6 mb-4">
-                                        <input v-model="shippingMethod" id="ups2" type="radio" name="checkbox" value="3">
-                                        <label for="ups2">UPS 2 Business Day - $15.00</label>
+                                        <input v-model="shippingMethod" id="ups2" type="radio" name="checkbox"
+                                               value="ups2">
+                                        <label class="ml-2" for="ups2">UPS 2 Business Day - $15.00</label>
                                         <small class="d-block ml-3">Orders placed by 9:45AM PST will ship same day.</small>
                                     </div>
                                     <div class="col-sm-6 mb-4">
-                                        <input v-model="shippingMethod" id="ups1" type="radio" name="checkbox" value="4">
-                                        <label for="ups1">UPS 1 Business Day - $35.00</label>
+                                        <input v-model="shippingMethod" id="ups1" type="radio" name="checkbox"
+                                               value="ups1">
+                                        <label class="ml-2" for="ups1">UPS 1 Business Day - $35.00</label>
                                         <small class="d-block ml-3">Orders placed by 9:45AM PST will ship same day.</small>
                                     </div>
                                     <!-- /select shipping method -->
                                 </form>
                                 <!-- /shipping-address -->
                                 <div class="p-4 bg-gray text-right">
-                                    <router-link to="/payment" class="btn btn-primary">Continue</router-link>
+                                    <h4 v-if="showErrMsg" class="text-danger">All fields required</h4>
+                                    <button @click="storeInfo"
+                                            class="btn btn-primary">Continue</button>
                                 </div>
                             </div>
                         </div>
@@ -407,6 +415,7 @@
 </template>
 
 <script>
+    /* eslint-disable */
     import Header from "@/components/indexComponents/Header";
     import Navigation from "@/components/indexComponents/Navigation";
     import Footer from "@/components/indexComponents/Footer";
@@ -426,12 +435,43 @@
                 country: '',
                 city: '',
                 zipCode: '',
-                shippingMethod: ''
+                shippingMethod: '',
+                showErrMsg: false,
             };
+        },
+        methods: {
+            storeInfo: function () {
+                if (this.firstName==='' || this.lastName==='' || this.email==='' || this.company==='' || this.address===''
+                    || this.phone==='' || this.country==='' || this.city==='' || this.zipCode==='' || this.shippingMethod==='') {
+                    this.showErrMsg = true;
+                } else {
+                    this.showErrMsg = false;
+
+                    this.$store.dispatch('storeShippingInfoAction', {
+                        firstName: this.firstName,
+                        lastName: this.lastName,
+                        email: this.email,
+                        company: this.company,
+                        address: this.address,
+                        phone: this.phone,
+                        country: this.country,
+                        city: this.city,
+                        zipCode: this.zipCode,
+                        shippingMethod: this.shippingMethod
+                    });
+
+                    this.$router.push('/payment');
+                }
+
+
+            },
         }
     }
 </script>
 
 <style scoped>
-
+.btn-fade{
+    opacity: .6;
+    cursor: default!important;
+}
 </style>

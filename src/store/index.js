@@ -7,6 +7,8 @@ export const store = new Vuex.Store({
     state: {
         cartProducts: [],
         cartTotal: 0,
+        shippingInfo: {},
+        paymentInfo: {},
     },
     mutations: {
         addItemToCart: (state, payload) => {
@@ -40,9 +42,14 @@ export const store = new Vuex.Store({
 
             state.cartTotal = 0;
             state.cartProducts.forEach( element => {
-
                 state.cartTotal = state.cartTotal + element.subTotal;
             })
+        },
+        storeShippingInfo: (state, payload) => {
+            Object.assign(state.shippingInfo, payload);
+        },
+        storeCardInfo: (state, payload) => {
+            Object.assign(state.paymentInfo, payload);
         },
     },
     actions: {
@@ -54,6 +61,12 @@ export const store = new Vuex.Store({
         },
         changeQuantityAction: (context, payload) => {
             context.commit('updateQuantity', payload)
+        },
+        storeShippingInfoAction: (context, payload) => {
+            context.commit('storeShippingInfo', payload)
+        },
+        storeCardInfoAction: (context, payload) => {
+            context.commit('storeCardInfo', payload)
         }
     },
     getters: {
@@ -65,6 +78,12 @@ export const store = new Vuex.Store({
         },
         cartTotalPrice: (state) => {
             return state.cartTotal
+        },
+        getterShippingInfo: (state) => {
+            return state.shippingInfo
+        },
+        getterPaymentInfo: (state) => {
+            return state.paymentInfo
         }
     },
 });

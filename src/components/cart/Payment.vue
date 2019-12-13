@@ -25,18 +25,18 @@
                             <div class="inner-wrapper border-box">
                                 <!-- navbar -->
                                 <div class="justify-content-between nav mb-5">
-                                    <router-link to="/shipping" class="text-center d-inline-block nav-item">
+                                    <span class="text-center d-inline-block nav-item">
                                         <i class="ti-truck d-block mb-2"/>
                                         <span class="d-block h4">Shipping Method</span>
-                                    </router-link>
-                                    <router-link to="/payment" class="text-center d-inline-block nav-item active">
+                                    </span>
+                                    <span  class="text-center d-inline-block nav-item active">
                                         <i class="ti-wallet d-block mb-2"/>
                                         <span class="d-block h4">Payment Method</span>
-                                    </router-link>
-                                    <router-link to="/review" class="text-center d-inline-block nav-item">
+                                    </span>
+                                    <span  class="text-center d-inline-block nav-item">
                                         <i class="ti-eye d-block mb-2"/>
                                         <span class="d-block h4">Review</span>
-                                    </router-link>
+                                    </span>
                                 </div>
                                 <!-- /navbar -->
 
@@ -45,31 +45,35 @@
                                 <div class="row mb-5">
                                     <div class="col-md-6">
                                         <h4 class="mb-3">Shipping Address</h4>
-                                        <ul class="list-unstyled">
-                                            <li>Somrat</li>
-                                            <li>Mohammadpur, Dhaka 120, Bangladesh </li>
-                                            <li>248-321-5879 </li>
-                                            <li>example.site@email.com</li>
+                                        <ul  class="list-unstyled">
+                                            <li>{{ shippingInfo.firstName + ' ' + shippingInfo.lastName }}</li>
+                                            <li>{{ shippingInfo.address }} </li>
+                                            <li>{{ shippingInfo.phone }} </li>
+                                            <li>{{ shippingInfo.email }}</li>
                                         </ul>
                                     </div>
                                     <div class="col-md-6">
                                         <h4 class="mb-3">Shipping Method</h4>
                                         <ul class="list-unstyled">
-                                            <li>Standard Ground (USPS) - $9.50 </li>
-                                            <li>Delivered in 8-10 business days. </li>
+                                            <li>{{ getShippingMethod(shippingInfo.shippingMethod) }}</li>
+                                            <li>{{ deliveryTime }}</li>
                                         </ul>
                                     </div>
                                 </div>
                                 <!-- billing information -->
                                 <h3 class="mb-5 border-bottom pb-2">Billing Information</h3>
 
+
                                 <div class="mb-4">
-                                    <input v-model="cardType" id="checkbox1" type="radio" name="checkbox" value="1" checked="checked">
-                                    <label for="checkbox1" class="h4">Pay with Paypal</label>
-                                </div>
-                                <div class="mb-4">
-                                    <input v-model="cardType" id="checkbox2" type="radio" name="checkbox" value="2">
-                                    <label for="checkbox2" class="h4">Credit Card</label>
+                                    <div class="mb-4">
+                                        <input v-model="cardType" id="checkbox1" type="radio" name="checkbox" value="paypal">
+                                        <label for="checkbox1" class="h4 ml-2">Pay with Paypal</label>
+                                    </div>
+
+                                    <div>
+                                        <input v-model="cardType" id="checkbox2" type="radio" name="checkbox" value="creditcard">
+                                        <label for="checkbox2" class="h4 ml-2">Credit Card</label>
+                                    </div>
                                     <small class="mb-2 d-block ml-3">We accept following credit card</small>
                                     <div class="form-group ml-3 row">
                                         <div class="col-12">
@@ -128,10 +132,14 @@
                                 </div>
                                 <!-- /shipping-information -->
                                 <!-- buttons -->
+                                <h4 v-if="showErrMsg" class="text-danger text-right">All fields are required.</h4>
                                 <div class="p-4 bg-gray d-flex justify-content-between">
-                                    <router-link to="/payment" class="btn btn-dark">Back</router-link>
-                                    <router-link to="/review" class="btn btn-primary">Continue</router-link>
+                                    <button @click="onBack"
+                                            class="btn btn-dark">Back</button>
+                                    <button @click="storeCardInfo"
+                                            class="btn btn-primary">Continue</button>
                                 </div>
+
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -186,7 +194,62 @@
                 exDateYear: '',
                 exDateMonth: '',
                 cvc: '',
+                shippingInfo: [],
+                deliveryTime: '',
+                showErrMsg: false,
             };
+        },
+        mounted() {
+            this.setInfo();
+        },
+        methods: {
+            setInfo: function () {
+                this.shippingInfo = this.getShippingInfo();
+            },
+            getShippingInfo: function() {
+                return this.$store.getters.getterShippingInfo;
+            },
+            getShippingMethod(method) {
+                if (method === 'standard') {
+                    method = 'Standard Ground (USPS) - $7.50';
+                    this.deliveryTime = 'Delivered in 8-12 business days.';
+                } else if (method === 'premium') {
+                    method = 'Premium Ground (UPS) - $12.50';
+                    this.deliveryTime = 'Delivered in 4-7 business days.';
+                } else if (method === 'ups2') {
+                    method = 'UPS 2 Business Day - $15.00';
+                    this.deliveryTime = 'Orders placed by 9:45AM PST will ship same day.';
+                }else if (method === 'ups1') {
+                    method = 'UPS 1 Business Day - $35.00';
+                    this.deliveryTime = 'Orders placed by 9:45AM PST will ship same day.';
+                }
+
+                return method;
+            },
+            onBack: function () {
+                this.$router.push('/shipping');
+            },
+            storeCardInfo: function () {
+                if (this.cardType==='' || this.cardName==='' || this.cardNumber==='' || this.exDateYear==='' || this.exDateMonth===''
+                    || this.cvc==='') {
+                    this.showErrMsg = true;
+                } else {
+                    this.showErrMsg = false;
+
+                    this.$store.dispatch('storeCardInfoAction', {
+                        cardType: this.cardType,
+                        cardName: this.cardName,
+                        cardNumber: this.cardNumber,
+                        exDateYear: this.exDateYear,
+                        exDateMonth: this.exDateMonth,
+                        cvc: this.cvc,
+                    });
+
+                    this.$router.push('/review');
+                }
+
+
+            },
         }
     }
 </script>

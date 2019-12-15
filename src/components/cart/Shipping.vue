@@ -385,7 +385,7 @@
                                 <ul class="list-unstyled">
                                     <li class="d-flex justify-content-between">
                                         <span>Subtotal</span>
-                                        <span>$237.00</span>
+                                        <span>${{ getCartTotalPrice }}</span>
                                     </li>
                                     <li class="d-flex justify-content-between">
                                         <span>Shipping & Handling</span>
@@ -438,6 +438,11 @@
                 shippingMethod: '',
                 showErrMsg: false,
             };
+        },
+        computed: {
+            getCartTotalPrice() {
+                return this.$store.getters.cartTotalPrice;
+            }
         },
         methods: {
             storeInfo: function () {

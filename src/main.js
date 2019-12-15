@@ -16,6 +16,8 @@ import Review from "@/components/cart/Review";
 import Confirmation from "@/components/cart/Confirmation";
 import ProductView from "@/components/ProductView";
 import ContactUs from "@/components/ContactUs";
+import Dashboard from "@/components/userDetails/Dashboard";
+import Profile from "@/components/userDetails/Profile";
 
 Vue.config.productionTip = false;
 
@@ -83,6 +85,14 @@ const routes = [
     {
         path: '/products/:id',
         component: ProductView,
+    },
+    {
+        path: '/dashboard',
+        component: Dashboard,
+    },
+    {
+        path: '/profile-details',
+        component: Profile,
     },
 ];
 

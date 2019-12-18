@@ -21,7 +21,7 @@
                                         type="submit" class="btn btn-primary">Login</button>
                             </div>
                         </form>
-                        <p class="mt-3">New in this site ?<router-link to="/signup">Create New Account</router-link></p>
+                        <p class="mt-3">New in this site?<router-link to="/signup" class="font-weight-bold"> Create New Account</router-link></p>
                     </div>
                 </div>
             </div>
@@ -68,7 +68,7 @@
                 this.requestLogin();
             },
             requestLogin: function () {
-                axios.post(Settings.GetApiUrl() + "/users/login", {
+                axios.post(Settings.GetApiUrl() + "/login", {
                     email: this.email,
                     password: this.password
                 }).then(resp => {

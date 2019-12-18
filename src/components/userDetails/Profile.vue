@@ -42,6 +42,10 @@
                                         </ul>
                                     </div>
                                 </div>
+
+                                <div class="container text-right">
+                                    <button @click="onLogOut" class="btn btn-dark text-capitalize">Log out</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -59,10 +63,17 @@
     import Header from "@/components/indexComponents/Header";
     import Navigation from "@/components/indexComponents/Navigation";
     import Footer from "@/components/indexComponents/Footer";
+    import SessionStore from "@/common/session_store";
 
     export default {
         name: "Profile",
-        components: {Footer, Navigation, Header}
+        components: {Footer, Navigation, Header},
+        methods: {
+            onLogOut: function () {
+                SessionStore.CleanSession();
+                this.$router.push("/")
+            }
+        }
     }
 </script>
 

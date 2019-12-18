@@ -4,9 +4,9 @@
             <div class="row">
                 <div class="col-md-6 mx-auto">
                     <div class="block text-center">
-                        <a class="logo" href="index.html">
+                        <router-link class="logo" to="/">
                             <img src="images/logo.png" alt="logo">
-                        </a>
+                        </router-link>
                         <h2 class="text-center">Create Your Account</h2>
                         <form class="text-left clearfix">
                             <div class="form-group">
@@ -19,10 +19,12 @@
                                 <input v-model="password"  type="password" class="form-control"  placeholder="Password">
                             </div>
                             <div class="text-center">
-                                <button v-on:click="onRegister" :disabled="is_loading" type="submit" class="btn btn-primary">Sign Up</button>
+                                <span v-on:click="onRegister"
+                                        :disabled="is_loading"
+                                        class="btn btn-primary">Sign Up</span>
                             </div>
                         </form>
-                        <p class="mt-3">Already have an account ?<router-link to="/login">Login</router-link></p>
+                        <p class="mt-3">Already have an account? <router-link to="/login" class="font-weight-bold">Login</router-link></p>
                         <p><router-link to="/recovery"> Forgot your password?</router-link></p>
                     </div>
                 </div>

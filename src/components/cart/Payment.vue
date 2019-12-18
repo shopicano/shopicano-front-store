@@ -201,6 +201,7 @@
         },
         mounted() {
             this.setInfo();
+            this.checkRequired();
         },
         computed: {
             getCartTotalPrice() {
@@ -208,6 +209,11 @@
             }
         },
         methods: {
+            checkRequired : function(){
+                if (this.shippingInfo.length === undefined) {
+                    this.$router.push('/shipping');
+                }
+            },
             setInfo: function () {
                 this.shippingInfo = this.getShippingInfo();
             },

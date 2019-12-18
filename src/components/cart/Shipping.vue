@@ -439,12 +439,20 @@
                 showErrMsg: false,
             };
         },
+        mounted() {
+            this.checkRequired();
+        },
         computed: {
             getCartTotalPrice() {
                 return this.$store.getters.cartTotalPrice;
             }
         },
         methods: {
+            checkRequired : function(){
+                if (this.$store.getters.cartItemCount < 1) {
+                    this.$router.push('/shop');
+                }
+            },
             storeInfo: function () {
                 if (this.firstName==='' || this.lastName==='' || this.email==='' || this.company==='' || this.address===''
                     || this.phone==='' || this.country==='' || this.city==='' || this.zipCode==='' || this.shippingMethod==='') {

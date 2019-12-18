@@ -441,11 +441,12 @@
         },
         mounted() {
             this.checkRequired();
+            this.onFieldLoad();
         },
         computed: {
             getCartTotalPrice() {
                 return this.$store.getters.cartTotalPrice;
-            }
+            },
         },
         methods: {
             checkRequired : function(){
@@ -475,9 +476,23 @@
 
                     this.$router.push('/payment');
                 }
-
-
             },
+            onFieldLoad: function () {
+                const instance = this.$store.getters.getterShippingInfo;
+
+                if (Object.keys(instance).length !== 0){
+                    this.firstName = instance.firstName;
+                    this.lastName = instance.lastName;
+                    this.email = instance.email;
+                    this.company = instance.company;
+                    this.address = instance.address;
+                    this.phone = instance.phone;
+                    this.country = instance.country;
+                    this.city = instance.city;
+                    this.zipCode = instance.zipCode;
+                    this.shippingMethod = instance.shippingMethod;
+                }
+            }
         }
     }
 </script>

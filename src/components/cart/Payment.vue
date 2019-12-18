@@ -202,6 +202,7 @@
         mounted() {
             this.setInfo();
             this.checkRequired();
+            this.onFieldLoad();
         },
         computed: {
             getCartTotalPrice() {
@@ -210,7 +211,7 @@
         },
         methods: {
             checkRequired : function(){
-                if (this.shippingInfo.length === undefined) {
+                if (Object.keys(this.shippingInfo).length < 1) {
                     this.$router.push('/shipping');
                 }
             },
@@ -255,12 +256,21 @@
                         exDateMonth: this.exDateMonth,
                         cvc: this.cvc,
                     });
-
                     this.$router.push('/review');
                 }
-
-
             },
+            onFieldLoad: function () {
+                const instance = this.$store.getters.getterPaymentInfo;
+
+                if (Object.keys(instance).length !== 0){
+                    this.cardType = instance.cardType;
+                    this.cardName = instance.cardName;
+                    this.cardNumber = instance.cardNumber;
+                    this.exDateYear = instance.exDateYear;
+                    this.exDateMonth = instance.exDateMonth;
+                    this.cvc = instance.cvc;
+                }
+            }
         }
     }
 </script>

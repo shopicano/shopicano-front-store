@@ -41,7 +41,7 @@
         },
         methods: {
             checkRequired : function(){
-                if (this.$store.getters.getterPaymentInfo.length === undefined) {
+                if (Object.keys(this.$store.getters.getterPaymentInfo) < 1) {
                     this.$router.push('/review');
                 } else {
                     this.$router.push('/confirmation');

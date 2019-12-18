@@ -96,7 +96,7 @@
                                 <!-- buttons -->
                                 <div class="p-4 bg-gray d-flex justify-content-between">
                                     <router-link to="/payment" class="btn btn-dark">Back</router-link>
-                                    <span @click="onCheckLoggedIn" class="btn btn-primary">Continue</span>
+                                    <span @click="onCheckLoggedIn" class="btn btn-primary text-capitalize">confirm purchase</span>
                                 </div>
                             </div>
                         </div>
@@ -169,7 +169,7 @@
         },
         methods: {
             checkRequired : function(){
-                if (this.shippingInfo.length === undefined || this.paymentInfo.length === undefined) {
+                if (Object.keys(this.shippingInfo).length < 1 || Object.keys(this.paymentInfo).length < 1) {
                     this.$router.push('/payment');
                 }
             },

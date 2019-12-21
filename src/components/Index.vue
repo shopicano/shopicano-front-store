@@ -17,13 +17,13 @@
 </template>
 
 <script>
-    import Header from "@/components/Header";
-    import Navigation from "@/components/Navigation";
-    import Footer from "@/components/Footer";
-    import NewsLetterModal from "@/components/NewsLetterModal";
-    import NewsLetter from "@/components/NewsLetter";
-    import Services from "@/components/Services";
-    import Home from "@/components/Home";
+    import Header from "@/components/indexComponents/Header";
+    import Navigation from "@/components/indexComponents/Navigation";
+    import Footer from "@/components/indexComponents/Footer";
+    import NewsLetterModal from "@/components/indexComponents/NewsLetterModal";
+    import NewsLetter from "@/components/indexComponents/NewsLetter";
+    import Services from "@/components/indexComponents/Services";
+    import Home from "@/components/indexComponents/Home";
 
     export default {
         name: "Index",

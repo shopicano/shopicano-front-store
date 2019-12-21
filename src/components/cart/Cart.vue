@@ -1,0 +1,149 @@
+<template>
+    <div>
+        <Header/>
+        <Navigation/>
+
+        <!-- main wrapper -->
+        <div class="main-wrapper">
+            <!-- breadcrumb -->
+            <nav class="bg-gray py-3">
+                <div class="container">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><router-link to="/">Home</router-link></li>
+                        <li class="breadcrumb-item active" aria-current="page">Cart</li>
+                    </ol>
+                </div>
+            </nav>
+            <!-- /breadcrumb -->
+
+            <div class="section">
+                <div class="cart shopping">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-10 mx-auto">
+                                <div class="block">
+                                    <div class="product-list">
+                                        <form>
+                                            <div class="table-responsive">
+                                                <table class="table cart-table">
+                                                    <thead>
+                                                    <tr>
+                                                        <th/>
+                                                        <th>Product Name</th>
+                                                        <th>Price</th>
+                                                        <th>Quantity</th>
+                                                        <th>Sub Total</th>
+                                                    </tr>
+                                                    </thead>
+
+                                                    <div v-if="isCartNil">
+                                                        <h4 class="my-3 text-center text-danger">You have no selected item in cart.</h4>
+                                                    </div>
+
+                                                    <tbody>
+                                                    <tr v-for="item in getFullCart" v-bind:key="item.itemID">
+                                                        <td>
+                                                            <a @click="onClickRemoveItem(item.itemID)" class="product-remove">&times;</a>
+                                                        </td>
+                                                        <td>
+                                                            <div class="product-info">
+                                                                <img class="img-fluid w-25" :src="item.itemThumbnail" alt="product-img" />
+                                                                <a class="ml-4">{{ item.itemName }}</a>
+                                                            </div>
+                                                        </td>
+                                                        <td>${{ item.itemPrice }}</td>
+                                                        <td>
+                                                            <input type="number"
+                                                                   v-bind:value="item.itemQuantity"
+                                                                   @keydown="$event.key === '-' ? $event.preventDefault() : null"
+                                                                   @keyup="changeQuantity(item.itemID, $event.target.value)"
+                                                                   min="0">
+                                                        </td>
+                                                        <td>${{ item.subTotal }}</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <hr>
+                                            <div class="d-flex flex-column flex-md-row align-items-center">
+                                                <input type="text" class="form-control text-md-left text-center mb-3 mb-md-0" name="coupon" id="coupon" placeholder="I have a discout coupon">
+                                                <a class="btn btn-outline-primary ml-md-3 w-100 mb-3 mb-md-0">Apply Coupon</a>
+                                                <a href="#" class="btn ml-md-4 btn-dark w-100">Update Cart</a>
+                                            </div>
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <ul class="list-unstyled text-right">
+                                                        <!--<li>Sub Total <span class="d-inline-block w-100px">$800.00</span></li>
+                                                        <li>UK Vat <span class="d-inline-block w-100px">$10.00</span></li>-->
+                                                        <li>Grand Total <span class="d-inline-block w-100px">${{ grandTotalPrice }}</span></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <router-link to="/shipping" tag="button" :disabled="isCartNil" class="btn btn-primary float-right">Checkout</router-link>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <Footer/>
+        </div>
+        <!-- /main wrapper -->
+    </div>
+</template>
+
+<script>
+    /* eslint-disable */
+    import Header from "@/components/indexComponents/Header";
+    import Navigation from "@/components/indexComponents/Navigation";
+    import Footer from "@/components/indexComponents/Footer";
+
+    export default {
+        name: "Cart",
+        components: {Footer, Navigation, Header},
+        data(){
+            return {
+                isCartNil: true,
+                quantity: []
+            };
+        },
+        computed: {
+            getFullCart(){
+                this.isCartNil = this.$store.getters.cartItemCount < 1;
+                return this.$store.getters.getCart;
+            },
+            grandTotalPrice() {
+                return this.$store.getters.cartTotalPrice;
+            }
+        },
+        methods: {
+            onClickRemoveItem: function (id) {
+                this.removeFromCart(id)
+            },
+            removeFromCart: function (itemId) {
+                this.$store.dispatch('removeItemFromAction', itemId)
+            },
+            changeQuantity: function (itemId, qntt) {
+                console.log(itemId, qntt);
+                if (qntt === "") {
+                    qntt = 0;
+                }
+                this.$store.dispatch('changeQuantityAction', {itemId, qntt});
+                console.log(itemId, qntt);
+            }
+        }
+    }
+</script>
+
+<style scoped>
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+</style>

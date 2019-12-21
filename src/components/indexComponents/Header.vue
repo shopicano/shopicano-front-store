@@ -9,7 +9,9 @@
                 </div>
                 <div class="col-lg-6 text-center text-lg-right">
                     <ul class="list-inline">
-                        <li class="list-inline-item"><a href="/login">My Accounts</a></li>
+                        <li class="list-inline-item">
+                            <span class="myaccount" @click="onCheckLoggedIn">My Accounts</span>
+                        </li>
                         <li class="list-inline-item">
                             <select class="country" name="country">
                                 <option value="USD">USD</option>
@@ -24,7 +26,26 @@
 </template>
 
 <script>
+    import SessionStore from "@/common/session_store";
+
     export default {
-        name: "Header"
+        name: "Header",
+        methods: {
+            onCheckLoggedIn: function () {
+                if (SessionStore.IsLoggedIn()) {
+                    this.$router.push('/profile-details');
+                } else {
+                    this.$router.push('/login');
+                }
+            }
+        }
     }
 </script>
+
+<style scoped>
+    .myaccount{
+        color: white;
+        cursor: pointer;
+        font-size: 12px;
+    }
+</style>

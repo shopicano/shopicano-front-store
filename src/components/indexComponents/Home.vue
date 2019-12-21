@@ -6,7 +6,7 @@
                     <h2 class="section-title">Top Categories</h2>
                 </div>
                 <!-- categories item -->
-                <div v-for="category in categories"
+                <div v-for="category in topCategories"
                      v-bind:key="category.id"
                      class="col-lg-4 col-md-6 mb-50">
                     <div class="card p-0">
@@ -18,21 +18,21 @@
                         </div>
                         <ul class="d-flex list-unstyled pl-0 categories-list">
                             <li class="m-0 hover-zoom-img">
-                                <a href="shop.html"><img src="images/categories/product-sm-1.jpg"
-                                                         class="img-fluid w-100" alt="product-img"></a>
+                                <router-link to="/shop"><img src="images/categories/product-sm-1.jpg"
+                                                         class="img-fluid w-100" alt="product-img"></router-link>
                             </li>
                             <li class="m-0 hover-zoom-img">
-                                <a href="shop.html"><img src="images/categories/product-sm-2.jpg"
-                                                         class="img-fluid w-100" alt="product-img"></a>
+                                <router-link to="/shop"><img src="images/categories/product-sm-2.jpg"
+                                                         class="img-fluid w-100 h-25" alt="product-img"></router-link>
                             </li>
                             <li class="m-0 hover-zoom-img">
-                                <a href="shop.html"><img src="images/categories/product-sm-3.jpg"
-                                                         class="img-fluid w-100" alt="product-img"></a>
+                                <router-link to="/shop"><img src="images/categories/product-sm-3.jpg"
+                                                         class="img-fluid w-100" alt="product-img"></router-link>
                             </li>
                         </ul>
                         <div class="px-4 py-3 border-top">
                             <h4 class="d-inline-block mb-0 mt-1">{{ category.name }}</h4>
-                            <a href="shop.html" class="btn btn-sm btn-outline-primary float-right">view more</a>
+                            <router-link to="/shop" class="btn btn-sm btn-outline-primary float-right">view more</router-link>
                         </div>
                     </div>
                 </div>
@@ -46,28 +46,28 @@
                      class="col-lg-4 col-md-6 mb-50">
                     <div class="card p-0">
                         <div class="border-bottom text-center hover-zoom-img">
-                            <router-link to="/shop">
+                            <router-link :to="`/products/${tp.id}`">
                                 <img class="rounded-top img-fluid imageDim" alt="product-img"
                                      v-bind:src="getFullImagePath(tp.image)" >
                             </router-link>
                         </div>
                         <ul class="d-flex list-unstyled pl-0 categories-list">
                             <li class="m-0 hover-zoom-img">
-                                <a href="shop.html"><img v-bind:src="getFullImagePath(tp.image)"
-                                                         class="img-fluid w-100" alt="product-img"></a>
+                                <router-link :to="`/products/${tp.id}`"><img v-bind:src="getFullImagePath(tp.image)"
+                                                         class="img-fluid w-100" alt="product-img"></router-link>
                             </li>
                             <li class="m-0 hover-zoom-img">
-                                <a href="shop.html"><img src="images/categories/product-sm-2.jpg"
-                                                         class="img-fluid w-100" alt="product-img"></a>
+                                <router-link :to="`/products/${tp.id}`"><img v-bind:src="getFullImagePath(tp.image)"
+                                                         class="img-fluid w-100" alt="product-img"></router-link>
                             </li>
                             <li class="m-0 hover-zoom-img">
-                                <a href="shop.html"><img src="images/categories/product-sm-3.jpg"
-                                                         class="img-fluid w-100" alt="product-img"></a>
+                                <router-link :to="`/products/${tp.id}`"><img v-bind:src="getFullImagePath(tp.image)"
+                                                         class="img-fluid w-100" alt="product-img"></router-link>
                             </li>
                         </ul>
                         <div class="px-4 py-3 border-top">
                             <h4 class="d-inline-block mb-0 mt-1">{{ tp.name }}</h4>
-                            <a href="shop.html" class="btn btn-sm btn-outline-primary float-right">view more</a>
+                            <router-link to="/shop" class="btn btn-sm btn-outline-primary float-right">view more</router-link>
                         </div>
                     </div>
                 </div>
@@ -77,6 +77,7 @@
 </template>
 
 <script>
+    /* eslint-disable */
     import axios from "axios";
     import Settings from "@/common/settings";
 
@@ -85,7 +86,7 @@
         components: {  },
         data() {
             return {
-                categories: [],
+                topCategories: [],
                 topProducts: [],
             };
         },
@@ -96,7 +97,7 @@
         methods: {
             getCategories: function () {
                 axios.get( Settings.GetApiUrl() + '/categories?limit=3').then(resp => {
-                    this.categories = resp.data.data;
+                    this.topCategories = resp.data.data;
                 }).catch(err => {
                     console.log(err);
                 })

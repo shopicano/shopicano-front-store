@@ -385,7 +385,7 @@
                                 <ul class="list-unstyled">
                                     <li class="d-flex justify-content-between">
                                         <span>Subtotal</span>
-                                        <span>$237.00</span>
+                                        <span>${{ getCartTotalPrice }}</span>
                                     </li>
                                     <li class="d-flex justify-content-between">
                                         <span>Shipping & Handling</span>
@@ -439,7 +439,21 @@
                 showErrMsg: false,
             };
         },
+        mounted() {
+            this.checkRequired();
+            this.onFieldLoad();
+        },
+        computed: {
+            getCartTotalPrice() {
+                return this.$store.getters.cartTotalPrice;
+            },
+        },
         methods: {
+            checkRequired : function(){
+                if (this.$store.getters.cartItemCount < 1) {
+                    this.$router.push('/shop');
+                }
+            },
             storeInfo: function () {
                 if (this.firstName==='' || this.lastName==='' || this.email==='' || this.company==='' || this.address===''
                     || this.phone==='' || this.country==='' || this.city==='' || this.zipCode==='' || this.shippingMethod==='') {
@@ -462,9 +476,23 @@
 
                     this.$router.push('/payment');
                 }
-
-
             },
+            onFieldLoad: function () {
+                const instance = this.$store.getters.getterShippingInfo;
+
+                if (Object.keys(instance).length !== 0){
+                    this.firstName = instance.firstName;
+                    this.lastName = instance.lastName;
+                    this.email = instance.email;
+                    this.company = instance.company;
+                    this.address = instance.address;
+                    this.phone = instance.phone;
+                    this.country = instance.country;
+                    this.city = instance.city;
+                    this.zipCode = instance.zipCode;
+                    this.shippingMethod = instance.shippingMethod;
+                }
+            }
         }
     }
 </script>

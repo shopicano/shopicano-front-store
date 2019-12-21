@@ -96,7 +96,7 @@
                                 <!-- buttons -->
                                 <div class="p-4 bg-gray d-flex justify-content-between">
                                     <router-link to="/payment" class="btn btn-dark">Back</router-link>
-                                    <router-link to="/confirmation" class="btn btn-primary">Continue</router-link>
+                                    <span @click="onCheckLoggedIn" class="btn btn-primary text-capitalize">confirm purchase</span>
                                 </div>
                             </div>
                         </div>
@@ -141,6 +141,7 @@
     import Header from "@/components/indexComponents/Header";
     import Navigation from "@/components/indexComponents/Navigation";
     import Footer from "@/components/indexComponents/Footer";
+    import SessionStore from "@/common/session_store";
 
     export default {
         name: "Review",
@@ -155,6 +156,7 @@
         },
         mounted() {
             this.setInfo();
+            this.checkRequired();
         },
         computed: {
             getFullCart(){
@@ -166,6 +168,11 @@
             }
         },
         methods: {
+            checkRequired : function(){
+                if (Object.keys(this.shippingInfo).length < 1 || Object.keys(this.paymentInfo).length < 1) {
+                    this.$router.push('/payment');
+                }
+            },
             setInfo: function () {
                 this.shippingInfo = this.getShippingInfo();
                 this.paymentInfo = this.getPaymentInfo();
@@ -201,6 +208,13 @@
                 }
 
                 return type;
+            },
+            onCheckLoggedIn: function () {
+                if (SessionStore.IsLoggedIn()) {
+                    this.$router.push('/confirmation');
+                } else {
+                    this.$router.push('/login');
+                }
             }
         }
     }

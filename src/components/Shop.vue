@@ -156,7 +156,8 @@
                                                 <BPagination
                                                         class="page-item"
                                                         v-model="currentPage"
-                                                        :limit="4"
+                                                        :limit="3"
+                                                        :hide-goto-end-buttons="true"
                                                         :total-rows="rows"
                                                         :per-page="perPage"
                                                         :link-gen="getData">

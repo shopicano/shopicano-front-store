@@ -32,9 +32,22 @@
     import Header from "@/components/indexComponents/Header";
     import Navigation from "@/components/indexComponents/Navigation";
     import Footer from "@/components/indexComponents/Footer";
+
     export default {
         name: "Confirmation",
-        components: {Footer, Navigation, Header}
+        components: {Footer, Navigation, Header},
+        mounted() {
+            this.checkRequired();
+        },
+        methods: {
+            checkRequired : function(){
+                if (Object.keys(this.$store.getters.getterPaymentInfo) < 1) {
+                    this.$router.push('/review');
+                } else {
+                    this.$router.push('/confirmation');
+                }
+            },
+        }
     }
 </script>
 

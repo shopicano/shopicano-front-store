@@ -149,7 +149,7 @@
                                 <ul class="list-unstyled">
                                     <li class="d-flex justify-content-between">
                                         <span>Subtotal</span>
-                                        <span>$237.00</span>
+                                        <span>${{ getCartTotalPrice }}</span>
                                     </li>
                                     <li class="d-flex justify-content-between">
                                         <span>Shipping & Handling</span>
@@ -201,8 +201,20 @@
         },
         mounted() {
             this.setInfo();
+            this.checkRequired();
+            this.onFieldLoad();
+        },
+        computed: {
+            getCartTotalPrice() {
+                return this.$store.getters.cartTotalPrice;
+            }
         },
         methods: {
+            checkRequired : function(){
+                if (Object.keys(this.shippingInfo).length < 1) {
+                    this.$router.push('/shipping');
+                }
+            },
             setInfo: function () {
                 this.shippingInfo = this.getShippingInfo();
             },
@@ -244,12 +256,21 @@
                         exDateMonth: this.exDateMonth,
                         cvc: this.cvc,
                     });
-
                     this.$router.push('/review');
                 }
-
-
             },
+            onFieldLoad: function () {
+                const instance = this.$store.getters.getterPaymentInfo;
+
+                if (Object.keys(instance).length !== 0){
+                    this.cardType = instance.cardType;
+                    this.cardName = instance.cardName;
+                    this.cardNumber = instance.cardNumber;
+                    this.exDateYear = instance.exDateYear;
+                    this.exDateMonth = instance.exDateMonth;
+                    this.cvc = instance.cvc;
+                }
+            }
         }
     }
 </script>

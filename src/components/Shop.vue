@@ -124,7 +124,7 @@
                                                             class="btn btn-primary btn-sm">Add To Cart</button>
                                                 </div>
                                             </div>
-                                            <div class="product-hover-overlay">
+                                            <!--<div class="product-hover-overlay">
                                                 <a href="#" class="product-icon favorite" data-toggle="tooltip"
                                                    data-placement="left" title="Wishlist">
                                                     <i class="ti-heart"/>
@@ -135,16 +135,16 @@
                                                    data-placement="left" title="Quick View">
                                                     <i class="ti-search"/>
                                                 </a>
-                                            </div>
+                                            </div>-->
                                         </div>
                                         <div class="product-info">
                                             <h3 class="h5"><router-link class="text-color" :to="`/products/${product.id}`">{{ product.name }}</router-link></h3>
                                             <span class="h5">${{ product.price }}</span>
                                         </div>
                                         <!-- product label badge -->
-                                        <div class="product-label sale">
+                                        <!--<div class="product-label sale">
                                             -8%
-                                        </div>
+                                        </div>-->
                                     </div>
                                 </div>
                                 <!-- //end of product -->

@@ -23,6 +23,8 @@ Vue.config.productionTip = false;
 
 Vue.use(VueRouter);
 Vue.use(Vuex);
+
+// For map in contact us page
 Vue.use(VueGoogleMaps, {
     load: {
         key: 'AIzaSyDI__ldkg53UnWkVoL1TomSXJjRxH04tIc', // YOUR_API_TOKEN

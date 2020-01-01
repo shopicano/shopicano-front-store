@@ -7,6 +7,8 @@ export const store = new Vuex.Store({
     state: {
         cartProducts: [],
         cartTotal: 0,
+        shipping_sameAs_billing: Boolean,
+        billingInfo: {},
         shippingInfo: {},
         paymentInfo: {},
     },
@@ -45,6 +47,12 @@ export const store = new Vuex.Store({
                 state.cartTotal = state.cartTotal + element.subTotal;
             })
         },
+        storeIfShippingSameAsBilling: (state, payload) => {
+            state.shipping_sameAs_billing = payload;
+        },
+        storeBillingInfo: (state, payload) => {
+            Object.assign(state.billingInfo, payload);
+        },
         storeShippingInfo: (state, payload) => {
             Object.assign(state.shippingInfo, payload);
         },
@@ -62,6 +70,12 @@ export const store = new Vuex.Store({
         changeQuantityAction: (context, payload) => {
             context.commit('updateQuantity', payload)
         },
+        storeIfShippingSameAsBillingAction: (context, payload) => {
+            context.commit('storeIfShippingSameAsBilling', payload)
+        },
+        storeBillingInfoAction: (context, payload) => {
+            context.commit('storeBillingInfo', payload)
+        },
         storeShippingInfoAction: (context, payload) => {
             context.commit('storeShippingInfo', payload)
         },
@@ -78,6 +92,12 @@ export const store = new Vuex.Store({
         },
         cartTotalPrice: (state) => {
             return state.cartTotal
+        },
+        getterIfShippingSameAsBilling: (state) => {
+            return state.shipping_sameAs_billing
+        },
+        getterBillingInfo: (state) => {
+            return state.billingInfo
         },
         getterShippingInfo: (state) => {
             return state.shippingInfo

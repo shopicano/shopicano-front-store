@@ -41,7 +41,7 @@
                                 <div class="table-responsive">
                                     <table class="table">
                                         <thead>
-                                        <tr>
+                                        <tr class="text-center">
                                             <td></td>
                                             <td>Product Name</td>
                                             <td>Quantity</td>
@@ -49,8 +49,8 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr v-for="item in getFullCart" v-bind:key="item.id">
-                                            <td class="align-middle"><img class="img-fluid w-25" :src="item.itemThumbnail" alt="product-img" /></td>
+                                        <tr class="text-center" v-for="item in getFullCart" v-bind:key="item.id">
+                                            <td class="align-middle"><img class="img-fluid img-thumbnail img-width" :src="item.itemThumbnail" alt="product-img" /></td>
                                             <td class="align-middle">{{ item.itemName }}</td>
                                             <td class="align-middle">{{ item.itemQuantity }}</td>
                                             <td class="align-middle">${{ item.subTotal }}</td>
@@ -62,9 +62,9 @@
                                 <!-- /review -->
 
                                 <!-- shipping-information -->
-                                <h3 class="mb-5 border-bottom pb-2">Shipping Information</h3>
+                                <h3 class="mt-5 mb-5 border-bottom pb-2">Shipping Information</h3>
                                 <div class="row mb-5">
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <h4 class="mb-3">Shipping Address</h4>
                                         <ul class="list-unstyled">
                                             <li>{{ shippingInfo.firstName + ' ' + shippingInfo.lastName }}</li>
@@ -73,21 +73,30 @@
                                             <li>{{ shippingInfo.email }}</li>
                                         </ul>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <h4 class="mb-3">Shipping Method</h4>
                                         <ul class="list-unstyled">
                                             <li>{{ getShippingMethod(shippingInfo.shippingMethod) }}</li>
                                             <li>{{ deliveryTime }}</li>
                                         </ul>
                                     </div>
-                                    <div class="col-md-4">
-                                        <h4 class="mb-3">Payment Method</h4>
+                                </div>
+                                <!-- @shipping-information -->
+
+                                <!-- billing-information -->
+                                <h3 class="mb-5 border-bottom pb-2">Billing Information</h3>
+                                <div class="row mb-5">
+                                    <div class="col">
+                                        <h4 class="mb-3">Billing Address</h4>
                                         <ul class="list-unstyled">
-                                            <li>{{ getCartType(paymentInfo.cardType) }}: </li>
-                                            <li>**** **** **** 2637</li>
+                                            <li>{{ billingInfo.firstName + ' ' + billingInfo.lastName }}</li>
+                                            <li>{{ billingInfo.address }} </li>
+                                            <li>{{ billingInfo.phone }} </li>
+                                            <li>{{ billingInfo.email }}</li>
                                         </ul>
                                     </div>
                                 </div>
+                                <!-- @billing-information -->
 
                                 <!-- buttons -->
                                 <div class="p-4 bg-gray d-flex justify-content-between">
@@ -147,7 +156,7 @@
                 isCartNil: true,
                 shippingInfo: [],
                 deliveryTime: '',
-                paymentInfo: [],
+                billingInfo: [],
             };
         },
         mounted() {
@@ -165,16 +174,19 @@
         },
         methods: {
             checkRequired : function(){
-                if (Object.keys(this.shippingInfo).length < 1 || Object.keys(this.paymentInfo).length < 1) {
-                    this.$router.push('/payment');
+                if (Object.keys(this.shippingInfo).length < 1 || Object.keys(this.billingInfo).length < 1) {
+                    this.$router.push('/shipping');
                 }
             },
             setInfo: function () {
                 this.shippingInfo = this.getShippingInfo();
-                this.paymentInfo = this.getPaymentInfo();
+                this.billingInfo = this.getBillingInfo();
             },
             getShippingInfo: function() {
                 return this.$store.getters.getterShippingInfo;
+            },
+            getBillingInfo: function() {
+                return this.$store.getters.getterBillingInfo;
             },
             getShippingMethod(method) {
                 if (method === 'standard') {
@@ -193,18 +205,6 @@
 
                 return method;
             },
-            getPaymentInfo: function() {
-                return this.$store.getters.getterPaymentInfo;
-            },
-            getCartType: function (type) {
-                if (type === 'paypal') {
-                    type = 'Paypal';
-                } else if (type === 'creditcard') {
-                    type = 'Credit Card';
-                }
-
-                return type;
-            },
             onCheckLoggedIn: function () {
                 if (SessionStore.IsLoggedIn()) {
                     this.$router.push('/confirmation');
@@ -217,5 +217,7 @@
 </script>
 
 <style scoped>
-
+    .img-width{
+        width: 80px!important;
+    }
 </style>

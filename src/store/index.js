@@ -10,7 +10,6 @@ export const store = new Vuex.Store({
         shipping_sameAs_billing: Boolean,
         billingInfo: {},
         shippingInfo: {},
-        paymentInfo: {},
     },
     mutations: {
         addItemToCart: (state, payload) => {
@@ -56,9 +55,6 @@ export const store = new Vuex.Store({
         storeShippingInfo: (state, payload) => {
             Object.assign(state.shippingInfo, payload);
         },
-        storeCardInfo: (state, payload) => {
-            Object.assign(state.paymentInfo, payload);
-        },
     },
     actions: {
         addItemToCartAction: (context, payload) => {
@@ -79,9 +75,6 @@ export const store = new Vuex.Store({
         storeShippingInfoAction: (context, payload) => {
             context.commit('storeShippingInfo', payload)
         },
-        storeCardInfoAction: (context, payload) => {
-            context.commit('storeCardInfo', payload)
-        }
     },
     getters: {
         getCart: (state) => {
@@ -102,8 +95,5 @@ export const store = new Vuex.Store({
         getterShippingInfo: (state) => {
             return state.shippingInfo
         },
-        getterPaymentInfo: (state) => {
-            return state.paymentInfo
-        }
     },
 });

@@ -24,14 +24,10 @@
                         <div class="col-md-8">
                             <div class="inner-wrapper border-box">
                                 <!-- navbar -->
-                                <div class="justify-content-between nav mb-5">
+                                <div class="align-content-between nav mb-5">
                                     <span class="text-center d-inline-block nav-item">
                                         <i class="ti-truck d-block mb-2"/>
                                         <span class="d-block h4">Shipping Method</span>
-                                    </span>
-                                    <span  class="text-center d-inline-block nav-item">
-                                        <i class="ti-wallet d-block mb-2"/>
-                                        <span class="d-block h4">Payment Method</span>
                                     </span>
                                     <span  class="text-center d-inline-block nav-item active">
                                         <i class="ti-eye d-block mb-2"/>
@@ -95,7 +91,7 @@
 
                                 <!-- buttons -->
                                 <div class="p-4 bg-gray d-flex justify-content-between">
-                                    <router-link to="/payment" class="btn btn-dark">Back</router-link>
+                                    <router-link to="/shipping" class="btn btn-dark">Back</router-link>
                                     <span @click="onCheckLoggedIn" class="btn btn-primary text-capitalize">confirm purchase</span>
                                 </div>
                             </div>

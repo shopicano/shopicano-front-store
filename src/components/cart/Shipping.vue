@@ -24,14 +24,10 @@
                         <div class="col-md-8">
                             <div class="inner-wrapper border-box">
                                 <!-- navbar -->
-                                <div class="justify-content-between nav mb-5">
+                                <div class="align-content-between nav mb-5">
                                     <span class="text-center d-inline-block active nav-item">
                                         <i class="ti-truck d-block mb-2"/>
                                         <span class="d-block h4">Shipping Method</span>
-                                    </span>
-                                    <span  class="text-center d-inline-block nav-item">
-                                        <i class="ti-wallet d-block mb-2"/>
-                                        <span class="d-block h4">Payment Method</span>
                                     </span>
                                     <span  class="text-center d-inline-block nav-item">
                                         <i class="ti-eye d-block mb-2"/>
@@ -333,7 +329,7 @@
                         shippingMethod: this.shippingMethod,
                     });
 
-                    this.$router.push('/payment');
+                    this.$router.push('/review');
                 }
             },
             onFieldLoad: function () {

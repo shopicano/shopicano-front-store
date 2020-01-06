@@ -78,8 +78,8 @@
                                            @keyup="onSearchProducts"
                                            class="form-control rounded-0" id="search-product"
                                            placeholder="Search...">
-                                    <button type="submit" class="search-icon pr-3 r-0">
-                                        <i class="ti-search text-color"/></button>
+                                    <span class="search-icon pr-3 r-0">
+                                        <i class="ti-search text-color"/></span>
                                 </form>
                             </div>
 
@@ -87,7 +87,7 @@
                             <div class="mb-30">
                                 <h4 class="mb-3">Shop by Categories</h4>
                                 <ul class="pl-0 shop-list list-unstyled">
-                                    <li v-for="category in categories" :key="category.id" v-on:click="setCategoryId(category.id)">
+                                    <li v-for="category in categories.slice(0,10)" :key="category.id" v-on:click="setCategoryId(category.id)">
                                         <a class="d-flex py-2 text-gray justify-content-between">
                                             <span>{{ category.name }}</span><span>9</span>
                                         </a>
@@ -192,6 +192,7 @@
     import NewsLetter from "@/components/indexComponents/NewsLetter";
     import Services from "@/components/indexComponents/Services";
     import Settings from "@/common/settings";
+    import SessionStore from "@/common/session_store";
 
     export default {
         name: "Shop",
@@ -260,7 +261,7 @@
                 })
             },
             getCategories: function () {
-                axios.get( Settings.GetApiUrl() + '/categories?&limit=15').then(resp => {
+                axios.get( Settings.GetApiUrl() + '/stats/categories').then(resp => {
                     this.categories = resp.data.data;
                 }).catch(err => {
                     console.log(err);
@@ -270,10 +271,11 @@
                 return Settings.GetMediaUrl() + subPath;
             },
             onSearchProducts: function() {
-                axios.get(Settings.GetApiUrl() + '/products/search?query=' + this.query
+                axios.get(Settings.GetApiUrl() + '/products/search?query=' + query
                     + '&limit=' + this.perPage + '&page=' + this.currentPage).then(resp => {
                     this.fetchIsEmpty = resp.data.data.length === 0;
                     this.productsList = resp.data.data;
+                    console.log(this.productsList)
                 }).catch(err => {
                     console.log(err);
                 })

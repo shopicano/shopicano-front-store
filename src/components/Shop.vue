@@ -271,8 +271,7 @@
                 return Settings.GetMediaUrl() + subPath;
             },
             onSearchProducts: function() {
-                axios.get(Settings.GetApiUrl() + '/products/search?query=' + query
-                    + '&limit=' + this.perPage + '&page=' + this.currentPage).then(resp => {
+                axios.get(Settings.GetApiUrl() + '/products?query=' + this.query).then(resp => {
                     this.fetchIsEmpty = resp.data.data.length === 0;
                     this.productsList = resp.data.data;
                     console.log(this.productsList)

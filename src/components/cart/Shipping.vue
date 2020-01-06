@@ -56,8 +56,12 @@
                                         <input v-model="company" class="form-control" type="text" id="company" name="company" required>
                                     </div>
                                     <div class="col-sm-6">
-                                        <label for="address">Address</label>
-                                        <input v-model="address" class="form-control" type="text" id="address" name="address" required>
+                                        <label for="house">House</label>
+                                        <input v-model="house" class="form-control" type="text" id="house" name="house" required>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label for="address">Road</label>
+                                        <input v-model="road" class="form-control" type="text" id="address" name="address" required>
                                     </div>
                                     <div class="col-sm-6">
                                         <label for="phone">Phone</label>
@@ -86,9 +90,9 @@
                                         <label >City</label>
                                         <select v-model="city" class="form-control" name="city">
                                             <option disabled value="">Your City</option>
-                                            <option value="brown">Dhaka</option>
-                                            <option value="gray">Newyork</option>
-                                            <option value="black">Delhi</option>
+                                            <option value="Dhaka">Dhaka</option>
+                                            <option value="Newyork">Newyork</option>
+                                            <option value="Delhi">Delhi</option>
                                         </select>
                                     </div>
                                     <div class="col-sm-6">
@@ -125,8 +129,12 @@
                                         <input v-model="company_shipping" class="form-control" type="text"  name="company" required>
                                     </div>
                                     <div class="col-sm-6">
-                                        <label for="address">Address</label>
-                                        <input v-model="address_shipping" class="form-control" type="text" name="address" required>
+                                        <label >House</label>
+                                        <input v-model="house_shipping" class="form-control" type="text" name="house" required>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label for="address">Road</label>
+                                        <input v-model="road_shipping" class="form-control" type="text" name="address" required>
                                     </div>
                                     <div class="col-sm-6">
                                         <label for="phone">Phone</label>
@@ -153,11 +161,11 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <label >City</label>
-                                        <select v-model="city_shipping" class="form-control" name="city">
+                                        <select v-model="city_shipping" class="form-control" >
                                             <option disabled value="">Your City</option>
-                                            <option value="brown">Dhaka</option>
-                                            <option value="gray">Newyork</option>
-                                            <option value="black">Delhi</option>
+                                            <option value="Dhaka">Dhaka</option>
+                                            <option value="Newyork">Newyork</option>
+                                            <option value="Delhi">Delhi</option>
                                         </select>
                                     </div>
                                     <div class="col-sm-6">
@@ -255,7 +263,8 @@
                 lastName: '',
                 email: '',
                 company: '',
-                address: '',
+                house: '',
+                road: '',
                 phone: '',
                 country: '',
                 city: '',
@@ -266,7 +275,8 @@
                 lastName_shipping: '',
                 email_shipping: '',
                 company_shipping: '',
-                address_shipping: '',
+                house_shipping: '',
+                road_shipping: '',
                 phone_shipping: '',
                 country_shipping: '',
                 city_shipping: '',
@@ -290,10 +300,10 @@
                 }
             },
             storeInfo: function () {
-                if (this.firstName==='' || this.lastName==='' || this.email==='' || this.company==='' || this.address===''
+                if (this.firstName==='' || this.lastName==='' || this.email==='' || this.company==='' || this.road===''
                     || this.phone==='' || this.country==='' || this.city==='' || this.zipCode==='' || this.shippingMethod===''
                     || this.firstName_shipping==='' || this.lastName_shipping==='' || this.email_shipping===''
-                    || this.company_shipping==='' || this.address_shipping==='' || this.phone_shipping==='' ||
+                    || this.company_shipping==='' || this.road_shipping==='' || this.phone_shipping==='' ||
                     this.country_shipping==='' || this.city_shipping==='' || this.zipCode_shipping==='') {
                     this.showErrMsg = true;
                 } else {
@@ -305,7 +315,8 @@
                         lastName: this.lastName,
                         email: this.email,
                         company: this.company,
-                        address: this.address,
+                        house: this.house,
+                        road: this.road,
                         phone: this.phone,
                         country: this.country,
                         city: this.city,
@@ -321,7 +332,8 @@
                         lastName: this.lastName_shipping,
                         email: this.email_shipping,
                         company: this.company_shipping,
-                        address: this.address_shipping,
+                        house: this.house_shipping,
+                        road: this.road_shipping,
                         phone: this.phone_shipping,
                         country: this.country_shipping,
                         city: this.city_shipping,
@@ -343,7 +355,8 @@
                     this.lastName = billingInstance.lastName;
                     this.email = billingInstance.email;
                     this.company = billingInstance.company;
-                    this.address = billingInstance.address;
+                    this.house = billingInstance.house;
+                    this.road = billingInstance.road;
                     this.phone = billingInstance.phone;
                     this.country = billingInstance.country;
                     this.city = billingInstance.city;
@@ -357,7 +370,8 @@
                     this.lastName_shipping = shippingInstance.lastName;
                     this.email_shipping = shippingInstance.email;
                     this.company_shipping = shippingInstance.company;
-                    this.address_shipping = shippingInstance.address;
+                    this.house_shipping = shippingInstance.house;
+                    this.road_shipping = billingInstance.road;
                     this.phone_shipping = shippingInstance.phone;
                     this.country_shipping = shippingInstance.country;
                     this.city_shipping = shippingInstance.city;
@@ -371,7 +385,8 @@
                     this.lastName_shipping = this.lastName;
                     this.email_shipping = this.email;
                     this.company_shipping = this.company;
-                    this.address_shipping = this.address;
+                    this.house_shipping = this.house;
+                    this.road_shipping = this.road;
                     this.phone_shipping = this.phone;
                     this.country_shipping = this.country;
                     this.city_shipping = this.city;
@@ -381,7 +396,8 @@
                     this.lastName_shipping = '';
                     this.email_shipping = '';
                     this.company_shipping = '';
-                    this.address_shipping = '';
+                    this.house_shipping = '';
+                    this.road_shipping = '';
                     this.phone_shipping = '';
                     this.country_shipping = '';
                     this.city_shipping = '';

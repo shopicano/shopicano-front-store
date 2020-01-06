@@ -103,8 +103,15 @@
                                     <router-link to="/shipping" class="btn btn-dark">Back</router-link>
                                     <span @click="onCheckLoggedIn" class="btn btn-primary text-capitalize">confirm purchase</span>
                                 </div>
+
+                                <div v-if="is_purchase_confirmed">
+                                    <v-braintree :authorization="token"
+                                                 @success="onSuccess"
+                                                 @error="onError"/>
+                                </div>
                             </div>
                         </div>
+
                         <div class="col-md-4">
                             <div class="border-box p-4">
                                 <h4>Order Summery</h4>
@@ -143,10 +150,13 @@
 
 <script>
     /* eslint-disable */
+    import axios from 'axios';
+
     import Header from "@/components/indexComponents/Header";
     import Navigation from "@/components/indexComponents/Navigation";
     import Footer from "@/components/indexComponents/Footer";
     import SessionStore from "@/common/session_store";
+    import Settings from "@/common/settings";
 
     export default {
         name: "Review",
@@ -157,11 +167,17 @@
                 shippingInfo: [],
                 deliveryTime: '',
                 billingInfo: [],
+                token: '',
+                billingAddress_id: '',
+                orderID: '',
+                is_purchase_confirmed: false,
+                nonce: '',
             };
         },
         mounted() {
             this.setInfo();
             this.checkRequired();
+            this.createOrder();
         },
         computed: {
             getFullCart(){
@@ -173,6 +189,115 @@
             }
         },
         methods: {
+            getAddressList() {
+                axios.get(Settings.GetApiUrl() + '/addresses', {
+                    headers: {
+                        "Authorization": "Bearer " + SessionStore.GetAccessToken(),
+                    }
+                }).then(resp => {
+                    this.billingAddress_id = resp.data.data[0].id;
+                    //console.log(this.billingAddress_id)
+                }).catch(err => {
+                    console.log(err)
+                });
+            },
+            createOrder() {
+                let items = [];
+                let order = {};
+                let cart_items = this.$store.getters.getCart;
+
+                console.log(cart_items);
+                cart_items.forEach(item => {
+                    items.push({
+                        id: item.itemID,
+                        quantity: item.itemQuantity
+                    })
+                });
+
+                console.log(items);
+
+                order = {
+                    items: items,
+                    store_id: '65422e25-2bd2-4d6e-9f5d-2bf7bbe19727',
+                    billing_address_id: this.billingAddress_id,
+                    payment_method_id: '97edb2e0-d606-4873-bb1e-1f7474e85ba1',
+                }
+            },
+            createBillingAddress() {
+                let billing_address = {
+                    name: this.billingInfo.firstName + this.billingInfo.lastName,
+                    house: this.billingInfo.house,
+                    road: this.billingInfo.road,
+                    city: this.billingInfo.city,
+                    country: this.billingInfo.country,
+                    postcode: this.billingInfo.zipCode,
+                    email: this.billingInfo.email,
+                    phone: this.billingInfo.phone,
+                };
+
+                console.log(billing_address);
+
+                axios.post(Settings.GetApiUrl() + '/addresses', {
+                    name: this.billingInfo.firstName + this.billingInfo.lastName,
+                    house: this.billingInfo.house,
+                    road: this.billingInfo.road,
+                    city: this.billingInfo.city,
+                    country: this.billingInfo.country,
+                    postcode: this.billingInfo.zipCode,
+                    email: this.billingInfo.email,
+                    phone: this.billingInfo.phone,
+                }, {
+                    headers: {
+                        "Authorization": "Bearer " + SessionStore.GetAccessToken(),
+                    }
+                }).then(resp => {
+                    console.log(resp)
+                }).catch(err => {
+                    console.log(err)
+                });
+            },
+            getOrderId() {
+                axios.get(Settings.GetApiUrl() + '/orders?page=1&limit=1', {
+                    headers: {
+                        "Authorization": "Bearer " + SessionStore.GetAccessToken(),
+                    }
+                }).then(resp => {
+                    console.log(resp);
+                    this.orderID = resp.data.data[0].id;
+                }).catch(err => {
+                    console.log(err)
+                });
+            },
+            onSuccess (payload) {
+                /*axios.post(Settings.GetApiUrl() + '/orders/' + this.orderID + '/nonce', {},{
+                    headers: {
+                        "Authorization": "Bearer " + SessionStore.GetAccessToken(),
+                    }
+                }).then(resp => {
+                    console.log(resp);
+
+                    this.nonce = '';
+                }).catch(err => [
+                    log(err)
+                ]);*/
+
+                let nonce = payload.nonce;
+                //console.log(payload);
+
+                axios.post(Settings.GetApiUrl() + '/orders/' + this.orderID + '/pay', nonce, {
+                    headers: {
+                        "Authorization": "Bearer " + SessionStore.GetAccessToken(),
+                    }
+                }).then(resp => {
+                    console.log(resp)
+                }).catch(err => {
+                    console.log(err)
+                });
+            },
+            onError (error) {
+                let message = error.message;
+                alert(message)
+            },
             checkRequired : function(){
                 if (Object.keys(this.shippingInfo).length < 1 || Object.keys(this.billingInfo).length < 1) {
                     this.$router.push('/shipping');
@@ -181,6 +306,7 @@
             setInfo: function () {
                 this.shippingInfo = this.getShippingInfo();
                 this.billingInfo = this.getBillingInfo();
+                this.token = localStorage.getItem('client_token');
             },
             getShippingInfo: function() {
                 return this.$store.getters.getterShippingInfo;
@@ -207,9 +333,18 @@
             },
             onCheckLoggedIn: function () {
                 if (SessionStore.IsLoggedIn()) {
-                    this.$router.push('/confirmation');
+                    if (this.billingAddress_id === '') {
+                        this.createBillingAddress();
+                    }
+
+                    this.getAddressList();
+                    this.createOrder();
+                    this.getOrderId();
+
+                    this.is_purchase_confirmed = true;
+                    //this.$router.push('/confirmation');
                 } else {
-                    this.$router.push('/login');
+                    //this.$router.push('/login');
                 }
             }
         }

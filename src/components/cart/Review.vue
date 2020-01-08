@@ -33,6 +33,10 @@
                                         <i class="ti-eye d-block mb-2"/>
                                         <span class="d-block h4">Review</span>
                                     </span>
+                                    <span  class="text-center d-inline-block nav-item">
+                                        <i class="ti-wallet d-block mb-2"/>
+                                        <span class="d-block h4">Payment Method</span>
+                                    </span>
                                 </div>
                                 <!-- /navbar -->
 
@@ -104,7 +108,19 @@
                                     <span @click="onCheckLoggedIn" class="btn btn-primary text-capitalize">confirm purchase</span>
                                 </div>
 
-                                <div v-if="is_purchase_confirmed">
+                                <div v-if="is_purchase_confirmed" class="mt-4 container">
+                                    <div v-on:change="checkGateWay">
+                                        <input v-model="gatewayName" id="checkbox1" type="radio" name="checkbox" value="braintree">
+                                        <label for="checkbox1" class="h4 ml-2">Brain Tree</label>
+                                    </div>
+
+                                    <div v-on:change="checkGateWay">
+                                        <input v-model="gatewayName" id="checkbox2" type="radio" name="checkbox" value="stripe">
+                                        <label for="checkbox2" class="h4 ml-2">Stripe</label>
+                                    </div>
+                                </div>
+
+                                <div v-if="is_gateway_braintree">
                                     <v-braintree :authorization="token"
                                                  @success="onSuccess"
                                                  @error="onError"/>
@@ -172,12 +188,14 @@
                 orderID: '',
                 is_purchase_confirmed: false,
                 nonce: '',
+                gatewayName: '',
+                is_gateway_braintree: false,
+                is_gateway_stripe: false,
             };
         },
         mounted() {
             this.setInfo();
             this.checkRequired();
-            this.createOrder();
         },
         computed: {
             getFullCart(){
@@ -189,6 +207,16 @@
             }
         },
         methods: {
+            checkGateWay() {
+                if (this.gatewayName === 'braintree') {
+                    this.is_gateway_stripe = false;
+                    this.is_gateway_braintree = true;
+                } else if (this.gatewayName === 'stripe') {
+                    this.is_gateway_braintree = false;
+                    this.is_gateway_stripe = true;
+
+                }
+            },
             getAddressList() {
                 axios.get(Settings.GetApiUrl() + '/addresses', {
                     headers: {
@@ -284,7 +312,7 @@
                 let nonce = payload.nonce;
                 //console.log(payload);
 
-                axios.post(Settings.GetApiUrl() + '/orders/' + this.orderID + '/pay', nonce, {
+                axios.post(Settings.GetApiUrl() + '/orders/' + this.orderID + '/pay', {nonce: nonce}, {
                     headers: {
                         "Authorization": "Bearer " + SessionStore.GetAccessToken(),
                     }
@@ -333,7 +361,7 @@
             },
             onCheckLoggedIn: function () {
                 if (SessionStore.IsLoggedIn()) {
-                    if (this.billingAddress_id === '') {
+                    /*if (this.billingAddress_id === '') {
                         this.createBillingAddress();
                     }
 
@@ -341,10 +369,10 @@
                     this.createOrder();
                     this.getOrderId();
 
-                    this.is_purchase_confirmed = true;
-                    //this.$router.push('/confirmation');
+                    this.is_purchase_confirmed = true;*/
+                    this.$router.push('/payment');
                 } else {
-                    //this.$router.push('/login');
+                    this.$router.push('/login');
                 }
             }
         }

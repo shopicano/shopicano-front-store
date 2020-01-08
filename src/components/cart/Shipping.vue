@@ -33,6 +33,10 @@
                                         <i class="ti-eye d-block mb-2"/>
                                         <span class="d-block h4">Review</span>
                                     </span>
+                                    <span  class="text-center d-inline-block nav-item">
+                                        <i class="ti-wallet d-block mb-2"/>
+                                        <span class="d-block h4">Payment Method</span>
+                                    </span>
                                 </div>
                                 <!-- /navbar -->
 
@@ -258,17 +262,17 @@
         components: {Footer, Navigation, Header},
         data() {
             return {
-                fullName: '',
-                firstName: '',
-                lastName: '',
-                email: '',
-                company: '',
-                house: '',
-                road: '',
-                phone: '',
-                country: '',
-                city: '',
-                zipCode: '',
+                fullName: 'ww',
+                firstName: 'qq',
+                lastName: 'sd',
+                email: 'da@d.com',
+                company: 'asd',
+                house: '3',
+                road: 'asdac',
+                phone: 'dWED322',
+                country: 'BD',
+                city: 'dha',
+                zipCode: '2020',
                 showErrMsg: false,
                 is_shipping_sameAs_billing: false,
                 firstName_shipping: '',

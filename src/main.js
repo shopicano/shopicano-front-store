@@ -19,6 +19,7 @@ import ProductView from "@/components/ProductView";
 import ContactUs from "@/components/ContactUs";
 import Dashboard from "@/components/userDetails/Dashboard";
 import Profile from "@/components/userDetails/Profile";
+import Addresses from "@/components/userDetails/Addresses";
 
 Vue.config.productionTip = false;
 
@@ -97,6 +98,10 @@ const routes = [
     {
         path: '/profile-details',
         component: Profile,
+    },
+    {
+        path: '/address',
+        component: Addresses,
     },
 ];
 

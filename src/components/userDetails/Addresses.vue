@@ -32,7 +32,7 @@
                                     <table class="table">
                                         <thead>
                                         <tr>
-                                            <th>Company</th>
+                                            <th>Date</th>
                                             <th>Name</th>
                                             <th>Address</th>
                                             <th>Country</th>
@@ -40,42 +40,20 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr>
-                                            <td>Nokia</td>
-                                            <td>Adam Smith</td>
-                                            <td>9/4 C Babor Road, Mohammad Pur, Dhaka</td>
-                                            <td>Bangladesh</td>
-                                            <td>+884 5452 6452</td>
+                                        <tr v-for="address in addresses" :key="address.id">
+                                            <td>{{ address.created_at }}</td>
+                                            <td>{{ address.name }}</td>
+                                            <td>{{ address.house+', '+address.road+', '+address.city+'-'+address.postcode }}</td>
+                                            <td>{{ address.country }}</td>
+                                            <td>{{ address.phone }}</td>
                                             <td>
                                                 <div class="btn-group" role="group">
-                                                    <button type="button" class="btn btn-sm btn-outline-primary"><i class="ti-pencil" aria-hidden="true"></i></button>
-                                                    <button type="button" class="btn btn-sm btn-outline-primary"><i class="ti-close" aria-hidden="true"></i></button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Samsung</td>
-                                            <td>Adam Smith</td>
-                                            <td>9/4 C Babor Road, Mohammad Pur, Dhaka</td>
-                                            <td>Bangladesh</td>
-                                            <td>+884 5452 6452</td>
-                                            <td>
-                                                <div class="btn-group" role="group">
-                                                    <button type="button" class="btn btn-sm btn-outline-primary"><i class="ti-pencil" aria-hidden="true"></i></button>
-                                                    <button type="button" class="btn btn-sm btn-outline-primary"><i class="ti-close" aria-hidden="true"></i></button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Motorola</td>
-                                            <td>Adam Smith</td>
-                                            <td>9/4 C Babor Road, Mohammad Pur, Dhaka</td>
-                                            <td>Bangladesh</td>
-                                            <td>+884 5452 6452</td>
-                                            <td>
-                                                <div class="btn-group" role="group">
-                                                    <button type="button" class="btn btn-sm btn-outline-primary"><i class="ti-pencil" aria-hidden="true"></i></button>
-                                                    <button type="button" class="btn btn-sm btn-outline-primary"><i class="ti-close" aria-hidden="true"></i></button>
+                                                    <!--<button type="button" class="btn btn-sm btn-outline-primary">
+                                                        <i class="ti-pencil" aria-hidden="true"/>
+                                                    </button>-->
+                                                    <button type="button" class="btn btn-sm btn-outline-primary">
+                                                        <i @click="deleteAddress(address.id)" class="ti-close" aria-hidden="true"/>
+                                                    </button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -110,7 +88,7 @@
         components: {Footer, Navigation, Header},
         data() {
             return {
-                address: [],
+                addresses: [],
             }
         },
         mounted() {
@@ -123,12 +101,24 @@
                         "Authorization": "Bearer " + SessionStore.GetAccessToken(),
                     }
                 }).then(resp => {
-                    this.address = resp.data.data;
-                    console.log(this.address)
+                    this.addresses = resp.data.data;
+                    console.log(this.addresses)
                 }).catch(err => {
                     console.log(err)
                 });
             },
+            deleteAddress: function (id) {
+                axios.delete(Settings.GetApiUrl() + '/addresses/' + id,{
+                    headers: {
+                        "Authorization": "Bearer " + SessionStore.GetAccessToken(),
+                    }
+                }).then(resp => {
+                    console.log(resp);
+                    this.getAddressList();
+                }).then(err => {
+                    console.log(err)
+                })
+            }
         }
     }
 </script>

@@ -34,6 +34,7 @@ class SessionStore {
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
         localStorage.removeItem('expire_on');
+        localStorage.removeItem('permission');
     }
 
     static isUnauthorized(err) {

@@ -76,7 +76,7 @@ const routes = [
         component: Shipping,
     },
     {
-        path: '/payment',
+        path: '/payment/:orderID',
         component: Payment,
     },
     {

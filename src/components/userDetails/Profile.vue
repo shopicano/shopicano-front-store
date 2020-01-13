@@ -95,6 +95,7 @@
                 })
             },
             onLogOut: function () {
+                SessionStore.CleanPaymentMethodGatewayConfig();
                 SessionStore.CleanSession();
                 this.$router.push("/")
             }

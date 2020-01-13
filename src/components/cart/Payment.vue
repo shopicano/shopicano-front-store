@@ -40,8 +40,12 @@
                                 </div>
                                 <!-- /navbar -->
 
-                                <div>
-
+                                <div v-if="is_gateway_braintree" class="row mb-5">
+                                    <div class="col">
+                                        <v-braintree :authorization="clientToken"
+                                                     @success="onSuccess"
+                                                     @error="onError"/>
+                                    </div>
                                 </div>
 
                                 <!-- buttons -->
@@ -103,16 +107,20 @@
         components: {Footer, Navigation, Header},
         data() {
             return {
+                orderID: '',
+                order: '',
                 shippingInfo: [],
-                transaction_id: 'cs_test_F1vKGQY5xWQ0akiUy1zL0m9llF08wITTjND6p4rfuhWtEHHqsPG9gJBy',
+                transaction_id: '',
                 public_key: '',
+                is_gateway_braintree: false,
+                clientToken: '',
             };
         },
         mounted() {
             this.setInfo();
             this.checkRequired();
-            //this.getOrderId();
-            this.onCheckout(this.transaction_id);
+            this.getOrderDetails();
+            this.generateNonce();
         },
         computed: {
             getCartTotalPrice() {
@@ -120,45 +128,84 @@
             }
         },
         methods: {
-            onCheckout: function (sessionId) {
-                // eslint-disable-next-line no-undef
-                alert('pub_key---->' + this.public_key);
-                let stripe = Stripe(this.public_key);
-                stripe.redirectToCheckout({
-                    sessionId: sessionId
-                }).then(resp => {
-                    console.log(resp);
-                }).catch(err => {
-                    console.log(err.response);
-                })
+            setInfo: function () {
+                this.orderID = this.$route.params.orderID;
+                this.shippingInfo = this.getShippingInfo();
+                this.public_key = localStorage.getItem('payment_public_key');
+                this.clientToken = localStorage.getItem('client_token');
             },
-            getOrderId() {
-                axios.get(Settings.GetApiUrl() + '/orders?page=1&limit=1', {
-                    headers: {
-                        "Authorization": "Bearer " + SessionStore.GetAccessToken(),
-                    }
-                }).then(resp => {
-                    console.log(resp);
-                    let orderID = resp.data.data[0].id;
-                    //this.transaction_id = orderID;
-                }).catch(err => {
-                    console.log(err)
-                });
+            getShippingInfo: function() {
+                return this.$store.getters.getterShippingInfo;
             },
             checkRequired : function(){
                 if (Object.keys(this.shippingInfo).length < 1) {
                     this.$router.push('/review');
                 }
             },
-            setInfo: function () {
-                this.shippingInfo = this.getShippingInfo();
-                this.public_key = localStorage.getItem('payment_public_key');
+            getOrderDetails: function () {
+                axios.get(Settings.GetApiUrl() + '/orders/' + this.orderID, {
+                    headers: {
+                        "Authorization": "Bearer " + SessionStore.GetAccessToken(),
+                    }
+                }).then(resp => {
+                    this.order = resp.data.data;
+                }).catch(err => {
+                    console.log(err)
+                })
             },
-            getShippingInfo: function() {
-                return this.$store.getters.getterShippingInfo;
+            generateNonce: function () {
+                axios.post(Settings.GetApiUrl() + '/orders/' + this.orderID + '/nonce', null,{
+                    headers: {
+                        "Authorization": "Bearer " + SessionStore.GetAccessToken(),
+                    }
+                }).then(resp => {
+                    console.log(resp)
+                    this.transaction_id = resp.data.data.nonce;
+
+                    this.onCheckout();
+                }).catch(err => {
+                    console.log(err)
+                })
+            },
+            onSuccess: function(payload) {
+                let nonce = payload.nonce;
+                //console.log(payload);
+
+                axios.post(Settings.GetApiUrl() + '/orders/' + this.orderID + '/pay', {nonce: nonce}, {
+                    headers: {
+                        "Authorization": "Bearer " + SessionStore.GetAccessToken(),
+                    }
+                }).then(resp => {
+                    console.log('onSuccess ---> ' + resp)
+                }).catch(err => {
+                    console.log(err)
+                });
+            },
+            onError: function (error) {
+                let message = error.message;
+                alert(message)
             },
             onBack: function () {
                 this.$router.push('/review');
+            },
+            onCheckout: function () {
+                if (this.order.payment_gateway === 'stripe') {
+                    //console.log(this.order.payment_gateway)
+
+                    alert('pub_key---->' + this.public_key);
+                    let stripe = Stripe(this.public_key);
+                    stripe.redirectToCheckout({
+                        sessionId: this.transaction_id
+                    }).then(resp => {
+                        console.log(resp);
+                    }).catch(err => {
+                        console.log(err.response);
+                    })
+                } else if (this.order.payment_gateway === 'VISA') {
+                    //console.log(this.order.payment_gateway)
+
+                    this.is_gateway_braintree = true;
+                }
             },
         }
     }

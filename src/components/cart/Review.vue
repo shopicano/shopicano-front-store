@@ -108,7 +108,7 @@
                                     <span @click="onCheckLoggedIn" class="btn btn-primary text-capitalize">confirm purchase</span>
                                 </div>
 
-                                <div v-if="is_purchase_confirmed" class="mt-4 container">
+                                <!--<div v-if="is_purchase_confirmed" class="mt-4 container">
                                     <div v-on:change="checkGateWay">
                                         <input v-model="gatewayName" id="checkbox1" type="radio" name="checkbox" value="braintree">
                                         <label for="checkbox1" class="h4 ml-2">Brain Tree</label>
@@ -118,13 +118,13 @@
                                         <input v-model="gatewayName" id="checkbox2" type="radio" name="checkbox" value="stripe">
                                         <label for="checkbox2" class="h4 ml-2">Stripe</label>
                                     </div>
-                                </div>
+                                </div>-->
 
-                                <div v-if="is_gateway_braintree">
+                                <!--<div v-if="is_gateway_braintree">
                                     <v-braintree :authorization="token"
                                                  @success="onSuccess"
                                                  @error="onError"/>
-                                </div>
+                                </div>-->
                             </div>
                         </div>
 
@@ -183,9 +183,9 @@
                 shippingInfo: [],
                 deliveryTime: '',
                 billingInfo: [],
-                token: '',
+                //token: '',
                 billingAddress_id: '',
-                orderID: '',
+                orderID: 'uuuuuu',
                 is_purchase_confirmed: false,
                 nonce: '',
                 gatewayName: '',
@@ -217,24 +217,11 @@
 
                 }
             },
-            getAddressList() {
-                axios.get(Settings.GetApiUrl() + '/addresses', {
-                    headers: {
-                        "Authorization": "Bearer " + SessionStore.GetAccessToken(),
-                    }
-                }).then(resp => {
-                    this.billingAddress_id = resp.data.data[0].id;
-                    //console.log(this.billingAddress_id)
-                }).catch(err => {
-                    console.log(err)
-                });
-            },
-            createOrder() {
+            createOrder: function(addressId) {
                 let items = [];
                 let order = {};
                 let cart_items = this.$store.getters.getCart;
 
-                console.log(cart_items);
                 cart_items.forEach(item => {
                     items.push({
                         id: item.itemID,
@@ -242,16 +229,25 @@
                     })
                 });
 
-                console.log(items);
-
                 order = {
                     items: items,
                     store_id: '65422e25-2bd2-4d6e-9f5d-2bf7bbe19727',
-                    billing_address_id: this.billingAddress_id,
+                    billing_address_id: addressId,
                     payment_method_id: '97edb2e0-d606-4873-bb1e-1f7474e85ba1',
-                }
+                };
+
+                axios.post(Settings.GetApiUrl() + '/orders', order, {
+                    headers: {
+                        "Authorization": "Bearer " + SessionStore.GetAccessToken(),
+                    }
+                }).then(resp => {
+                    console.log(resp);
+                    return this.$router.push({ path: `/payment/${resp.data.data.id}` });
+                }).catch(err => {
+                    console.log(err)
+                })
             },
-            createBillingAddress() {
+            createBillingAddress: function() {
                 let billing_address = {
                     name: this.billingInfo.firstName + this.billingInfo.lastName,
                     house: this.billingInfo.house,
@@ -263,40 +259,17 @@
                     phone: this.billingInfo.phone,
                 };
 
-                console.log(billing_address);
-
-                axios.post(Settings.GetApiUrl() + '/addresses', {
-                    name: this.billingInfo.firstName + this.billingInfo.lastName,
-                    house: this.billingInfo.house,
-                    road: this.billingInfo.road,
-                    city: this.billingInfo.city,
-                    country: this.billingInfo.country,
-                    postcode: this.billingInfo.zipCode,
-                    email: this.billingInfo.email,
-                    phone: this.billingInfo.phone,
-                }, {
+                axios.post(Settings.GetApiUrl() + '/addresses', billing_address, {
                     headers: {
                         "Authorization": "Bearer " + SessionStore.GetAccessToken(),
                     }
                 }).then(resp => {
-                    console.log(resp)
+                    this.createOrder(resp.data.data.id)
                 }).catch(err => {
                     console.log(err)
                 });
             },
-            getOrderId() {
-                axios.get(Settings.GetApiUrl() + '/orders?page=1&limit=1', {
-                    headers: {
-                        "Authorization": "Bearer " + SessionStore.GetAccessToken(),
-                    }
-                }).then(resp => {
-                    console.log(resp);
-                    this.orderID = resp.data.data[0].id;
-                }).catch(err => {
-                    console.log(err)
-                });
-            },
-            onSuccess (payload) {
+            onSuccess: function(payload) {
                 /*axios.post(Settings.GetApiUrl() + '/orders/' + this.orderID + '/nonce', {},{
                     headers: {
                         "Authorization": "Bearer " + SessionStore.GetAccessToken(),
@@ -322,10 +295,11 @@
                     console.log(err)
                 });
             },
-            onError (error) {
+            onError: function (error) {
                 let message = error.message;
                 alert(message)
             },
+            // Checking are shippingInfo & billingInfo stored in state
             checkRequired : function(){
                 if (Object.keys(this.shippingInfo).length < 1 || Object.keys(this.billingInfo).length < 1) {
                     this.$router.push('/shipping');
@@ -334,7 +308,7 @@
             setInfo: function () {
                 this.shippingInfo = this.getShippingInfo();
                 this.billingInfo = this.getBillingInfo();
-                this.token = localStorage.getItem('client_token');
+                //this.token = localStorage.getItem('client_token');
             },
             getShippingInfo: function() {
                 return this.$store.getters.getterShippingInfo;
@@ -342,7 +316,7 @@
             getBillingInfo: function() {
                 return this.$store.getters.getterBillingInfo;
             },
-            getShippingMethod(method) {
+            getShippingMethod: function(method) {
                 if (method === 'standard') {
                     method = 'Standard Ground (USPS) - $7.50';
                     this.deliveryTime = 'Delivered in 8-12 business days.';
@@ -361,16 +335,12 @@
             },
             onCheckLoggedIn: function () {
                 if (SessionStore.IsLoggedIn()) {
-                    /*if (this.billingAddress_id === '') {
+                    if (this.billingAddress_id === '') {
                         this.createBillingAddress();
                     }
+                    //this.getOrderId();
 
-                    this.getAddressList();
-                    this.createOrder();
-                    this.getOrderId();
-
-                    this.is_purchase_confirmed = true;*/
-                    this.$router.push('/payment');
+                    //this.$router.push({ path: `/payment/${orderID}` });
                 } else {
                     this.$router.push('/login');
                 }

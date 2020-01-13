@@ -149,6 +149,9 @@
                     }
                 }).then(resp => {
                     this.order = resp.data.data;
+
+                    // Calling onCheckout function
+                    this.onCheckout();
                 }).catch(err => {
                     console.log(err)
                 })
@@ -159,10 +162,8 @@
                         "Authorization": "Bearer " + SessionStore.GetAccessToken(),
                     }
                 }).then(resp => {
-                    console.log(resp)
+                    console.log(resp);
                     this.transaction_id = resp.data.data.nonce;
-
-                    this.onCheckout();
                 }).catch(err => {
                     console.log(err)
                 })
@@ -176,7 +177,8 @@
                         "Authorization": "Bearer " + SessionStore.GetAccessToken(),
                     }
                 }).then(resp => {
-                    console.log('onSuccess ---> ' + resp)
+                    console.log('onSuccess ---> ' + resp);
+                    return this.$router.push('/confirmation');
                 }).catch(err => {
                     console.log(err)
                 });
@@ -190,9 +192,9 @@
             },
             onCheckout: function () {
                 if (this.order.payment_gateway === 'stripe') {
-                    //console.log(this.order.payment_gateway)
+                    // Generating Nonce for stripe
+                    this.generateNonce();
 
-                    alert('pub_key---->' + this.public_key);
                     let stripe = Stripe(this.public_key);
                     stripe.redirectToCheckout({
                         sessionId: this.transaction_id
@@ -201,10 +203,12 @@
                     }).catch(err => {
                         console.log(err.response);
                     })
-                } else if (this.order.payment_gateway === 'VISA') {
-                    //console.log(this.order.payment_gateway)
-
+                } else if (this.order.payment_gateway === 'braintree') {
                     this.is_gateway_braintree = true;
+                } else if (this.order.payment_gateway === 'cash') {
+                    this.$router.push('/confirmation');
+                } else {
+                    alert("Error happened")
                 }
             },
         }

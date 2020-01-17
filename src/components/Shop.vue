@@ -120,7 +120,7 @@
                                                          v-bind:src="getFullImagePath(product.image)" alt="product-img">
                                                 </router-link>
                                                 <div class="btn-cart">
-                                                    <button @click="addToCart(product.id, getFullImagePath(product.image), product.name, 1, product.price)"
+                                                    <button @click="addToCart(product.id, getFullImagePath(product.image), product.name, 1, product.price, product.is_digital)"
                                                             class="btn btn-primary btn-sm">Add To Cart</button>
                                                 </div>
                                             </div>
@@ -205,10 +205,11 @@
                 productsList: [],
                 categories: [],
                 catID: '',
-                categoryItemes: [],
+                categoryItems: [],
                 categorySelected: false,
                 fetchIsEmpty: false,
                 query: '',
+                prevIsDigital: '',
             }
         },
         mounted() {
@@ -245,17 +246,17 @@
                 axios.get( Settings.GetApiUrl() + "/products?page=" + this.currentPage + "&limit="
                     + this.perPage,).then(resp => {
 
-                    this.categoryItemes = [];
+                    this.categoryItems = [];
                     for (let key in resp.data.data) {
                         if (resp.data.data[key].category_id === this.catID) {
                             var obj = resp.data.data[key];
-                            this.categoryItemes.push(obj);
+                            this.categoryItems.push(obj);
                         }
                     }
 
-                    this.productsList = this.categoryItemes;
+                    this.productsList = this.categoryItems;
 
-                    console.log(this.categoryItemes)
+                    console.log(this.categoryItems)
                 }).catch(err => {
                     console.log(err);
                 })
@@ -279,8 +280,22 @@
                     console.log(err);
                 })
             },
-            addToCart: function (id, imgUrl, itemName, quantity, price ) {
-                this.$store.dispatch('addItemToCartAction', {itemID: id, itemThumbnail: imgUrl, itemName: itemName, itemQuantity: quantity, itemPrice: price})
+            addToCart: function (id, imgUrl, itemName, quantity, price, isDigital) {
+                /*if (this.tempIsDigital !== isDigital) {
+                    alert('You can not add both Digital and Physical product in cart.')
+                } else if (this.tempIsDigital==='' || this.tempIsDigital === isDigital) {
+                }
+                this.tempIsDigital = isDigital;*/
+
+                if (this.prevIsDigital === '') {
+                    this.$store.dispatch('addItemToCartAction', {itemID: id, itemThumbnail: imgUrl, itemName: itemName, itemQuantity: quantity, itemPrice: price});
+                    this.prevIsDigital = isDigital;
+                } else if (this.prevIsDigital !== isDigital) {
+                    alert('Cart must have all digital or all non-digital products')
+                } else if (this.prevIsDigital === isDigital) {
+                    this.$store.dispatch('addItemToCartAction', {itemID: id, itemThumbnail: imgUrl, itemName: itemName, itemQuantity: quantity, itemPrice: price});
+                    this.prevIsDigital = isDigital;
+                }
             },
             loadjQueryScripts: function () {
                 // tooltip

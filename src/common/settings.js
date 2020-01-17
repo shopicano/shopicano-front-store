@@ -1,6 +1,6 @@
 class Settings {
     static GetApiUrl() {
-        return "http://128.199.89.247:9119/v1"
+        return "http://e4ba86a7.ngrok.io/v1"
         // return "http://localhost:9009/v1";
     }
 

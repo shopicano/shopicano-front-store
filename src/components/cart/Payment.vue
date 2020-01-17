@@ -203,7 +203,7 @@
                     }).catch(err => {
                         console.log(err.response);
                     })
-                } else if (this.order.payment_gateway === 'braintree') {
+                } else if (this.order.payment_gateway === 'brain_tree') {
                     this.is_gateway_braintree = true;
                 } else if (this.order.payment_gateway === 'cash') {
                     this.$router.push('/confirmation');

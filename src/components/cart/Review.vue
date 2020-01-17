@@ -250,7 +250,7 @@
             createBillingAddress: function() {
                 let billing_address = {
                     name: this.billingInfo.firstName + this.billingInfo.lastName,
-                    street: this.billingInfo.address,
+                    address: this.billingInfo.address,
                     city: this.billingInfo.city,
                     country: this.billingInfo.country,
                     postcode: this.billingInfo.zipCode,

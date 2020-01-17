@@ -325,7 +325,7 @@
                         lastName: this.lastName_shipping,
                         email: this.email_shipping,
                         company: this.company_shipping,
-                        address_shipping: this.address_shipping,
+                        address: this.address_shipping,
                         phone: this.phone_shipping,
                         country: this.country_shipping,
                         city: this.city_shipping,

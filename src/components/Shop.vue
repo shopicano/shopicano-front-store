@@ -78,8 +78,8 @@
                                            @keyup="onSearchProducts"
                                            class="form-control rounded-0" id="search-product"
                                            placeholder="Search...">
-                                    <button type="submit" class="search-icon pr-3 r-0">
-                                        <i class="ti-search text-color"/></button>
+                                    <span class="search-icon pr-3 r-0">
+                                        <i class="ti-search text-color"/></span>
                                 </form>
                             </div>
 
@@ -87,7 +87,7 @@
                             <div class="mb-30">
                                 <h4 class="mb-3">Shop by Categories</h4>
                                 <ul class="pl-0 shop-list list-unstyled">
-                                    <li v-for="category in categories" :key="category.id" v-on:click="setCategoryId(category.id)">
+                                    <li v-for="category in categories.slice(0,10)" :key="category.id" v-on:click="setCategoryId(category.id)">
                                         <a class="d-flex py-2 text-gray justify-content-between">
                                             <span>{{ category.name }}</span><span>9</span>
                                         </a>
@@ -120,11 +120,11 @@
                                                          v-bind:src="getFullImagePath(product.image)" alt="product-img">
                                                 </router-link>
                                                 <div class="btn-cart">
-                                                    <button @click="addToCart(product.id, getFullImagePath(product.image), product.name, 1, product.price)"
+                                                    <button @click="addToCart(product.id, getFullImagePath(product.image), product.name, 1, product.price, product.is_digital)"
                                                             class="btn btn-primary btn-sm">Add To Cart</button>
                                                 </div>
                                             </div>
-                                            <div class="product-hover-overlay">
+                                            <!--<div class="product-hover-overlay">
                                                 <a href="#" class="product-icon favorite" data-toggle="tooltip"
                                                    data-placement="left" title="Wishlist">
                                                     <i class="ti-heart"/>
@@ -135,16 +135,16 @@
                                                    data-placement="left" title="Quick View">
                                                     <i class="ti-search"/>
                                                 </a>
-                                            </div>
+                                            </div>-->
                                         </div>
                                         <div class="product-info">
                                             <h3 class="h5"><router-link class="text-color" :to="`/products/${product.id}`">{{ product.name }}</router-link></h3>
                                             <span class="h5">${{ product.price }}</span>
                                         </div>
                                         <!-- product label badge -->
-                                        <div class="product-label sale">
+                                        <!--<div class="product-label sale">
                                             -8%
-                                        </div>
+                                        </div>-->
                                     </div>
                                 </div>
                                 <!-- //end of product -->
@@ -192,6 +192,7 @@
     import NewsLetter from "@/components/indexComponents/NewsLetter";
     import Services from "@/components/indexComponents/Services";
     import Settings from "@/common/settings";
+    import SessionStore from "@/common/session_store";
 
     export default {
         name: "Shop",
@@ -204,10 +205,11 @@
                 productsList: [],
                 categories: [],
                 catID: '',
-                categoryItemes: [],
+                categoryItems: [],
                 categorySelected: false,
                 fetchIsEmpty: false,
                 query: '',
+                prevIsDigital: '',
             }
         },
         mounted() {
@@ -244,23 +246,23 @@
                 axios.get( Settings.GetApiUrl() + "/products?page=" + this.currentPage + "&limit="
                     + this.perPage,).then(resp => {
 
-                    this.categoryItemes = [];
+                    this.categoryItems = [];
                     for (let key in resp.data.data) {
                         if (resp.data.data[key].category_id === this.catID) {
                             var obj = resp.data.data[key];
-                            this.categoryItemes.push(obj);
+                            this.categoryItems.push(obj);
                         }
                     }
 
-                    this.productsList = this.categoryItemes;
+                    this.productsList = this.categoryItems;
 
-                    console.log(this.categoryItemes)
+                    console.log(this.categoryItems)
                 }).catch(err => {
                     console.log(err);
                 })
             },
             getCategories: function () {
-                axios.get( Settings.GetApiUrl() + '/categories?&limit=15').then(resp => {
+                axios.get( Settings.GetApiUrl() + '/stats/categories').then(resp => {
                     this.categories = resp.data.data;
                 }).catch(err => {
                     console.log(err);
@@ -270,16 +272,30 @@
                 return Settings.GetMediaUrl() + subPath;
             },
             onSearchProducts: function() {
-                axios.get(Settings.GetApiUrl() + '/products/search?query=' + this.query
-                    + '&limit=' + this.perPage + '&page=' + this.currentPage).then(resp => {
+                axios.get(Settings.GetApiUrl() + '/products?query=' + this.query).then(resp => {
                     this.fetchIsEmpty = resp.data.data.length === 0;
                     this.productsList = resp.data.data;
+                    console.log(this.productsList)
                 }).catch(err => {
                     console.log(err);
                 })
             },
-            addToCart: function (id, imgUrl, itemName, quantity, price ) {
-                this.$store.dispatch('addItemToCartAction', {itemID: id, itemThumbnail: imgUrl, itemName: itemName, itemQuantity: quantity, itemPrice: price})
+            addToCart: function (id, imgUrl, itemName, quantity, price, isDigital) {
+                /*if (this.tempIsDigital !== isDigital) {
+                    alert('You can not add both Digital and Physical product in cart.')
+                } else if (this.tempIsDigital==='' || this.tempIsDigital === isDigital) {
+                }
+                this.tempIsDigital = isDigital;*/
+
+                if (this.prevIsDigital === '') {
+                    this.$store.dispatch('addItemToCartAction', {itemID: id, itemThumbnail: imgUrl, itemName: itemName, itemQuantity: quantity, itemPrice: price});
+                    this.prevIsDigital = isDigital;
+                } else if (this.prevIsDigital !== isDigital) {
+                    alert('Cart must have all digital or all non-digital products')
+                } else if (this.prevIsDigital === isDigital) {
+                    this.$store.dispatch('addItemToCartAction', {itemID: id, itemThumbnail: imgUrl, itemName: itemName, itemQuantity: quantity, itemPrice: price});
+                    this.prevIsDigital = isDigital;
+                }
             },
             loadjQueryScripts: function () {
                 // tooltip

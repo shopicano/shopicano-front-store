@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import Vuex from 'vuex'
 import { store } from './store'
 import * as VueGoogleMaps from 'vue2-google-maps'
+import VueBraintree from 'vue-braintree';
 
 import App from './App.vue';
 import Index from "@/components/Index";
@@ -18,11 +19,15 @@ import ProductView from "@/components/ProductView";
 import ContactUs from "@/components/ContactUs";
 import Dashboard from "@/components/userDetails/Dashboard";
 import Profile from "@/components/userDetails/Profile";
+import Addresses from "@/components/userDetails/Addresses";
 
 Vue.config.productionTip = false;
 
 Vue.use(VueRouter);
 Vue.use(Vuex);
+Vue.use(VueBraintree);
+
+// For map in contact us page
 Vue.use(VueGoogleMaps, {
     load: {
         key: 'AIzaSyDI__ldkg53UnWkVoL1TomSXJjRxH04tIc', // YOUR_API_TOKEN
@@ -71,7 +76,7 @@ const routes = [
         component: Shipping,
     },
     {
-        path: '/payment',
+        path: '/payment/:orderID',
         component: Payment,
     },
     {
@@ -93,6 +98,10 @@ const routes = [
     {
         path: '/profile-details',
         component: Profile,
+    },
+    {
+        path: '/address',
+        component: Addresses,
     },
 ];
 

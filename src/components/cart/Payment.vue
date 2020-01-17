@@ -49,11 +49,11 @@
                                 </div>
 
                                 <!-- buttons -->
-                                <div class="p-4 bg-gray d-flex justify-content-between">
+                                <!--<div class="p-4 bg-gray d-flex justify-content-between">
                                     <button @click="onBack"
                                             class="btn btn-dark">Back</button>
                                     <button class="btn btn-primary">Continue</button>
-                                </div>
+                                </div>-->
 
                             </div>
                         </div>

@@ -59,13 +59,9 @@
                                         <label for="company">Company</label>
                                         <input v-model="company" class="form-control" type="text" id="company" name="company" required>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <label for="house">House</label>
-                                        <input v-model="house" class="form-control" type="text" id="house" name="house" required>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label for="address">Road</label>
-                                        <input v-model="road" class="form-control" type="text" id="address" name="address" required>
+                                    <div class="col-sm-12">
+                                        <label for="address">Address</label>
+                                        <input v-model="address" class="form-control" type="text" id="address" name="address" required>
                                     </div>
                                     <div class="col-sm-6">
                                         <label for="phone">Phone</label>
@@ -132,13 +128,9 @@
                                         <label for="company">Company</label>
                                         <input v-model="company_shipping" class="form-control" type="text"  name="company" required>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <label >House</label>
-                                        <input v-model="house_shipping" class="form-control" type="text" name="house" required>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label for="address">Road</label>
-                                        <input v-model="road_shipping" class="form-control" type="text" name="address" required>
+                                    <div class="col-sm-12">
+                                        <label for="address">Address</label>
+                                        <input v-model="address_shipping" class="form-control" type="text" name="address" required>
                                     </div>
                                     <div class="col-sm-6">
                                         <label for="phone">Phone</label>
@@ -267,8 +259,7 @@
                 lastName: '',
                 email: '',
                 company: '',
-                house: '',
-                road: '',
+                address: '',
                 phone: '',
                 country: '',
                 city: '',
@@ -279,8 +270,7 @@
                 lastName_shipping: '',
                 email_shipping: '',
                 company_shipping: '',
-                house_shipping: '',
-                road_shipping: '',
+                address_shipping: '',
                 phone_shipping: '',
                 country_shipping: '',
                 city_shipping: '',
@@ -304,10 +294,10 @@
                 }
             },
             storeInfo: function () {
-                if (this.firstName==='' || this.lastName==='' || this.email==='' || this.company==='' || this.road===''
+                if (this.firstName==='' || this.lastName==='' || this.email==='' || this.company==='' || this.address===''
                     || this.phone==='' || this.country==='' || this.city==='' || this.zipCode==='' || this.shippingMethod===''
                     || this.firstName_shipping==='' || this.lastName_shipping==='' || this.email_shipping===''
-                    || this.company_shipping==='' || this.road_shipping==='' || this.phone_shipping==='' ||
+                    || this.company_shipping==='' || this.address_shipping==='' || this.phone_shipping==='' ||
                     this.country_shipping==='' || this.city_shipping==='' || this.zipCode_shipping==='') {
                     this.showErrMsg = true;
                 } else {
@@ -319,8 +309,7 @@
                         lastName: this.lastName,
                         email: this.email,
                         company: this.company,
-                        house: this.house,
-                        road: this.road,
+                        address: this.address,
                         phone: this.phone,
                         country: this.country,
                         city: this.city,
@@ -336,8 +325,7 @@
                         lastName: this.lastName_shipping,
                         email: this.email_shipping,
                         company: this.company_shipping,
-                        house: this.house_shipping,
-                        road: this.road_shipping,
+                        address_shipping: this.address_shipping,
                         phone: this.phone_shipping,
                         country: this.country_shipping,
                         city: this.city_shipping,
@@ -359,8 +347,7 @@
                     this.lastName = billingInstance.lastName;
                     this.email = billingInstance.email;
                     this.company = billingInstance.company;
-                    this.house = billingInstance.house;
-                    this.road = billingInstance.road;
+                    this.address = billingInstance.address;
                     this.phone = billingInstance.phone;
                     this.country = billingInstance.country;
                     this.city = billingInstance.city;
@@ -374,8 +361,7 @@
                     this.lastName_shipping = shippingInstance.lastName;
                     this.email_shipping = shippingInstance.email;
                     this.company_shipping = shippingInstance.company;
-                    this.house_shipping = shippingInstance.house;
-                    this.road_shipping = billingInstance.road;
+                    this.address_shipping = shippingInstance.address;
                     this.phone_shipping = shippingInstance.phone;
                     this.country_shipping = shippingInstance.country;
                     this.city_shipping = shippingInstance.city;
@@ -389,8 +375,7 @@
                     this.lastName_shipping = this.lastName;
                     this.email_shipping = this.email;
                     this.company_shipping = this.company;
-                    this.house_shipping = this.house;
-                    this.road_shipping = this.road;
+                    this.address_shipping = this.address;
                     this.phone_shipping = this.phone;
                     this.country_shipping = this.country;
                     this.city_shipping = this.city;
@@ -400,8 +385,7 @@
                     this.lastName_shipping = '';
                     this.email_shipping = '';
                     this.company_shipping = '';
-                    this.house_shipping = '';
-                    this.road_shipping = '';
+                    this.address_shipping = '';
                     this.phone_shipping = '';
                     this.country_shipping = '';
                     this.city_shipping = '';

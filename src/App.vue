@@ -3,8 +3,14 @@
 </template>
 
 <script>
+    /* eslint-disable */
+    import SessionStore from "@/common/session_store";
+
     export default {
         name: 'app',
-        components: {}
+        mounted() {
+            //SessionStore.CleanPaymentMethodGatewayConfig();
+            SessionStore.SetPaymentMethodGatewayConfig();
+        },
     }
 </script>

@@ -1,3 +1,7 @@
+import axios from "axios";
+import Settings from "@/common/settings";
+
+/* eslint-disable */
 class SessionStore {
     static SetSession(session) {
         localStorage.setItem('access_token', session.access_token);
@@ -34,11 +38,30 @@ class SessionStore {
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
         localStorage.removeItem('expire_on');
+        localStorage.removeItem('permission');
     }
 
     static isUnauthorized(err) {
         let resp = err.response;
         return resp.status === 401
+    }
+
+    static SetPaymentMethodGatewayConfig() {
+        axios.get(Settings.GetApiUrl() + '/payments/configs').then(resp => {
+            localStorage.setItem('client_token', resp.data.data.client_token);
+            localStorage.setItem('failure_callback_url', resp.data.data.failure_callback_url);
+            localStorage.setItem('payment_public_key', resp.data.data.public_key);
+            localStorage.setItem('success_callback_url', resp.data.data.success_callback_url);
+        }).catch(err => {
+            console.log('Method: SetPaymentMethodGatewayConfig -----> ' + err)
+        });
+    }
+
+    static CleanPaymentMethodGatewayConfig() {
+        localStorage.removeItem('client_token');
+        localStorage.removeItem('failure_callback_url');
+        localStorage.removeItem('payment_public_key');
+        localStorage.removeItem('success_callback_url');
     }
 }
 

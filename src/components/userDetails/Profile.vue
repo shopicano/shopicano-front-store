@@ -34,11 +34,11 @@
                                     </div>
                                     <div class="media-body">
                                         <ul class="user-profile-list">
-                                            <li><span>Full Name:</span>Johanna Doe</li>
-                                            <li><span>Country:</span>USA</li>
-                                            <li><span>Email:</span>mail@gmail.com</li>
-                                            <li><span>Phone:</span>+880123123</li>
-                                            <li><span>Date of Birth:</span>Dec , 22 ,1991</li>
+                                            <li><span>Full Name:</span>{{ user.name }}</li>
+                                            <!--<li><span>Country:</span>USA</li>-->
+                                            <li><span>Email:</span>{{ user.email }}</li>
+                                            <li><span>Phone:</span>{{ user.phone }}</li>
+                                            <!--<li><span>Date of Birth:</span>Dec , 22 ,1991</li>-->
                                         </ul>
                                     </div>
                                 </div>
@@ -60,16 +60,42 @@
 </template>
 
 <script>
+    /* eslint-disable */
+    import axios from 'axios';
+
     import Header from "@/components/indexComponents/Header";
     import Navigation from "@/components/indexComponents/Navigation";
     import Footer from "@/components/indexComponents/Footer";
     import SessionStore from "@/common/session_store";
+    import Settings from "@/common/settings";
 
     export default {
         name: "Profile",
         components: {Footer, Navigation, Header},
+        data() {
+            return {
+                user: [],
+            }
+        },
+        mounted() {
+            this.getUserInfo();
+        },
         methods: {
+            getUserInfo () {
+                axios.get(Settings.GetApiUrl() + '/users',{
+                    headers: {
+                        "Authorization": "Bearer " + SessionStore.GetAccessToken(),
+                    }
+                }).then(resp => {
+                    this.user = resp.data.data;
+                    console.log(resp.data.data);
+                    return resp.data.data;
+                }).catch(err => {
+                    console.log(err)
+                })
+            },
             onLogOut: function () {
+                SessionStore.CleanPaymentMethodGatewayConfig();
                 SessionStore.CleanSession();
                 this.$router.push("/")
             }
@@ -78,5 +104,13 @@
 </script>
 
 <style scoped>
-
+    .list-tab{
+        padding: 10px 20px;
+        border: 1px solid #e5e5e5;
+        display: inline-block;
+        color: #222222;
+    }
+    .list-tab:hover{
+        cursor: pointer;
+    }
 </style>

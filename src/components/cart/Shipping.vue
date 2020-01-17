@@ -72,6 +72,19 @@
                                         <input v-model="phone" class="form-control" type="tel" id="phone" name="phone" required>
                                     </div>
                                     <div class="col-sm-6">
+                                        <label for="zip-code">Zip Code</label>
+                                        <input v-model="zipCode" class="form-control" type="text" id="zip-code" name="zip-code" required>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label >City</label>
+                                        <select v-model="city" class="form-control" name="city">
+                                            <option disabled value="">Your City</option>
+                                            <option value="Dhaka">Dhaka</option>
+                                            <option value="Newyork">Newyork</option>
+                                            <option value="Delhi">Delhi</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-6">
                                         <label >Country</label>
                                         <select v-model="country" class="form-control" name="country">
                                             <option disabled value="">Please select one</option>
@@ -89,19 +102,6 @@
                                             <option value="Zambia">Zambia</option>
                                             <option value="Zimbabwe">Zimbabwe</option>
                                         </select>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label >City</label>
-                                        <select v-model="city" class="form-control" name="city">
-                                            <option disabled value="">Your City</option>
-                                            <option value="Dhaka">Dhaka</option>
-                                            <option value="Newyork">Newyork</option>
-                                            <option value="Delhi">Delhi</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label for="zip-code">Zip Code</label>
-                                        <input v-model="zipCode" class="form-control" type="text" id="zip-code" name="zip-code" required>
                                     </div>
                                 </form>
                                 <!-- /Billing-address -->
@@ -145,6 +145,19 @@
                                         <input v-model="phone_shipping" class="form-control" type="tel" name="phone" required>
                                     </div>
                                     <div class="col-sm-6">
+                                        <label for="zip-code">Zip Code</label>
+                                        <input v-model="zipCode_shipping" class="form-control" type="text" name="zip-code" required>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label >City</label>
+                                        <select v-model="city_shipping" class="form-control" >
+                                            <option disabled value="">Your City</option>
+                                            <option value="Dhaka">Dhaka</option>
+                                            <option value="Newyork">Newyork</option>
+                                            <option value="Delhi">Delhi</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-6">
                                         <label >Country</label>
                                         <select v-model="country_shipping" class="form-control" name="country">
                                             <option disabled value="">Please select one</option>
@@ -162,19 +175,6 @@
                                             <option value="Zambia">Zambia</option>
                                             <option value="Zimbabwe">Zimbabwe</option>
                                         </select>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label >City</label>
-                                        <select v-model="city_shipping" class="form-control" >
-                                            <option disabled value="">Your City</option>
-                                            <option value="Dhaka">Dhaka</option>
-                                            <option value="Newyork">Newyork</option>
-                                            <option value="Delhi">Delhi</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label for="zip-code">Zip Code</label>
-                                        <input v-model="zipCode_shipping" class="form-control" type="text" name="zip-code" required>
                                     </div>
 
                                     <!-- select shipping method -->
@@ -262,17 +262,17 @@
         components: {Footer, Navigation, Header},
         data() {
             return {
-                fullName: 'ww',
-                firstName: 'qq',
-                lastName: 'sd',
-                email: 'da@d.com',
-                company: 'asd',
-                house: '3',
-                road: 'asdac',
-                phone: '0168xxxxxx23',
-                country: 'Bangladesh',
-                city: 'Dhaka',
-                zipCode: '2020',
+                fullName: '',
+                firstName: '',
+                lastName: '',
+                email: '',
+                company: '',
+                house: '',
+                road: '',
+                phone: '',
+                country: '',
+                city: '',
+                zipCode: '',
                 showErrMsg: false,
                 is_shipping_sameAs_billing: false,
                 firstName_shipping: '',

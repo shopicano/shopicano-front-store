@@ -120,7 +120,6 @@
             this.setInfo();
             this.checkRequired();
             this.getOrderDetails();
-            this.generateNonce();
         },
         computed: {
             getCartTotalPrice() {
@@ -191,6 +190,7 @@
                 this.$router.push('/review');
             },
             onCheckout: function () {
+                console.log('payment_gateway ---> ' + this.order.payment_gateway);
                 if (this.order.payment_gateway === 'stripe') {
                     // Generating Nonce for stripe
                     this.generateNonce();

@@ -1,4 +1,5 @@
 class Settings {
+
     static GetApiUrl() {
         return process.env.VUE_APP_SHOPICANO_URL;
     }

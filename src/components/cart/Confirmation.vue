@@ -15,7 +15,7 @@
                                 <h3 class="text-center mb-3">Thank you! For your payment</h3>
                                 <p class="text-color">Your order has been placed and will be processed as soon as possible. Make sure you make note of your order number, which is <span class="text-primary">34VB5540K83</span> You will be receiving an email shortly with confirmation of your order. You can now:</p>
                                 <router-link to="/shop" class="btn btn-primary mt-3 mx-2">Go To Shopping</router-link>
-                                <router-link to="/track" class="btn btn-dark mt-3 mx-2">Track order</router-link>
+                                <router-link to="/orders" class="btn btn-dark mt-3 mx-2">Track order</router-link>
                             </div>
                         </div>
                     </div>

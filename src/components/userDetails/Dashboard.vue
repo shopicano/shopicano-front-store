@@ -21,21 +21,11 @@
                     <div class="row">
                         <div class="col-md-12">
                             <ul class="list-inline dashboard-menu text-center">
-                                <li class="list-inline-item"><router-link class="active" to="/dashboard">Dashboard</router-link></li>
-                                <li class="list-inline-item"><router-link to="/order">Orders</router-link></li>
-                                <li class="list-inline-item"><router-link to="/address">Address</router-link></li>
                                 <li class="list-inline-item"><router-link to="/profile-details">Profile Details</router-link></li>
+                                <li class="list-inline-item"><router-link class="active" to="/orders">Orders</router-link></li>
+                                <li class="list-inline-item"><router-link to="/address">Address</router-link></li>
                             </ul>
-                            <div class="dashboard-wrapper user-dashboard">
-                                <div class="media">
-                                    <div class="pull-left mr-3">
-                                        <img class="media-object user-img" src="images/avater.jpg" alt="Image">
-                                    </div>
-                                    <div class="media-body align-self-center">
-                                        <h2 class="media-heading">Welcome Adam Smith</h2>
-                                        <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Unde, iure, est. Sit mollitia est maxime! Eos cupiditate tempore, tempora omnis. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim, nihil. </p>
-                                    </div>
-                                </div>
+                            <!--<div class="dashboard-wrapper user-dashboard">
                                 <div class="total-order mt-4">
                                     <h4>Total Orders</h4>
                                     <div class="table-responsive">
@@ -72,7 +62,55 @@
                                         </table>
                                     </div>
                                 </div>
-                            </div>
+                            </div>-->
+
+
+                            <!-- track -->
+                            <section class="section">
+                                <div class="container">
+                                    <div class="row bg-dark">
+                                        <div class="col-lg-12 text-center">
+                                            <div class="p-4">
+                                                <h5 class="text-white">TRACKING ORDER NO - 3587SMRT37</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row bg-gray px-3 py-5">
+                                        <div class="col-md-4 text-center">
+                                            <p><strong>Shipped Via: </strong>Standard Delevery</p>
+                                        </div>
+                                        <div class="col-md-4 text-center">
+                                            <p><strong>Status: </strong>Processing Order</p>
+                                        </div>
+                                        <div class="col-md-4 text-center">
+                                            <p><strong>Expected Date: </strong>Sep 1, 2019</p>
+                                        </div>
+                                        <div class="d-flex justify-content-between w-100 mt-5 flex-column flex-sm-row">
+                                            <div class="border mx-1 mb-2 border-primary p-2 p-md-4 text-center">
+                                                <i class="ti-bag icon-md mb-3 d-inline-block"></i>
+                                                <h5>Confirmed Order</h5>
+                                            </div>
+                                            <div class="border mx-1 mb-2 border-primary p-2 p-md-4 text-center">
+                                                <i class="ti-settings icon-md mb-3 d-inline-block"></i>
+                                                <h5>Processing Order</h5>
+                                            </div>
+                                            <div class="border mx-1 mb-2 p-2 p-md-4 text-center">
+                                                <i class="ti-crown icon-md mb-3 d-inline-block"></i>
+                                                <h5>Quality Check</h5>
+                                            </div>
+                                            <div class="border mx-1 mb-2 p-2 p-md-4 text-center">
+                                                <i class="ti-truck icon-md mb-3 d-inline-block"></i>
+                                                <h5>Product Dispatched</h5>
+                                            </div>
+                                            <div class="border mx-1 mb-2 p-2 p-md-4 text-center">
+                                                <i class="ti-home icon-md mb-3 d-inline-block"></i>
+                                                <h5>Product Delivered</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <!-- /track -->
                         </div>
                     </div>
                 </div>

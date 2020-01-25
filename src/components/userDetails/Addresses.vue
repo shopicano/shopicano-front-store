@@ -21,10 +21,9 @@
                     <div class="row">
                         <div class="col-md-12">
                             <ul class="list-inline dashboard-menu text-center">
-                                <li class="list-inline-item"><router-link to="/dashboard">Dashboard</router-link></li>
-                                <li class="list-inline-item"><router-link to="/order">Orders</router-link></li>
-                                <li class="list-inline-item"><router-link class="active"  to="/address">Address</router-link></li>
                                 <li class="list-inline-item"><router-link to="/profile-details">Profile Details</router-link></li>
+                                <li class="list-inline-item"><router-link to="/orders">Orders</router-link></li>
+                                <li class="list-inline-item"><router-link class="active" to="/address">Address</router-link></li>
                             </ul>
 
                             <div class="dashboard-wrapper user-dashboard">

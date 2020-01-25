@@ -16,6 +16,7 @@ RUN npm install
 COPY public public
 COPY src src
 COPY babel.config.js babel.config.js
+COPY .env .env
 
 # build app for production with minification
 RUN npm run build

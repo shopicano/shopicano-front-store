@@ -81,7 +81,9 @@
                                                 </div>
                                             </div>
                                             <hr>
-                                            <router-link to="/shipping" tag="button" :disabled="isCartNil" class="btn btn-primary float-right">Checkout</router-link>
+                                            <router-link to="/shipping" tag="button"
+                                                         :disabled="isCartNil"
+                                                         class="btn btn-primary float-right">Checkout</router-link>
                                         </form>
                                     </div>
                                 </div>
@@ -115,6 +117,9 @@
         computed: {
             getFullCart(){
                 this.isCartNil = this.$store.getters.cartItemCount < 1;
+                if (this.isCartNil) {
+                    return this.$router.push('/shop');
+                }
                 return this.$store.getters.getCart;
             },
             grandTotalPrice() {

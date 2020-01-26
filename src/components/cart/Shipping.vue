@@ -216,19 +216,19 @@
                                         <span>Subtotal</span>
                                         <span>${{ getCartTotalPrice }}</span>
                                     </li>
-                                    <li class="d-flex justify-content-between">
+                                    <!--<li class="d-flex justify-content-between">
                                         <span>Shipping & Handling</span>
                                         <span>$15.00</span>
                                     </li>
                                     <li class="d-flex justify-content-between">
                                         <span>Estimated Tax</span>
                                         <span>$0.00</span>
-                                    </li>
+                                    </li>-->
                                 </ul>
                                 <hr>
                                 <div class="d-flex justify-content-between">
                                     <span>Total</span>
-                                    <strong>USD $253.00</strong>
+                                    <strong>USD ${{ getCartTotalPrice }}</strong>
                                 </div>
                             </div>
                         </div>
@@ -255,15 +255,15 @@
         data() {
             return {
                 fullName: '',
-                firstName: '',
-                lastName: '',
-                email: '',
-                company: '',
-                address: '',
-                phone: '',
-                country: '',
-                city: '',
-                zipCode: '',
+                firstName: 'Faysal',
+                lastName: 'Mahmud',
+                email: 'fmaabid@gmail.com',
+                company: 'Shopicano',
+                address: '62/2, West Agargaon, Sher-E-Bangla Nagar',
+                phone: '01684365000',
+                country: 'Bangladesh',
+                city: 'Dhaka',
+                zipCode: '1207',
                 showErrMsg: false,
                 is_shipping_sameAs_billing: false,
                 firstName_shipping: '',

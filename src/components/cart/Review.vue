@@ -102,29 +102,23 @@
                                 </div>
                                 <!-- @billing-information -->
 
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h3 class="mb-5 border-bottom pb-2">Select A Payment Method</h3>
+                                    </div>
+
+                                    <div class="col-sm-6 mb-4">
+                                        <input v-model="payment_method_name" id="meth1" class="custom-checkbox" type="radio"
+                                               value="standard" checked="checked">
+                                        <label class="ml-2" for="meth1">Standard Ground (USPS) - $7.50</label>
+                                    </div>
+                                </div>
+
                                 <!-- buttons -->
                                 <div class="p-4 bg-gray d-flex justify-content-between">
                                     <router-link to="/shipping" class="btn btn-dark">Back</router-link>
                                     <span @click="onCheckLoggedIn" class="btn btn-primary text-capitalize">confirm purchase</span>
                                 </div>
-
-                                <!--<div v-if="is_purchase_confirmed" class="mt-4 container">
-                                    <div v-on:change="checkGateWay">
-                                        <input v-model="gatewayName" id="checkbox1" type="radio" name="checkbox" value="braintree">
-                                        <label for="checkbox1" class="h4 ml-2">Brain Tree</label>
-                                    </div>
-
-                                    <div v-on:change="checkGateWay">
-                                        <input v-model="gatewayName" id="checkbox2" type="radio" name="checkbox" value="stripe">
-                                        <label for="checkbox2" class="h4 ml-2">Stripe</label>
-                                    </div>
-                                </div>-->
-
-                                <!--<div v-if="is_gateway_braintree">
-                                    <v-braintree :authorization="token"
-                                                 @success="onSuccess"
-                                                 @error="onError"/>
-                                </div>-->
                             </div>
                         </div>
 
@@ -137,19 +131,19 @@
                                         <span>Subtotal</span>
                                         <span>${{ getCartTotalPrice }}</span>
                                     </li>
-                                    <li class="d-flex justify-content-between">
+                                    <!--<li class="d-flex justify-content-between">
                                         <span>Shipping & Handling</span>
                                         <span>$15.00</span>
                                     </li>
                                     <li class="d-flex justify-content-between">
                                         <span>Estimated Tax</span>
                                         <span>$0.00</span>
-                                    </li>
+                                    </li>-->
                                 </ul>
                                 <hr>
                                 <div class="d-flex justify-content-between">
                                     <span>Total</span>
-                                    <strong>USD $253.00</strong>
+                                    <strong>USD ${{ getCartTotalPrice }}</strong>
                                 </div>
                             </div>
                         </div>
@@ -191,6 +185,8 @@
                 gatewayName: '',
                 is_gateway_braintree: false,
                 is_gateway_stripe: false,
+                payment_method_name: '',
+                payment_method_list: '',
             };
         },
         mounted() {
@@ -231,9 +227,9 @@
 
                 order = {
                     items: items,
-                    store_id: '65422e25-2bd2-4d6e-9f5d-2bf7bbe19727',
+                    store_id: '9d956742-9e92-4913-9a5f-4a9f8b5759b6',
                     billing_address_id: addressId,
-                    payment_method_id: '97edb2e0-d606-4873-bb1e-1f7474e85ba1',
+                    payment_method_id: '0a27ec01-5c3e-49d6-bdc3-cf66ee24655a',
                 };
 
                 axios.post(Settings.GetApiUrl() + '/orders', order, {
@@ -263,7 +259,8 @@
                         "Authorization": "Bearer " + SessionStore.GetAccessToken(),
                     }
                 }).then(resp => {
-                    this.createOrder(resp.data.data.id)
+                    console.log(resp);
+                    this.createOrder(resp.data.data.id);
                 }).catch(err => {
                     console.log(err)
                 });
@@ -341,6 +338,8 @@
 
                     //this.$router.push({ path: `/payment/${orderID}` });
                 } else {
+                    localStorage.setItem('redirect_to', '/review');
+                    console.log(localStorage.getItem('redirect_to'))
                     this.$router.push('/login');
                 }
             }

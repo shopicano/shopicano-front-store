@@ -45,7 +45,9 @@
             };
         },
         mounted() {
-
+            if (SessionStore.IsLoggedIn()) {
+                this.$router.push("/");
+            }
         },
         methods: {
             toggleLoading: function (ok) {
@@ -73,17 +75,24 @@
                     password: this.password
                 }).then(resp => {
                     let data = resp.data.data;
+                    console.log(data);
                     SessionStore.SetSession(data);
+
+                    if (localStorage.getItem('redirect_to') === undefined) {
+                        localStorage.removeItem('redirect_to');
+                        return this.$router.push("/review");
+                    }
+
                     this.$router.push("/");
                 }).catch(err => {
                     this.toggleLoading(false);
                     let result = err.response;
-                    if (result === undefined) {
+                    console.log(result);
+                    /*if (result === undefined) {
                         alert("Server seems busy!");
                         return;
                     }
-                    console.log(result);
-                    alert(result.data.title);
+                    alert(result.data.title);*/
                 })
             },
             onRegister: function () {

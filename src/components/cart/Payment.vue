@@ -177,6 +177,7 @@
                     }
                 }).then(resp => {
                     console.log('onSuccess ---> ' + resp);
+                    SessionStore.CleanPaymentMethodGatewayConfig();
                     return this.$router.push('/confirmation');
                 }).catch(err => {
                     console.log(err)

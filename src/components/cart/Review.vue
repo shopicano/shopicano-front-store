@@ -177,7 +177,6 @@
                 shippingInfo: [],
                 deliveryTime: '',
                 billingInfo: [],
-                //token: '',
                 billingAddress_id: '',
                 orderID: 'uuuuuu',
                 is_purchase_confirmed: false,
@@ -243,7 +242,31 @@
                     console.log(err)
                 })
             },
+            createShippingAddress: function() {
+                let shipping_address = {
+                    name: this.shippingInfo.firstName + this.shippingInfo.lastName,
+                    address: this.shippingInfo.address,
+                    city: this.shippingInfo.city,
+                    country: this.shippingInfo.country,
+                    postcode: this.shippingInfo.zipCode,
+                    email: this.shippingInfo.email,
+                    phone: this.shippingInfo.phone,
+                };
+
+                axios.post(Settings.GetApiUrl() + '/addresses', shipping_address, {
+                    headers: {
+                        "Authorization": "Bearer " + SessionStore.GetAccessToken(),
+                    }
+                }).then(resp => {
+                    console.log(resp);
+                    this.createOrder(resp.data.data.id);
+                }).catch(err => {
+                    console.log(err)
+                });
+            },
             createBillingAddress: function() {
+                this.createShippingAddress();
+
                 let billing_address = {
                     name: this.billingInfo.firstName + this.billingInfo.lastName,
                     address: this.billingInfo.address,

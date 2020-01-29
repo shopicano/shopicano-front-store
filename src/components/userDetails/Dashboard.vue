@@ -25,9 +25,9 @@
                                 <li class="list-inline-item"><router-link class="active" to="/orders">Orders</router-link></li>
                                 <li class="list-inline-item"><router-link to="/address">Address</router-link></li>
                             </ul>
-                            <!--<div class="dashboard-wrapper user-dashboard">
+                            <div class="dashboard-wrapper user-dashboard">
                                 <div class="total-order mt-4">
-                                    <h4>Total Orders</h4>
+                                    <h4>Order History</h4>
                                     <div class="table-responsive">
                                         <table class="table">
                                             <thead>
@@ -62,7 +62,7 @@
                                         </table>
                                     </div>
                                 </div>
-                            </div>-->
+                            </div>
 
 
                             <!-- track -->
@@ -77,7 +77,7 @@
                                     </div>
                                     <div class="row bg-gray px-3 py-5">
                                         <div class="col-md-4 text-center">
-                                            <p><strong>Shipped Via: </strong>Standard Delevery</p>
+                                            <p><strong>Shipped Via: </strong>Standard Delivery</p>
                                         </div>
                                         <div class="col-md-4 text-center">
                                             <p><strong>Status: </strong>Processing Order</p>

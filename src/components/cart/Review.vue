@@ -109,8 +109,13 @@
 
                                     <div class="col-sm-6 mb-4">
                                         <input v-model="payment_method_name" id="meth1" class="custom-checkbox" type="radio"
-                                               value="standard" checked="checked">
-                                        <label class="ml-2" for="meth1">Standard Ground (USPS) - $7.50</label>
+                                               value="cash">
+                                        <label class="ml-2" for="meth1">Cash On Delivery</label>
+                                    </div>
+                                    <div class="col-sm-6 mb-4">
+                                        <input v-model="payment_method_name" id="meth2" class="custom-checkbox" type="radio"
+                                               value="card">
+                                        <label class="ml-2" for="meth2">Card</label>
                                     </div>
                                 </div>
 
@@ -362,7 +367,7 @@
                     //this.$router.push({ path: `/payment/${orderID}` });
                 } else {
                     localStorage.setItem('redirect_to', '/review');
-                    console.log(localStorage.getItem('redirect_to'))
+                    console.log(localStorage.getItem('redirect_to'));
                     this.$router.push('/login');
                 }
             }

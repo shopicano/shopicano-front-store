@@ -107,15 +107,9 @@
                                         <h3 class="mb-5 border-bottom pb-2">Select A Payment Method</h3>
                                     </div>
 
-                                    <div class="col-sm-6 mb-4">
-                                        <input v-model="payment_method_name" id="meth1" class="custom-checkbox" type="radio"
-                                               value="cash">
-                                        <label class="ml-2" for="meth1">Cash On Delivery</label>
-                                    </div>
-                                    <div class="col-sm-6 mb-4">
-                                        <input v-model="payment_method_name" id="meth2" class="custom-checkbox" type="radio"
-                                               value="card">
-                                        <label class="ml-2" for="meth2">Card</label>
+                                    <div v-for="method in paymentMethods" :key="method.id" class="col-sm-6 mb-4">
+                                        <input v-model="payment_method" :id="method.id" class="custom-checkbox" :value="method.id" type="radio">
+                                        <label class="ml-2" :for="method.id">{{ method.name }}</label>
                                     </div>
                                 </div>
 
@@ -183,6 +177,7 @@
                 deliveryTime: '',
                 billingInfo: [],
                 billingAddress_id: '',
+                shippingAddress_id: '',
                 orderID: 'uuuuuu',
                 is_purchase_confirmed: false,
                 nonce: '',
@@ -190,7 +185,8 @@
                 is_gateway_braintree: false,
                 is_gateway_stripe: false,
                 payment_method_name: '',
-                payment_method_list: '',
+                payment_method: '',
+                paymentMethods: '',
             };
         },
         mounted() {
@@ -217,7 +213,19 @@
 
                 }
             },
-            createOrder: function(addressId) {
+            getPaymentMethodList: function () {
+                axios.get(Settings.GetApiUrl() + '/platform/payment-methods', {
+                    headers: {
+                        "Authorization": "Bearer " + SessionStore.GetAccessToken(),
+                    }
+                }).then(resp => {
+                    console.log(resp);
+                    this.paymentMethods = resp.data.data;
+                }).catch(err => {
+                    console.log(err)
+                })
+            },
+            createOrder: function(shippingAddressId, billingAddressId) {
                 let items = [];
                 let order = {};
                 let cart_items = this.$store.getters.getCart;
@@ -229,12 +237,20 @@
                     })
                 });
 
-                order = {
-                    items: items,
-                    store_id: '9d956742-9e92-4913-9a5f-4a9f8b5759b6',
-                    billing_address_id: addressId,
-                    payment_method_id: '0a27ec01-5c3e-49d6-bdc3-cf66ee24655a',
-                };
+                if (shippingAddressId !== '') {
+                    order = {
+                        items: items,
+                        billing_address_id: billingAddressId,
+                        payment_method_id: this.payment_method,
+                        shipping_address_id: shippingAddressId,
+                    }
+                } else {
+                    order = {
+                        items: items,
+                        billing_address_id: billingAddressId,
+                        payment_method_id: this.payment_method,
+                    }
+                }
 
                 axios.post(Settings.GetApiUrl() + '/orders', order, {
                     headers: {
@@ -245,11 +261,11 @@
                     return this.$router.push({ path: `/payment/${resp.data.data.id}` });
                 }).catch(err => {
                     console.log(err)
-                })
+                });
             },
             createShippingAddress: function() {
                 let shipping_address = {
-                    name: this.shippingInfo.firstName + this.shippingInfo.lastName,
+                    name: this.shippingInfo.firstName + ' ' + this.shippingInfo.lastName,
                     address: this.shippingInfo.address,
                     city: this.shippingInfo.city,
                     country: this.shippingInfo.country,
@@ -264,16 +280,16 @@
                     }
                 }).then(resp => {
                     console.log(resp);
-                    this.createOrder(resp.data.data.id);
+                    this.createBillingAddress(resp.data.data.id);
+                    this.shippingAddress_id = resp.data.data.id;
                 }).catch(err => {
                     console.log(err)
                 });
             },
-            createBillingAddress: function() {
-                this.createShippingAddress();
+            createBillingAddress: function(shippingAddress) {
 
                 let billing_address = {
-                    name: this.billingInfo.firstName + this.billingInfo.lastName,
+                    name: this.billingInfo.firstName + ' ' + this.billingInfo.lastName,
                     address: this.billingInfo.address,
                     city: this.billingInfo.city,
                     country: this.billingInfo.country,
@@ -288,7 +304,8 @@
                     }
                 }).then(resp => {
                     console.log(resp);
-                    this.createOrder(resp.data.data.id);
+                    this.billingAddress_id = resp.data.data.id;
+                    this.createOrder(shippingAddress, resp.data.data.id);
                 }).catch(err => {
                     console.log(err)
                 });
@@ -332,6 +349,8 @@
             setInfo: function () {
                 this.shippingInfo = this.getShippingInfo();
                 this.billingInfo = this.getBillingInfo();
+
+                this.getPaymentMethodList();
                 //this.token = localStorage.getItem('client_token');
             },
             getShippingInfo: function() {
@@ -360,7 +379,13 @@
             onCheckLoggedIn: function () {
                 if (SessionStore.IsLoggedIn()) {
                     if (this.billingAddress_id === '') {
-                        this.createBillingAddress();
+                        if (this.$store.getters.getterIsAllProductDigital === false) {
+                            this.createShippingAddress();
+                        } else {
+                            this.createBillingAddress('');
+                        }
+                        console.log(this.shippingAddress_id)
+                        //this.createBillingAddress();
                     }
                     //this.getOrderId();
 

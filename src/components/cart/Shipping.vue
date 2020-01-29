@@ -51,13 +51,9 @@
                                         <label for="lastName">Last Name</label>
                                         <input v-model="lastName" class="form-control" type="text" id="lastName" name="lastName" required>
                                     </div>
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-10">
                                         <label for="email">Email</label>
                                         <input v-model="email" class="form-control" type="email" id="email" name="email" required>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label for="company">Company</label>
-                                        <input v-model="company" class="form-control" type="text" id="company" name="company" required>
                                     </div>
                                     <div class="col-sm-12">
                                         <label for="address">Address</label>
@@ -120,13 +116,9 @@
                                         <label for="lastName">Last Name</label>
                                         <input v-model="lastName_shipping" class="form-control" type="text" name="lastName" required>
                                     </div>
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-10">
                                         <label for="email">Email</label>
                                         <input v-model="email_shipping" class="form-control" type="email" name="email" required>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label for="company">Company</label>
-                                        <input v-model="company_shipping" class="form-control" type="text"  name="company" required>
                                     </div>
                                     <div class="col-sm-12">
                                         <label for="address">Address</label>
@@ -254,13 +246,11 @@
         components: {Footer, Navigation, Header},
         data() {
             return {
-                fullName: '',
-                firstName: '',
-                lastName: '',
-                email: '',
-                company: '',
+                firstName: 'Faysal',
+                lastName: 'Mahmud',
+                email: 'fmaabid@gmail.com',
                 address: '',
-                phone: '',
+                phone: '01684365000',
                 country: '',
                 city: '',
                 zipCode: '',
@@ -294,10 +284,10 @@
                 }
             },
             storeInfo: function () {
-                if (this.firstName==='' || this.lastName==='' || this.email==='' || this.company==='' || this.address===''
+                if (this.firstName==='' || this.lastName==='' || this.email==='' || this.address===''
                     || this.phone==='' || this.country==='' || this.city==='' || this.zipCode==='' || this.shippingMethod===''
                     || this.firstName_shipping==='' || this.lastName_shipping==='' || this.email_shipping===''
-                    || this.company_shipping==='' || this.address_shipping==='' || this.phone_shipping==='' ||
+                    || this.address_shipping==='' || this.phone_shipping==='' ||
                     this.country_shipping==='' || this.city_shipping==='' || this.zipCode_shipping==='') {
                     this.showErrMsg = true;
                 } else {
@@ -308,7 +298,6 @@
                         firstName: this.firstName,
                         lastName: this.lastName,
                         email: this.email,
-                        company: this.company,
                         address: this.address,
                         phone: this.phone,
                         country: this.country,
@@ -324,7 +313,6 @@
                         firstName: this.firstName_shipping,
                         lastName: this.lastName_shipping,
                         email: this.email_shipping,
-                        company: this.company_shipping,
                         address: this.address_shipping,
                         phone: this.phone_shipping,
                         country: this.country_shipping,
@@ -346,7 +334,6 @@
                     this.firstName = billingInstance.firstName;
                     this.lastName = billingInstance.lastName;
                     this.email = billingInstance.email;
-                    this.company = billingInstance.company;
                     this.address = billingInstance.address;
                     this.phone = billingInstance.phone;
                     this.country = billingInstance.country;
@@ -360,7 +347,6 @@
                     this.firstName_shipping = shippingInstance.firstName;
                     this.lastName_shipping = shippingInstance.lastName;
                     this.email_shipping = shippingInstance.email;
-                    this.company_shipping = shippingInstance.company;
                     this.address_shipping = shippingInstance.address;
                     this.phone_shipping = shippingInstance.phone;
                     this.country_shipping = shippingInstance.country;
@@ -374,7 +360,6 @@
                     this.firstName_shipping = this.firstName;
                     this.lastName_shipping = this.lastName;
                     this.email_shipping = this.email;
-                    this.company_shipping = this.company;
                     this.address_shipping = this.address;
                     this.phone_shipping = this.phone;
                     this.country_shipping = this.country;

@@ -124,11 +124,20 @@
                         <div class="col-md-4">
                             <div class="border-box p-4">
                                 <h4>Order Summery</h4>
-                                <p>Excepteur sint occaecat cupidat non proi dent sunt.officia.</p>
-                                <ul class="list-unstyled">
+                                <hr>
+                                <!--<p>Excepteur sint occaecat cupidat non proi dent sunt.officia.</p>-->
+                                <ul class="list-unstyled mt-5">
                                     <li class="d-flex justify-content-between">
                                         <span>Subtotal</span>
                                         <span>${{ getCartTotalPrice }}</span>
+                                    </li>
+                                    <li class="d-flex justify-content-between">
+                                        <span>Shipping Charge</span>
+                                        <span>${{ shippingMethodDetailed.delivery_charge }}</span>
+                                    </li>
+                                    <li v-if="discountType!=='' && discountAmount!==''" class="d-flex justify-content-between">
+                                        <span class="text-capitalize">{{ discountType.replace('_', ' ') }}</span>
+                                        <span>${{ discountAmount }}</span>
                                     </li>
                                     <!--<li class="d-flex justify-content-between">
                                         <span>Shipping & Handling</span>
@@ -142,8 +151,12 @@
                                 <hr>
                                 <div class="d-flex justify-content-between">
                                     <span>Total</span>
-                                    <strong>USD ${{ getCartTotalPrice }}</strong>
+                                    <strong>USD ${{ generateTotalPrice }}</strong>
                                 </div>
+                            </div>
+                            <div class="d-flex flex-column flex-md-row align-items-center mt-5">
+                                <input v-model="coupon" type="text" class="form-control text-md-left text-center mb-3 mb-md-0 d-block" id="coupon" placeholder="I have a discount coupon">
+                                <a @click="onApplyCoupon" class="btn btn-outline-primary ">Apply</a>
                             </div>
                         </div>
                     </div>
@@ -187,6 +200,12 @@
                 payment_method_name: '',
                 payment_method: '',
                 paymentMethods: '',
+                shippingMethodDetailed: '',
+                coupon: '',
+                discount: [],
+                discountAmount: '',
+                discountType: '',
+                totalPrice: '',
             };
         },
         mounted() {
@@ -200,18 +219,45 @@
             },
             getCartTotalPrice() {
                 return this.$store.getters.cartTotalPrice;
-            }
+            },
+            generateTotalPrice: function () {
+                this.totalPrice = this.$store.getters.cartTotalPrice;
+
+                return this.totalPrice = this.totalPrice + this.shippingMethodDetailed.delivery_charge - this.discountAmount;
+            },
         },
         methods: {
-            checkGateWay() {
-                if (this.gatewayName === 'braintree') {
-                    this.is_gateway_stripe = false;
-                    this.is_gateway_braintree = true;
-                } else if (this.gatewayName === 'stripe') {
-                    this.is_gateway_braintree = false;
-                    this.is_gateway_stripe = true;
+            getSippingMethod: function (id) {
+                axios.get(Settings.GetApiUrl() + '/platform/shipping-methods/' + id, {
+                    headers: {
+                        "Authorization": "Bearer " + SessionStore.GetAccessToken(),
+                    }
+                }).then(resp => {
+                    console.log(resp);
+                    this.shippingMethodDetailed = resp.data.data;
+                }).catch(err => {
+                    console.log(err)
+                })
+            },
+            onApplyCoupon: function () {
+                axios.get(Settings.GetApiUrl() + '/coupons/' + this.coupon + '/check?store_id=' + this.$store.getters.getterIsFromSameStore +
+                    '&order_amount=' + this.$store.getters.cartTotalPrice +
+                    '&shipping_cost=' + this.shippingMethodDetailed.delivery_charge, {
+                    headers: {
+                        "Authorization": "Bearer " + SessionStore.GetAccessToken(),
+                    }
+                }).then(resp => {
+                    console.log(resp);
 
-                }
+                    if (this.discount.length > 0) {
+                        this.discount.push(resp.data.data);
+                    }
+
+                    this.discountAmount = resp.data.data.discount_amount;
+                    this.discountType = resp.data.data.discount_type;
+                }).catch(err => {
+                    console.log(err);
+                })
             },
             getPaymentMethodList: function () {
                 axios.get(Settings.GetApiUrl() + '/platform/payment-methods', {
@@ -243,12 +289,14 @@
                         billing_address_id: billingAddressId,
                         payment_method_id: this.payment_method,
                         shipping_address_id: shippingAddressId,
+                        coupon_code: this.coupon,
                     }
                 } else {
                     order = {
                         items: items,
                         billing_address_id: billingAddressId,
                         payment_method_id: this.payment_method,
+                        coupon_code: this.coupon,
                     }
                 }
 
@@ -350,6 +398,7 @@
                 this.shippingInfo = this.getShippingInfo();
                 this.billingInfo = this.getBillingInfo();
 
+                this.getSippingMethod(this.shippingInfo.shippingMethod);
                 this.getPaymentMethodList();
                 //this.token = localStorage.getItem('client_token');
             },

@@ -65,17 +65,9 @@
                                                 </table>
                                             </div>
                                             <hr>
-                                            <div class="d-flex flex-column flex-md-row align-items-center">
-                                                <input type="text" class="form-control text-md-left text-center mb-3 mb-md-0" name="coupon" id="coupon" placeholder="I have a discout coupon">
-                                                <a class="btn btn-outline-primary ml-md-3 w-100 mb-3 mb-md-0">Apply Coupon</a>
-                                                <a href="#" class="btn ml-md-4 btn-dark w-100">Update Cart</a>
-                                            </div>
-                                            <hr>
                                             <div class="row">
                                                 <div class="col-12">
                                                     <ul class="list-unstyled text-right">
-                                                        <!--<li>Sub Total <span class="d-inline-block w-100px">$800.00</span></li>
-                                                        <li>UK Vat <span class="d-inline-block w-100px">$10.00</span></li>-->
                                                         <li>Grand Total <span class="d-inline-block w-100px">${{ grandTotalPrice }}</span></li>
                                                     </ul>
                                                 </div>

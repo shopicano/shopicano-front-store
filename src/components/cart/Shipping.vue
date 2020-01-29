@@ -165,35 +165,17 @@
                                     <div class="col-12">
                                         <h3 class="mb-5 border-bottom pb-2">Select A Shipping Method</h3>
                                     </div>
-                                    <div class="col-sm-6 mb-4">
-                                        <input v-model="shippingMethod" id="standard" class="custom-checkbox" type="radio"
-                                               value="standard" checked="checked">
-                                        <label class="ml-2" for="standard">Standard Ground (USPS) - $7.50</label>
-                                        <small class="d-block ml-3">Delivered in 8-12 business days.</small>
-                                    </div>
-                                    <div class="col-sm-6 mb-4">
-                                        <input v-model="shippingMethod" id="premium" type="radio" name="checkbox"
-                                               value="premium">
-                                        <label class="ml-2" for="premium">Premium Ground (UPS) - $12.50</label>
-                                        <small class="d-block ml-3">Delivered in 4-7 business days.</small>
-                                    </div>
-                                    <div class="col-sm-6 mb-4">
-                                        <input v-model="shippingMethod" id="ups2" type="radio" name="checkbox"
-                                               value="ups2">
-                                        <label class="ml-2" for="ups2">UPS 2 Business Day - $15.00</label>
-                                        <small class="d-block ml-3">Orders placed by 9:45AM PST will ship same day.</small>
-                                    </div>
-                                    <div class="col-sm-6 mb-4">
-                                        <input v-model="shippingMethod" id="ups1" type="radio" name="checkbox"
-                                               value="ups1">
-                                        <label class="ml-2" for="ups1">UPS 1 Business Day - $35.00</label>
-                                        <small class="d-block ml-3">Orders placed by 9:45AM PST will ship same day.</small>
+                                    <div v-for="method in shpMethods" :key="method.id" class="col-sm-6 mb-4">
+                                        <input v-model="shippingMethod" :id="method.id" class="custom-checkbox" type="radio"
+                                               :value="method.id">
+                                        <label class="ml-2" :for="method.id">{{ method.name }} - ${{ method.delivery_charge }}</label>
+                                        <small class="d-block ml-3">Delivered in {{ method.approximate_delivery_time }} business days.</small>
                                     </div>
                                     <!-- /select shipping method -->
                                 </form>
                                 <!-- /shipping-address -->
                                 <div class="p-4 bg-gray text-right">
-                                    <h4 v-if="showErrMsg" class="text-danger">All fields required</h4>
+                                    <h4 v-if="showErrMsg" class="text-danger">All fields are required</h4>
                                     <button @click="storeInfo"
                                             class="btn btn-primary">Continue</button>
                                 </div>
@@ -202,8 +184,9 @@
                         <div class="col-md-4">
                             <div class="border-box p-4">
                                 <h4>Order Summery</h4>
-                                <p>Excepteur sint occaecat cupidat non proi dent sunt.officia.</p>
-                                <ul class="list-unstyled">
+                                <hr>
+                                <!--<p>Excepteur sint occaecat cupidat non proi dent sunt.officia.</p>-->
+                                <ul class="list-unstyled mt-5">
                                     <li class="d-flex justify-content-between">
                                         <span>Subtotal</span>
                                         <span>${{ getCartTotalPrice }}</span>
@@ -237,9 +220,12 @@
 
 <script>
     /* eslint-disable */
+    import axios from 'axios';
     import Header from "@/components/indexComponents/Header";
     import Navigation from "@/components/indexComponents/Navigation";
     import Footer from "@/components/indexComponents/Footer";
+    import Settings from "@/common/settings";
+    import SessionStore from "@/common/session_store";
 
     export default {
         name: "Shipping",
@@ -266,6 +252,7 @@
                 city_shipping: '',
                 zipCode_shipping: '',
                 shippingMethod: '',
+                shpMethods: [],
             };
         },
         mounted() {
@@ -282,6 +269,19 @@
                 if (this.$store.getters.cartItemCount < 1) {
                     this.$router.push('/shop');
                 }
+            },
+            getShippingMethodList: function () {
+                axios.get(Settings.GetApiUrl() + '/platform/shipping-methods?page=' + this.currentPage + '&limit='
+                    + this.perPage, {
+                    headers: {
+                        "Authorization": "Bearer " + SessionStore.GetAccessToken(),
+                    }
+                }).then(resp => {
+                    console.log(resp);
+                    this.shpMethods = resp.data.data;
+                }).catch(err => {
+                    console.log(err)
+                })
             },
             storeInfo: function () {
                 if (this.firstName==='' || this.lastName==='' || this.email==='' || this.address===''
@@ -325,6 +325,8 @@
                 }
             },
             onFieldLoad: function () {
+                this.getShippingMethodList();
+
                 const billingInstance = this.$store.getters.getterBillingInfo;
                 const shippingInstance = this.$store.getters.getterShippingInfo;
                 const isBothAddressSame = this.$store.getters.getterIfShippingSameAsBilling;

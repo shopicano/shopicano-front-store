@@ -16,9 +16,9 @@
                                      v-bind:src="getFullImagePath(category.image)" >
                             </router-link>
                         </div>
-                        <div class="px-4 py-3 border-top">
+                        <div class="px-4 py-3 border-top text-center">
                             <h4 class="d-inline-block mb-0 mt-1">{{ category.name }}</h4>
-                            <router-link to="/shop" class="btn btn-sm btn-outline-primary float-right">view more</router-link>
+                            <!--<router-link to="/shop" class="btn btn-sm btn-outline-primary float-right">view more</router-link>-->
                         </div>
                     </div>
                 </div>
@@ -37,11 +37,14 @@
                                      v-bind:src="getFullImagePath(tp.image)" >
                             </router-link>
                         </div>
-                        <div class="px-4 py-3 border-top">
+                        <div class="px-4 py-3 border-top text-center">
                             <h4 class="d-inline-block mb-0 mt-1">{{ tp.name }}</h4>
-                            <router-link to="/shop" class="btn btn-sm btn-outline-primary float-right">view more</router-link>
                         </div>
                     </div>
+                </div>
+
+                <div class="col-md-12 text-center">
+                    <router-link to="/shop" class="w-75 btn btn-primary">view more products</router-link>
                 </div>
             </div>
         </div>
@@ -55,7 +58,7 @@
 
     export default {
         name: "Home",
-        components: {  },
+        components: {},
         data() {
             return {
                 topCategories: [],

@@ -53,7 +53,7 @@
                 this.is_loading = ok;
             },
             onRegister: function () {
-                axios.post(Settings.GetApiUrl() + "/users/sign-up", {
+                axios.post(Settings.GetApiUrl() + "/register", {
                     name: this.name,
                     email: this.email,
                     password: this.password

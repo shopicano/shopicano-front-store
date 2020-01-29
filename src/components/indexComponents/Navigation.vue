@@ -81,6 +81,9 @@
             },
             itemCount() {
                 this.isCartNil = this.$store.getters.cartItemCount < 1;
+                if (this.isCartNil) {
+                    this.$store.dispatch('storeIsProductDigitalAction', '');
+                }
                 return this.$store.getters.cartItemCount;
             },
             getTotalPrice() {

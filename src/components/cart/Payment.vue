@@ -66,19 +66,19 @@
                                         <span>Subtotal</span>
                                         <span>${{ getCartTotalPrice }}</span>
                                     </li>
-                                    <li class="d-flex justify-content-between">
+                                    <!--<li class="d-flex justify-content-between">
                                         <span>Shipping & Handling</span>
                                         <span>$15.00</span>
                                     </li>
                                     <li class="d-flex justify-content-between">
                                         <span>Estimated Tax</span>
                                         <span>$0.00</span>
-                                    </li>
+                                    </li>-->
                                 </ul>
                                 <hr>
                                 <div class="d-flex justify-content-between">
                                     <span>Total</span>
-                                    <strong>USD $253.00</strong>
+                                    <strong>USD ${{ getCartTotalPrice }}</strong>
                                 </div>
                             </div>
                         </div>
@@ -177,6 +177,7 @@
                     }
                 }).then(resp => {
                     console.log('onSuccess ---> ' + resp);
+                    SessionStore.CleanPaymentMethodGatewayConfig();
                     return this.$router.push('/confirmation');
                 }).catch(err => {
                     console.log(err)

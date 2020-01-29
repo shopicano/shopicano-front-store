@@ -102,55 +102,61 @@
                                 </div>
                                 <!-- @billing-information -->
 
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h3 class="mb-5 border-bottom pb-2">Select A Payment Method</h3>
+                                    </div>
+
+                                    <div v-for="method in paymentMethods" :key="method.id" class="col-sm-6 mb-4">
+                                        <input v-model="payment_method" :id="method.id" class="custom-checkbox" :value="method.id" type="radio">
+                                        <label class="ml-2" :for="method.id">{{ method.name }}</label>
+                                    </div>
+                                </div>
+
                                 <!-- buttons -->
                                 <div class="p-4 bg-gray d-flex justify-content-between">
                                     <router-link to="/shipping" class="btn btn-dark">Back</router-link>
                                     <span @click="onCheckLoggedIn" class="btn btn-primary text-capitalize">confirm purchase</span>
                                 </div>
-
-                                <!--<div v-if="is_purchase_confirmed" class="mt-4 container">
-                                    <div v-on:change="checkGateWay">
-                                        <input v-model="gatewayName" id="checkbox1" type="radio" name="checkbox" value="braintree">
-                                        <label for="checkbox1" class="h4 ml-2">Brain Tree</label>
-                                    </div>
-
-                                    <div v-on:change="checkGateWay">
-                                        <input v-model="gatewayName" id="checkbox2" type="radio" name="checkbox" value="stripe">
-                                        <label for="checkbox2" class="h4 ml-2">Stripe</label>
-                                    </div>
-                                </div>-->
-
-                                <!--<div v-if="is_gateway_braintree">
-                                    <v-braintree :authorization="token"
-                                                 @success="onSuccess"
-                                                 @error="onError"/>
-                                </div>-->
                             </div>
                         </div>
 
                         <div class="col-md-4">
                             <div class="border-box p-4">
                                 <h4>Order Summery</h4>
-                                <p>Excepteur sint occaecat cupidat non proi dent sunt.officia.</p>
-                                <ul class="list-unstyled">
+                                <hr>
+                                <!--<p>Excepteur sint occaecat cupidat non proi dent sunt.officia.</p>-->
+                                <ul class="list-unstyled mt-5">
                                     <li class="d-flex justify-content-between">
                                         <span>Subtotal</span>
                                         <span>${{ getCartTotalPrice }}</span>
                                     </li>
                                     <li class="d-flex justify-content-between">
+                                        <span>Shipping Charge</span>
+                                        <span>${{ shippingMethodDetailed.delivery_charge }}</span>
+                                    </li>
+                                    <li v-if="discountType!=='' && discountAmount!==''" class="d-flex justify-content-between">
+                                        <span class="text-capitalize">{{ discountType.replace('_', ' ') }}</span>
+                                        <span>${{ discountAmount }}</span>
+                                    </li>
+                                    <!--<li class="d-flex justify-content-between">
                                         <span>Shipping & Handling</span>
                                         <span>$15.00</span>
                                     </li>
                                     <li class="d-flex justify-content-between">
                                         <span>Estimated Tax</span>
                                         <span>$0.00</span>
-                                    </li>
+                                    </li>-->
                                 </ul>
                                 <hr>
                                 <div class="d-flex justify-content-between">
                                     <span>Total</span>
-                                    <strong>USD $253.00</strong>
+                                    <strong>USD ${{ generateTotalPrice }}</strong>
                                 </div>
+                            </div>
+                            <div class="d-flex flex-column flex-md-row align-items-center mt-5">
+                                <input v-model="coupon" type="text" class="form-control text-md-left text-center mb-3 mb-md-0 d-block" id="coupon" placeholder="I have a discount coupon">
+                                <a @click="onApplyCoupon" class="btn btn-outline-primary ">Apply</a>
                             </div>
                         </div>
                     </div>
@@ -183,14 +189,23 @@
                 shippingInfo: [],
                 deliveryTime: '',
                 billingInfo: [],
-                //token: '',
                 billingAddress_id: '',
+                shippingAddress_id: '',
                 orderID: 'uuuuuu',
                 is_purchase_confirmed: false,
                 nonce: '',
                 gatewayName: '',
                 is_gateway_braintree: false,
                 is_gateway_stripe: false,
+                payment_method_name: '',
+                payment_method: '',
+                paymentMethods: '',
+                shippingMethodDetailed: '',
+                coupon: '',
+                discount: [],
+                discountAmount: '',
+                discountType: '',
+                totalPrice: '',
             };
         },
         mounted() {
@@ -204,20 +219,59 @@
             },
             getCartTotalPrice() {
                 return this.$store.getters.cartTotalPrice;
-            }
+            },
+            generateTotalPrice: function () {
+                this.totalPrice = this.$store.getters.cartTotalPrice;
+
+                return this.totalPrice = this.totalPrice + this.shippingMethodDetailed.delivery_charge - this.discountAmount;
+            },
         },
         methods: {
-            checkGateWay() {
-                if (this.gatewayName === 'braintree') {
-                    this.is_gateway_stripe = false;
-                    this.is_gateway_braintree = true;
-                } else if (this.gatewayName === 'stripe') {
-                    this.is_gateway_braintree = false;
-                    this.is_gateway_stripe = true;
-
-                }
+            getSippingMethod: function (id) {
+                axios.get(Settings.GetApiUrl() + '/platform/shipping-methods/' + id, {
+                    headers: {
+                        "Authorization": "Bearer " + SessionStore.GetAccessToken(),
+                    }
+                }).then(resp => {
+                    console.log(resp);
+                    this.shippingMethodDetailed = resp.data.data;
+                }).catch(err => {
+                    console.log(err)
+                })
             },
-            createOrder: function(addressId) {
+            onApplyCoupon: function () {
+                axios.get(Settings.GetApiUrl() + '/coupons/' + this.coupon + '/check?store_id=' + this.$store.getters.getterIsFromSameStore +
+                    '&order_amount=' + this.$store.getters.cartTotalPrice +
+                    '&shipping_cost=' + this.shippingMethodDetailed.delivery_charge, {
+                    headers: {
+                        "Authorization": "Bearer " + SessionStore.GetAccessToken(),
+                    }
+                }).then(resp => {
+                    console.log(resp);
+
+                    if (this.discount.length > 0) {
+                        this.discount.push(resp.data.data);
+                    }
+
+                    this.discountAmount = resp.data.data.discount_amount;
+                    this.discountType = resp.data.data.discount_type;
+                }).catch(err => {
+                    console.log(err);
+                })
+            },
+            getPaymentMethodList: function () {
+                axios.get(Settings.GetApiUrl() + '/platform/payment-methods', {
+                    headers: {
+                        "Authorization": "Bearer " + SessionStore.GetAccessToken(),
+                    }
+                }).then(resp => {
+                    console.log(resp);
+                    this.paymentMethods = resp.data.data;
+                }).catch(err => {
+                    console.log(err)
+                })
+            },
+            createOrder: function(shippingAddressId, billingAddressId) {
                 let items = [];
                 let order = {};
                 let cart_items = this.$store.getters.getCart;
@@ -229,12 +283,22 @@
                     })
                 });
 
-                order = {
-                    items: items,
-                    store_id: '65422e25-2bd2-4d6e-9f5d-2bf7bbe19727',
-                    billing_address_id: addressId,
-                    payment_method_id: '97edb2e0-d606-4873-bb1e-1f7474e85ba1',
-                };
+                if (shippingAddressId !== '') {
+                    order = {
+                        items: items,
+                        billing_address_id: billingAddressId,
+                        payment_method_id: this.payment_method,
+                        shipping_address_id: shippingAddressId,
+                        coupon_code: this.coupon,
+                    }
+                } else {
+                    order = {
+                        items: items,
+                        billing_address_id: billingAddressId,
+                        payment_method_id: this.payment_method,
+                        coupon_code: this.coupon,
+                    }
+                }
 
                 axios.post(Settings.GetApiUrl() + '/orders', order, {
                     headers: {
@@ -245,11 +309,35 @@
                     return this.$router.push({ path: `/payment/${resp.data.data.id}` });
                 }).catch(err => {
                     console.log(err)
-                })
+                });
             },
-            createBillingAddress: function() {
+            createShippingAddress: function() {
+                let shipping_address = {
+                    name: this.shippingInfo.firstName + ' ' + this.shippingInfo.lastName,
+                    address: this.shippingInfo.address,
+                    city: this.shippingInfo.city,
+                    country: this.shippingInfo.country,
+                    postcode: this.shippingInfo.zipCode,
+                    email: this.shippingInfo.email,
+                    phone: this.shippingInfo.phone,
+                };
+
+                axios.post(Settings.GetApiUrl() + '/addresses', shipping_address, {
+                    headers: {
+                        "Authorization": "Bearer " + SessionStore.GetAccessToken(),
+                    }
+                }).then(resp => {
+                    console.log(resp);
+                    this.createBillingAddress(resp.data.data.id);
+                    this.shippingAddress_id = resp.data.data.id;
+                }).catch(err => {
+                    console.log(err)
+                });
+            },
+            createBillingAddress: function(shippingAddress) {
+
                 let billing_address = {
-                    name: this.billingInfo.firstName + this.billingInfo.lastName,
+                    name: this.billingInfo.firstName + ' ' + this.billingInfo.lastName,
                     address: this.billingInfo.address,
                     city: this.billingInfo.city,
                     country: this.billingInfo.country,
@@ -263,7 +351,9 @@
                         "Authorization": "Bearer " + SessionStore.GetAccessToken(),
                     }
                 }).then(resp => {
-                    this.createOrder(resp.data.data.id)
+                    console.log(resp);
+                    this.billingAddress_id = resp.data.data.id;
+                    this.createOrder(shippingAddress, resp.data.data.id);
                 }).catch(err => {
                     console.log(err)
                 });
@@ -307,6 +397,9 @@
             setInfo: function () {
                 this.shippingInfo = this.getShippingInfo();
                 this.billingInfo = this.getBillingInfo();
+
+                this.getSippingMethod(this.shippingInfo.shippingMethod);
+                this.getPaymentMethodList();
                 //this.token = localStorage.getItem('client_token');
             },
             getShippingInfo: function() {
@@ -335,12 +428,20 @@
             onCheckLoggedIn: function () {
                 if (SessionStore.IsLoggedIn()) {
                     if (this.billingAddress_id === '') {
-                        this.createBillingAddress();
+                        if (this.$store.getters.getterIsAllProductDigital === false) {
+                            this.createShippingAddress();
+                        } else {
+                            this.createBillingAddress('');
+                        }
+                        console.log(this.shippingAddress_id)
+                        //this.createBillingAddress();
                     }
                     //this.getOrderId();
 
                     //this.$router.push({ path: `/payment/${orderID}` });
                 } else {
+                    localStorage.setItem('redirect_to', '/review');
+                    console.log(localStorage.getItem('redirect_to'));
                     this.$router.push('/login');
                 }
             }

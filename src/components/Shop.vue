@@ -120,7 +120,7 @@
                                                          v-bind:src="getFullImagePath(product.image)" alt="product-img">
                                                 </router-link>
                                                 <div class="btn-cart">
-                                                    <button @click="addToCart(product.id, getFullImagePath(product.image), product.name, 1, product.price, product.is_digital)"
+                                                    <button @click="addToCart(product.id, product.store_id, getFullImagePath(product.image), product.name, 1, product.price, product.is_digital)"
                                                             class="btn btn-primary btn-sm">Add To Cart</button>
                                                 </div>
                                             </div>
@@ -209,7 +209,6 @@
                 categorySelected: false,
                 fetchIsEmpty: false,
                 query: '',
-                prevIsDigital: '',
             }
         },
         mounted() {
@@ -224,7 +223,7 @@
                 } else if (this.categorySelected) {
                     return this.getCategoryItems();
                 }
-            }
+            },
         },
         methods: {
             getProducts: function () {
@@ -280,21 +279,30 @@
                     console.log(err);
                 })
             },
-            addToCart: function (id, imgUrl, itemName, quantity, price, isDigital) {
-                /*if (this.tempIsDigital !== isDigital) {
-                    alert('You can not add both Digital and Physical product in cart.')
-                } else if (this.tempIsDigital==='' || this.tempIsDigital === isDigital) {
-                }
-                this.tempIsDigital = isDigital;*/
+            addToCart: function (id, store_id, imgUrl, itemName, quantity, price, isDigital) {
+                const digital = this.$store.getters.getterIsAllProductDigital;
+                const prevStoreId = this.$store.getters.getterIsFromSameStore;
 
-                if (this.prevIsDigital === '') {
-                    this.$store.dispatch('addItemToCartAction', {itemID: id, itemThumbnail: imgUrl, itemName: itemName, itemQuantity: quantity, itemPrice: price});
-                    this.prevIsDigital = isDigital;
-                } else if (this.prevIsDigital !== isDigital) {
-                    alert('Cart must have all digital or all non-digital products')
-                } else if (this.prevIsDigital === isDigital) {
-                    this.$store.dispatch('addItemToCartAction', {itemID: id, itemThumbnail: imgUrl, itemName: itemName, itemQuantity: quantity, itemPrice: price});
-                    this.prevIsDigital = isDigital;
+                if (prevStoreId === '' || store_id === prevStoreId) {
+                    this.$store.dispatch('isFromSameStoreAction', store_id)
+                } else {
+                    return alert('All selected products must be from same store.')
+                }
+
+                if (digital === '' || digital===isDigital) {
+                    this.$store.dispatch('storeIsProductDigitalAction', isDigital);
+                    this.$store.dispatch('addItemToCartAction', {
+                        itemID: id,
+                        storeID: store_id,
+                        itemThumbnail: imgUrl,
+                        itemName: itemName,
+                        itemQuantity: quantity,
+                        itemPrice: price
+                    });
+
+                    //console.log(this.$store.getters.getterIsAllProductDigital);
+                } else if (digital !== isDigital) {
+                    alert('Cart must have all Digital or all Non-Digital products');
                 }
             },
             loadjQueryScripts: function () {

@@ -40,9 +40,9 @@
                                         </thead>
                                         <tbody>
                                         <tr v-for="address in addresses" :key="address.id">
-                                            <td>{{ address.created_at }}</td>
+                                            <td>{{ address.created_at.split('T')[0] }}</td>
                                             <td>{{ address.name }}</td>
-                                            <td>{{ address.house+', '+address.road+', '+address.city+'-'+address.postcode }}</td>
+                                            <td>{{ address.address+', '+address.city+'-'+address.postcode }}</td>
                                             <td>{{ address.country }}</td>
                                             <td>{{ address.phone }}</td>
                                             <td>

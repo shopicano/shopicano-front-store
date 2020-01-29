@@ -92,7 +92,7 @@ const routes = [
         component: ProductView,
     },
     {
-        path: '/dashboard',
+        path: '/orders',
         component: Dashboard,
     },
     {

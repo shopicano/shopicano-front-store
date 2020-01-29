@@ -118,6 +118,7 @@
             getFullCart(){
                 this.isCartNil = this.$store.getters.cartItemCount < 1;
                 if (this.isCartNil) {
+                    this.$store.dispatch('storeIsProductDigitalAction', '');
                     return this.$router.push('/shop');
                 }
                 return this.$store.getters.getCart;

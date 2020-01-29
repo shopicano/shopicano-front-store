@@ -209,7 +209,6 @@
                 categorySelected: false,
                 fetchIsEmpty: false,
                 query: '',
-                prevIsDigital: '',
             }
         },
         mounted() {
@@ -224,6 +223,9 @@
                 } else if (this.categorySelected) {
                     return this.getCategoryItems();
                 }
+            },
+            checkIsDigital() {
+                return this.$store.getters.getterIsAllProductDigital;
             }
         },
         methods: {
@@ -287,14 +289,21 @@
                 }
                 this.tempIsDigital = isDigital;*/
 
-                if (this.prevIsDigital === '') {
-                    this.$store.dispatch('addItemToCartAction', {itemID: id, itemThumbnail: imgUrl, itemName: itemName, itemQuantity: quantity, itemPrice: price});
-                    this.prevIsDigital = isDigital;
-                } else if (this.prevIsDigital !== isDigital) {
-                    alert('Cart must have all digital or all non-digital products')
-                } else if (this.prevIsDigital === isDigital) {
-                    this.$store.dispatch('addItemToCartAction', {itemID: id, itemThumbnail: imgUrl, itemName: itemName, itemQuantity: quantity, itemPrice: price});
-                    this.prevIsDigital = isDigital;
+                const digital = this.$store.getters.getterIsAllProductDigital;
+
+                if (digital === '' || digital===isDigital) {
+                    this.$store.dispatch('storeIsProductDigitalAction', isDigital);
+                    this.$store.dispatch('addItemToCartAction', {
+                        itemID: id,
+                        itemThumbnail: imgUrl,
+                        itemName: itemName,
+                        itemQuantity: quantity,
+                        itemPrice: price
+                    });
+
+                    console.log(this.$store.getters.getterIsAllProductDigital);
+                } else if (digital !== isDigital) {
+                    alert('Cart must have all Digital or all Non-Digital products')
                 }
             },
             loadjQueryScripts: function () {

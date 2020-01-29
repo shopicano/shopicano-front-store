@@ -10,6 +10,7 @@ export const store = new Vuex.Store({
         shipping_sameAs_billing: Boolean,
         billingInfo: {},
         shippingInfo: {},
+        isAllProductDigital: '',
     },
     mutations: {
         addItemToCart: (state, payload) => {
@@ -55,6 +56,9 @@ export const store = new Vuex.Store({
         storeShippingInfo: (state, payload) => {
             Object.assign(state.shippingInfo, payload);
         },
+        storeIsProductDigital(state, payload) {
+            state.isAllProductDigital = payload;
+        }
     },
     actions: {
         addItemToCartAction: (context, payload) => {
@@ -75,6 +79,9 @@ export const store = new Vuex.Store({
         storeShippingInfoAction: (context, payload) => {
             context.commit('storeShippingInfo', payload)
         },
+        storeIsProductDigitalAction: (context, payload) => {
+            context.commit('storeIsProductDigital', payload)
+        }
     },
     getters: {
         getCart: (state) => {
@@ -95,5 +102,8 @@ export const store = new Vuex.Store({
         getterShippingInfo: (state) => {
             return state.shippingInfo
         },
+        getterIsAllProductDigital: (state) => {
+            return state.isAllProductDigital
+        }
     },
 });

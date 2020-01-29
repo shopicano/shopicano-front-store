@@ -232,11 +232,11 @@
         components: {Footer, Navigation, Header},
         data() {
             return {
-                firstName: 'Faysal',
-                lastName: 'Mahmud',
-                email: 'fmaabid@gmail.com',
+                firstName: '',
+                lastName: '',
+                email: '',
                 address: '',
-                phone: '01684365000',
+                phone: '',
                 country: '',
                 city: '',
                 zipCode: '',

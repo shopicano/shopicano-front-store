@@ -43,7 +43,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-12 text-center">
+                <div v-if="topProducts.length>0" class="col-md-12 text-center">
                     <router-link to="/shop" class="w-75 btn btn-primary">view more products</router-link>
                 </div>
             </div>

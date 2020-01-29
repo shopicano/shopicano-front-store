@@ -139,14 +139,6 @@
                                         <span class="text-capitalize">{{ discountType.replace('_', ' ') }}</span>
                                         <span>${{ discountAmount }}</span>
                                     </li>
-                                    <!--<li class="d-flex justify-content-between">
-                                        <span>Shipping & Handling</span>
-                                        <span>$15.00</span>
-                                    </li>
-                                    <li class="d-flex justify-content-between">
-                                        <span>Estimated Tax</span>
-                                        <span>$0.00</span>
-                                    </li>-->
                                 </ul>
                                 <hr>
                                 <div class="d-flex justify-content-between">
@@ -191,7 +183,6 @@
                 billingInfo: [],
                 billingAddress_id: '',
                 shippingAddress_id: '',
-                orderID: 'uuuuuu',
                 is_purchase_confirmed: false,
                 nonce: '',
                 gatewayName: '',
@@ -202,7 +193,6 @@
                 paymentMethods: '',
                 shippingMethodDetailed: '',
                 coupon: '',
-                discount: [],
                 discountAmount: '',
                 discountType: '',
                 totalPrice: '',
@@ -248,10 +238,6 @@
                     }
                 }).then(resp => {
                     console.log(resp);
-
-                    if (this.discount.length > 0) {
-                        this.discount.push(resp.data.data);
-                    }
 
                     this.discountAmount = resp.data.data.discount_amount;
                     this.discountType = resp.data.data.discount_type;
@@ -358,37 +344,7 @@
                     console.log(err)
                 });
             },
-            onSuccess: function(payload) {
-                /*axios.post(Settings.GetApiUrl() + '/orders/' + this.orderID + '/nonce', {},{
-                    headers: {
-                        "Authorization": "Bearer " + SessionStore.GetAccessToken(),
-                    }
-                }).then(resp => {
-                    console.log(resp);
-
-                    this.nonce = '';
-                }).catch(err => [
-                    log(err)
-                ]);*/
-
-                let nonce = payload.nonce;
-                //console.log(payload);
-
-                axios.post(Settings.GetApiUrl() + '/orders/' + this.orderID + '/pay', {nonce: nonce}, {
-                    headers: {
-                        "Authorization": "Bearer " + SessionStore.GetAccessToken(),
-                    }
-                }).then(resp => {
-                    console.log(resp)
-                }).catch(err => {
-                    console.log(err)
-                });
-            },
-            onError: function (error) {
-                let message = error.message;
-                alert(message)
-            },
-            // Checking are shippingInfo & billingInfo stored in state
+            // Checking are the shippingInfo & billingInfo stored in state
             checkRequired : function(){
                 if (Object.keys(this.shippingInfo).length < 1 || Object.keys(this.billingInfo).length < 1) {
                     this.$router.push('/shipping');
@@ -400,7 +356,6 @@
 
                 this.getSippingMethod(this.shippingInfo.shippingMethod);
                 this.getPaymentMethodList();
-                //this.token = localStorage.getItem('client_token');
             },
             getShippingInfo: function() {
                 return this.$store.getters.getterShippingInfo;

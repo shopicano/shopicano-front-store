@@ -413,7 +413,9 @@
                 }
             },
             onFieldLoad: function () {
-                this.getShippingMethodList();
+                if (!this.$store.getters.getterIsAllProductDigital) {
+                    this.getShippingMethodList();
+                }
                 this.loadAddressList();
 
                 const billingInstance = this.$store.getters.getterBillingInfo;

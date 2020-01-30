@@ -57,11 +57,21 @@
                                         <span>Subtotal</span>
                                         <span>${{ getCartTotalPrice }}</span>
                                     </li>
+
+                                    <li v-if="!this.$store.getters.getterIsAllProductDigital" class="d-flex justify-content-between">
+                                        <span>Shipping Charge</span>
+                                        <span>${{ getDeliveryCharge }}</span>
+                                    </li>
+
+                                    <li v-if="this.$store.getters.getterStoreDiscount.type!=='' && this.$store.getters.getterStoreDiscount.amount!==''" class="d-flex justify-content-between">
+                                        <span class="text-capitalize">{{ this.$store.getters.getterStoreDiscount.type.replace('_', ' ') }}</span>
+                                        <span>${{ this.$store.getters.getterStoreDiscount.amount }}</span>
+                                    </li>
                                 </ul>
                                 <hr>
                                 <div class="d-flex justify-content-between">
                                     <span>Total</span>
-                                    <strong>USD ${{ getCartTotalPrice }}</strong>
+                                    <strong>USD ${{ getGrandTotal }}</strong>
                                 </div>
                             </div>
                         </div>
@@ -107,6 +117,12 @@
         computed: {
             getCartTotalPrice() {
                 return this.$store.getters.cartTotalPrice;
+            },
+            getGrandTotal() {
+                return this.$store.getters.getterStoreGrandTotal;
+            },
+            getDeliveryCharge() {
+                return this.$store.getters.getterStoreDeliveryCharge;
             }
         },
         methods: {

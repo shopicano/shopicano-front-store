@@ -104,7 +104,7 @@
                                 </div>
                                 <!-- @billing-information -->
 
-                                <div class="row">
+                                <div v-if="totalPrice !== 0" class="row">
                                     <div class="col-12">
                                         <h3 class="mb-5 border-bottom pb-2">Select A Payment Method</h3>
                                     </div>
@@ -216,9 +216,31 @@
                 this.totalPrice = this.$store.getters.cartTotalPrice;
 
                 if (this.$store.getters.getterIsAllProductDigital) {
-                    return this.totalPrice = this.totalPrice - this.discountAmount;
+                    this.totalPrice = this.totalPrice - this.discountAmount;
+
+                    if (this.totalPrice <= 0) {
+                        this.totalPrice = 0;
+                    }
+                    this.$store.dispatch('storeGrandTotalAction', this.totalPrice);
+                    this.$store.dispatch('storeDiscountAction', {
+                        'amount': this.discountAmount,
+                        'type': this.discountType,
+                    });
+
+                    return this.$store.getters.getterStoreGrandTotal;
                 } else if (!this.$store.getters.getterIsAllProductDigital) {
-                    return this.totalPrice = this.totalPrice + this.shippingMethodDetailed.delivery_charge - this.discountAmount;
+                    this.totalPrice = this.totalPrice + this.shippingMethodDetailed.delivery_charge - this.discountAmount;
+
+                    if (this.totalPrice <= 0) {
+                        this.totalPrice = 0;
+                    }
+                    this.$store.dispatch('storeGrandTotalAction', this.totalPrice);
+                    this.$store.dispatch('storeDiscountAction', {
+                        'amount': this.discountAmount,
+                        'type': this.discountType,
+                    });
+
+                    return this.$store.getters.getterStoreGrandTotal;
                 }
             },
         },
@@ -231,6 +253,7 @@
                 }).then(resp => {
                     console.log(resp);
                     this.shippingMethodDetailed = resp.data.data;
+                    this.$store.dispatch('storeDeliveryChargeAction', this.shippingMethodDetailed.delivery_charge)
                 }).catch(err => {
                     console.log(err)
                 })
@@ -279,20 +302,24 @@
                     order = {
                         items: items,
                         billing_address_id: billingAddressId,
-                        payment_method_id: this.payment_method,
                         shipping_address_id: shippingAddressId,
                     };
                     if (this.coupon !== '') {
                         order['coupon_code'] = this.coupon
                     }
+                    if (this.totalPrice !== 0) {
+                        order['payment_method_id'] = this.payment_method
+                    }
                 } else {
                     order = {
                         items: items,
                         billing_address_id: billingAddressId,
-                        payment_method_id: this.payment_method,
                     };
                     if (this.coupon !== '') {
                         order['coupon_code'] = this.coupon
+                    }
+                    if (this.totalPrice !== 0) {
+                        order['payment_method_id'] = this.payment_method
                     }
                 }
 
@@ -302,7 +329,12 @@
                     }
                 }).then(resp => {
                     console.log(resp);
-                    return this.$router.push({ path: `/payment/${resp.data.data.id}` });
+
+                    if (this.totalPrice === 0) {
+                        this.$router.push({ path: `/payment/${resp.data.data.id}`});
+                        return
+                    }
+                    this.$router.push({ path: `/payment/${resp.data.data.id}`});
                 }).catch(err => {
                     console.log(err)
                 });
@@ -399,11 +431,7 @@
                             this.createBillingAddress('');
                         }
                         console.log(this.shippingAddress_id)
-                        //this.createBillingAddress();
                     }
-                    //this.getOrderId();
-
-                    //this.$router.push({ path: `/payment/${orderID}` });
                 } else {
                     localStorage.setItem('redirect_to', '/review');
                     console.log(localStorage.getItem('redirect_to'));

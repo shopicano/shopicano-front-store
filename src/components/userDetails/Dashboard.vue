@@ -32,7 +32,7 @@
                                         <table class="table">
                                             <thead>
                                             <tr>
-                                                <th>Order ID</th>
+                                                <th>Order Hash</th>
                                                 <th>Date</th>
                                                 <th>Items</th>
                                                 <th>Total Price</th>
@@ -40,26 +40,26 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr>
-                                                <td><a href="#">#252125</a></td>
-                                                <td>Mar 25, 2016</td>
-                                                <td>2</td>
-                                                <td>$ 99.00</td>
-                                            </tr>
-                                            <tr>
-                                                <td><a href="#">#252125</a></td>
-                                                <td>Mar 25, 2016</td>
-                                                <td>2</td>
-                                                <td>$ 99.00</td>
-                                            </tr>
-                                            <tr>
-                                                <td><a href="#">#252125</a></td>
-                                                <td>Mar 25, 2016</td>
-                                                <td>2</td>
-                                                <td>$ 99.00</td>
+                                            <tr v-for="order in orderList" :key="order.id">
+                                                <td><a>{{ order.hash }}</a></td>
+                                                <td>{{ order.created_at.replace('T', ' ') }}</td>
+                                                <td>{{ order.items.length }}</td>
+                                                <td>$ {{ order.grand_total }}</td>
                                             </tr>
                                             </tbody>
                                         </table>
+                                    </div>
+
+                                    <div>
+                                        <BPagination
+                                                v-model="currentPage"
+                                                :limit="3"
+                                                :hide-goto-end-buttons="true"
+                                                :total-rows="rows"
+                                                :per-page="perPage"
+                                                :link-gen="getData"
+                                                align="center">
+                                        </BPagination>
                                     </div>
                                 </div>
                             </div>
@@ -123,13 +123,54 @@
 </template>
 
 <script>
+    /* eslint-disable */
+    import axios from 'axios';
+    import {BPagination} from "bootstrap-vue";
+
     import Header from "@/components/indexComponents/Header";
     import Navigation from "@/components/indexComponents/Navigation";
     import Footer from "@/components/indexComponents/Footer";
+    import Settings from "@/common/settings";
+    import SessionStore from "@/common/session_store";
 
     export default {
         name: "Dashboard",
-        components: {Footer, Navigation, Header}
+        components: {Footer, Navigation, Header, BPagination},
+        data() {
+            return {
+                rows: 100,
+                currentPage: 1,
+                perPage: 10,
+                orderList: '',
+            }
+        },
+        mounted() {
+
+        },
+        computed: {
+            getData: function () {
+                return this.getOrderList();
+            }
+        },
+        methods: {
+            getOrderList: function () {
+                axios.get(Settings.GetApiUrl() + '/orders?page=' + this.currentPage + '&limit='
+                    + this.perPage, {
+                    headers: {
+                        "Authorization": "Bearer " + SessionStore.GetAccessToken(),
+                    }
+                }).then(resp => {
+                    console.log(resp);
+
+                    if (resp.data.data.length === 0) {
+                        return this.currentPage -= 1;
+                    }
+                    this.orderList = resp.data.data;
+                }).catch(err => {
+                    console.log(err);
+                })
+            }
+        }
     }
 </script>
 

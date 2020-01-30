@@ -42,6 +42,16 @@
 
                                 <!-- Billing-address -->
                                 <h3 class="mb-5 border-bottom pb-2">Billing Address</h3>
+                                <div class="col-sm-12">
+                                    <label>Fill form by Previous Information</label>
+                                    <select v-model="selectedBillingAddressID"
+                                            @change="fetchAddressInfo(selectedBillingAddressID)" class="form-control" name="city">
+                                        <option disabled value="">Select</option>
+                                        <option v-for="addrs in addressList"
+                                                :key="addrs.id"
+                                                :value="addrs.id">{{ addrs.address }}</option>
+                                    </select>
+                                </div>
                                 <form class="row">
                                     <div class="col-sm-6">
                                         <label for="firstName">First Name</label>
@@ -106,6 +116,17 @@
                                     <div class="col-sm-6 mb-4">
                                         <input type="checkbox" v-on:change="checkIsSame" id="sameas" v-model="is_shipping_sameAs_billing">
                                         <label class="ml-2" for="sameas">Shipping Address same as Billing Address</label>
+                                    </div>
+
+                                    <div v-if="!is_shipping_sameAs_billing" class="col-sm-12">
+                                        <label>Fill form by Previous Information</label>
+                                        <select v-model="selectedShippingAddressID"
+                                                @change="fetchAddressInfo(selectedShippingAddressID)" class="form-control" name="city">
+                                            <option disabled value="">Select</option>
+                                            <option v-for="addrs in addressList"
+                                                    :key="addrs.id"
+                                                    :value="addrs.id">{{ addrs.address }}</option>
+                                        </select>
                                     </div>
 
                                     <form class="row">
@@ -255,7 +276,10 @@
                 city_shipping: '',
                 zipCode_shipping: '',
                 shippingMethod: '',
-                shpMethods: [],
+                shpMethods: [],     // Shipping Method list
+                addressList: [],    // List of addresses if there any available - (For drop down)
+                selectedBillingAddressID: '',    // Selected selectedBillingAddressID from the list
+                selectedShippingAddressID: '',
             };
         },
         mounted() {
@@ -272,6 +296,29 @@
                 if (this.$store.getters.cartItemCount < 1) {
                     this.$router.push('/shop');
                 }
+            },
+            loadAddressList: function () {
+                axios.get(Settings.GetApiUrl() + '/addresses', {
+                    headers: {
+                        "Authorization": "Bearer " + SessionStore.GetAccessToken(),
+                    }
+                }).then(resp => {
+                    this.addressList = resp.data.data;
+                    console.log(this.addressList)
+                }).catch(err => {
+                    console.log(err)
+                });
+            },
+            fetchAddressInfo: function (id) {
+                axios.get(Settings.GetApiUrl() + '/addresses/' + id, {
+                    headers: {
+                        "Authorization": "Bearer " + SessionStore.GetAccessToken(),
+                    }
+                }).then(resp => {
+                    console.log(resp.data.data)
+                }).catch(err => {
+                    console.log(err)
+                });
             },
             getShippingMethodList: function () {
                 axios.get(Settings.GetApiUrl() + '/platform/shipping-methods?page=' + this.currentPage + '&limit='
@@ -367,6 +414,7 @@
             },
             onFieldLoad: function () {
                 this.getShippingMethodList();
+                this.loadAddressList();
 
                 const billingInstance = this.$store.getters.getterBillingInfo;
                 const shippingInstance = this.$store.getters.getterShippingInfo;

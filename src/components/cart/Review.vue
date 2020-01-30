@@ -66,29 +66,31 @@
                                 <!-- /review -->
 
                                 <!-- shipping-information -->
-                                <h3 class="mt-5 mb-5 border-bottom pb-2">Shipping Information</h3>
-                                <div class="row mb-5">
-                                    <div class="col-md-6">
-                                        <h4 class="mb-3">Shipping Address</h4>
-                                        <ul class="list-unstyled">
-                                            <li>{{ shippingInfo.firstName + ' ' + shippingInfo.lastName }}</li>
-                                            <li>{{ shippingInfo.address }} </li>
-                                            <li>{{ shippingInfo.phone }} </li>
-                                            <li>{{ shippingInfo.email }}</li>
-                                        </ul>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <h4 class="mb-3">Shipping Method</h4>
-                                        <ul class="list-unstyled">
-                                            <li>{{ getShippingMethod(shippingInfo.shippingMethod) }}</li>
-                                            <li>{{ deliveryTime }}</li>
-                                        </ul>
+                                <div v-if="!this.$store.getters.getterIsAllProductDigital">
+                                    <h3 class="mt-5 mb-5 border-bottom pb-2">Shipping Information</h3>
+                                    <div class="row mb-5">
+                                        <div class="col-md-6">
+                                            <h4 class="mb-3">Shipping Address</h4>
+                                            <ul class="list-unstyled">
+                                                <li>{{ shippingInfo.firstName + ' ' + shippingInfo.lastName }}</li>
+                                                <li>{{ shippingInfo.address }} </li>
+                                                <li>{{ shippingInfo.phone }} </li>
+                                                <li>{{ shippingInfo.email }}</li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h4 class="mb-3">Shipping Method</h4>
+                                            <ul class="list-unstyled">
+                                                <li>{{ getShippingMethod(shippingInfo.shippingMethod) }}</li>
+                                                <li>{{ deliveryTime }}</li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
                                 <!-- @shipping-information -->
 
                                 <!-- billing-information -->
-                                <h3 class="mb-5 border-bottom pb-2">Billing Information</h3>
+                                <h3 class="mb-5 border-bottom pb-2 mt-5">Billing Information</h3>
                                 <div class="row mb-5">
                                     <div class="col">
                                         <h4 class="mb-3">Billing Address</h4>
@@ -131,7 +133,7 @@
                                         <span>Subtotal</span>
                                         <span>${{ getCartTotalPrice }}</span>
                                     </li>
-                                    <li class="d-flex justify-content-between">
+                                    <li v-if="!this.$store.getters.getterIsAllProductDigital" class="d-flex justify-content-between">
                                         <span>Shipping Charge</span>
                                         <span>${{ shippingMethodDetailed.delivery_charge }}</span>
                                     </li>
@@ -193,7 +195,7 @@
                 paymentMethods: '',
                 shippingMethodDetailed: '',
                 coupon: '',
-                discountAmount: '',
+                discountAmount: 0,
                 discountType: '',
                 totalPrice: '',
             };
@@ -213,7 +215,11 @@
             generateTotalPrice: function () {
                 this.totalPrice = this.$store.getters.cartTotalPrice;
 
-                return this.totalPrice = this.totalPrice + this.shippingMethodDetailed.delivery_charge - this.discountAmount;
+                if (this.$store.getters.getterIsAllProductDigital) {
+                    return this.totalPrice = this.totalPrice - this.discountAmount;
+                } else if (!this.$store.getters.getterIsAllProductDigital) {
+                    return this.totalPrice = this.totalPrice + this.shippingMethodDetailed.delivery_charge - this.discountAmount;
+                }
             },
         },
         methods: {
@@ -275,14 +281,18 @@
                         billing_address_id: billingAddressId,
                         payment_method_id: this.payment_method,
                         shipping_address_id: shippingAddressId,
-                        coupon_code: this.coupon,
+                    };
+                    if (this.coupon !== '') {
+                        order['coupon_code'] = this.coupon
                     }
                 } else {
                     order = {
                         items: items,
                         billing_address_id: billingAddressId,
                         payment_method_id: this.payment_method,
-                        coupon_code: this.coupon,
+                    };
+                    if (this.coupon !== '') {
+                        order['coupon_code'] = this.coupon
                     }
                 }
 

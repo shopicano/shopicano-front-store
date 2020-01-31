@@ -1,7 +1,7 @@
 <template>
     <div>
         <Header/>
-        <Navigation/>
+        <Navigation logo="../images/logo.png"/>
 
         <!-- main wrapper -->
         <div class="main-wrapper">

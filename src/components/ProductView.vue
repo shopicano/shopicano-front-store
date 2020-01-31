@@ -55,7 +55,7 @@
                     <div class="row">
                         <div class="col-lg-6 mb-4 mb-lg-0">
                             <!-- product image slider -->
-                            <div class="product-slider">
+                            <!--<div class="product-slider">
                                 <div v-bind:data-image="getFullImagePath(product.image)">
                                     <img class="img-fluid w-100 image-zoom" v-bind:src="getFullImagePath(product.image)" alt="product-img"
                                          v-bind:data-zoom="getFullImagePath(product.image)">
@@ -68,7 +68,18 @@
                                     <img class="img-fluid w-100 image-zoom" v-bind:src="getFullImagePath(product.image)"  alt="product-img"
                                          v-bind:data-zoom="getFullImagePath(product.image)">
                                 </div>
-                            </div>
+                            </div>-->
+
+                            <VueAgile>
+                                <div class="slide">
+                                    <img class="img-fluid w-100 image-zoom" v-bind:src="getFullImagePath(product.image)" alt="product-img">
+                                </div>
+
+                                <div :key="img.id" class="slide" v-for="img in product.additional_images.split(',')">
+                                    <img class="img-fluid w-100 image-zoom" v-bind:src="getFullImagePath(img)" alt="product-img">
+                                </div>
+
+                            </VueAgile>
                         </div>
                         <!-- produt details -->
                         <div class="col-lg-6 mb-100">
@@ -166,7 +177,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-12">
+                        <div class="col-lg-12 mt-5">
                             <h3 class="mb-3">Product Description</h3>
                             <p class="text-gray mb-4">{{ product.description }}</p>
                             <!--<h4>Product Features</h4>
@@ -403,6 +414,7 @@
 <script>
     /* eslint-disable */
     import axios from "axios";
+    import { VueAgile } from 'vue-agile';
 
     import Header from "@/components/indexComponents/Header";
     import Navigation from "@/components/indexComponents/Navigation";
@@ -411,7 +423,7 @@
 
     export default {
         name: "ProductView",
-        components: {Footer, Navigation, Header},
+        components: {Footer, Navigation, Header, VueAgile},
         data() {
             return {
                 product: [],
@@ -420,41 +432,6 @@
         },
         mounted() {
             this.getProduct();
-
-            // tooltip
-            $(function () {
-                $('[data-toggle="tooltip"]').tooltip();
-            });
-
-            //  collection item quick view
-            $('.venobox').venobox({
-                framewidth: '80%',
-                frameheight: '100%'
-            });
-
-            // product Slider
-            $('.product-slider').slick({
-                autoplay: false,
-                infinite: true,
-                arrows: true,
-                prevArrow: '<button type=\'button\' class=\'prevArrow\'><i class=\'ti-arrow-left\'></i></button>',
-                nextArrow: '<button type=\'button\' class=\'nextArrow\'><i class=\'ti-arrow-right\'></i></button>',
-                dots: true,
-                customPaging: function (slider, i) {
-                    var image = $(slider.$slides[i]).data('image');
-                    return '<img class="img-fluid" src="' + image + '" alt="product-img">';
-                }
-            });
-
-            // image zoom
-            $('.image-zoom')
-                .wrap('<span></span>')
-                .css('display', 'block')
-                .parent()
-                .zoom({
-                    on: 'click',
-                    url: $(this).find('img').attr('data-zoom')
-                });
         },
         methods: {
             getProduct: function () {

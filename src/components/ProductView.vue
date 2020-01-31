@@ -27,7 +27,7 @@
                         <span class="mb-lg-4 mb-3 h5">$90.00</span>
                         <p class="mb-lg-4 mb-3 text-gray">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. sed ut perspic atis unde omnis iste natus</p>
                         <form action="#">
-                            <select class="form-control w-100 mb-2" name="color">
+                            <!--<select class="form-control w-100 mb-2" name="color">
                                 <option value="brown">Brown Color</option>
                                 <option value="gray">Gray Color</option>
                                 <option value="black">Black Color</option>
@@ -36,7 +36,7 @@
                                 <option value="small">Small Size</option>
                                 <option value="medium">Medium Size</option>
                                 <option value="large">Large Size</option>
-                            </select>
+                            </select>-->
                             <button class="btn btn-primary w-100 mb-lg-4 mb-3">add to cart</button>
                         </form>
                         <ul class="list-inline social-icon-alt">
@@ -55,7 +55,7 @@
                     <div class="row">
                         <div class="col-lg-6 mb-4 mb-lg-0">
                             <!-- product image slider -->
-                            <div class="product-slider">
+                            <!--<div class="product-slider">
                                 <div v-bind:data-image="getFullImagePath(product.image)">
                                     <img class="img-fluid w-100 image-zoom" v-bind:src="getFullImagePath(product.image)" alt="product-img"
                                          v-bind:data-zoom="getFullImagePath(product.image)">
@@ -68,25 +68,35 @@
                                     <img class="img-fluid w-100 image-zoom" v-bind:src="getFullImagePath(product.image)"  alt="product-img"
                                          v-bind:data-zoom="getFullImagePath(product.image)">
                                 </div>
-                            </div>
+                            </div>-->
+
+                            <VueAgile>
+                                <div class="slide">
+                                    <img class="img-fluid w-100 image-zoom" v-bind:src="getFullImagePath(product.image)" alt="product-img">
+                                </div>
+
+                                <div :key="img.id" class="slide" v-for="img in product.additional_images.split(',')">
+                                    <img class="img-fluid w-100 image-zoom" v-bind:src="getFullImagePath(img)" alt="product-img">
+                                </div>
+                            </VueAgile>
                         </div>
                         <!-- produt details -->
                         <div class="col-lg-6 mb-100">
                             <h2>{{ product.name }}</h2>
                             <i class="ti-check-box text-success"/>
                             <span class="text-success">Instock</span>
-                            <ul class="list-inline mb-4">
+                            <!--<ul class="list-inline mb-4">
                                 <li class="list-inline-item mx-0"><a href="#" class="rated"><i class="ti-star"/></a></li>
                                 <li class="list-inline-item mx-0"><a href="#" class="rated"><i class="ti-star"/></a></li>
                                 <li class="list-inline-item mx-0"><a href="#" class="rated"><i class="ti-star"/></a></li>
                                 <li class="list-inline-item mx-0"><a href="#" class="rated"><i class="ti-star"/></a></li>
                                 <li class="list-inline-item mx-0"><a href="#" class="rated"><i class="ti-star"/></a></li>
                                 <li class="list-inline-item"><a href="#" class="text-gray ml-3">( 3 Reviews )</a></li>
-                            </ul>
-                            <h4 class="text-primary h3">${{ product.price }} <s class="text-color ml-2">$90.00</s></h4>
-                            <h6 class="mb-4">You save: <span class="text-primary">$25.00 USD (30%)</span></h6>
-                            <div class="d-flex flex-column flex-sm-row justify-content-between mb-4">
-                                <div class="input-group  bootstrap-touchspin bootstrap-touchspin-injected">
+                            </ul>-->
+                            <h4 class="text-primary h3 mt-2">${{ product.price }} <!--<s class="text-color ml-2">$90.00</s>--></h4>
+                            <!--<h6 class="mb-4">You save: <span class="text-primary">$25.00 USD (30%)</span></h6>-->
+                            <div class="d-flex flex-column flex-sm-row justify-content-between mt-5 mb-4">
+                                <div class="input-group  bootstrap-touchspin bootstrap-touchspin-injected w-25">
                                     <input id="quantity" class="quantity mr-sm-2 mb-3 mb-sm-0 form-control"
                                            v-model.number="quantity"
                                            @keydown="$event.key === '-' ? $event.preventDefault() : null"
@@ -102,7 +112,7 @@
                                 </div>
 
 
-                                <select class="form-control mx-sm-2 mb-3 mb-sm-0" name="color">
+                                <!--<select class="form-control mx-sm-2 mb-3 mb-sm-0" name="color">
                                     <option value="brown">Brown Color</option>
                                     <option value="gray">Gray Color</option>
                                     <option value="black">Black Color</option>
@@ -112,20 +122,20 @@
                                     <option class="form-control" value="small">Small Size</option>
                                     <option value="medium">Medium Size</option>
                                     <option value="large">Large Size</option>
-                                </select>
+                                </select>-->
                             </div>
                             <button @click="addToCart(product.id, getFullImagePath(product.image), product.name, 1, product.price)"
                                     class="btn btn-primary mb-4">add to cart</button>
-                            <h4 class="mb-3"><span class="text-primary">Harry up!</span> Sale ends in</h4>
+                            <!--<h4 class="mb-3"><span class="text-primary">Harry up!</span> Sale ends in</h4>-->
                             <!-- syo-timer -->
                             <div class="syotimer dark">
                                 <div id="sale-timer" data-year="2019" data-month="5" data-day="1" data-hour="1"></div>
                             </div>
                             <hr>
-                            <div class="payment-option border border-primary mt-5 mb-4">
+                            <!--<div class="payment-option border border-primary mt-5 mb-4">
                                 <h5 class="bg-white">Guaranted Safe Checkout</h5>
                                 <img class="img-fluid w-100 p-3" src="../../public/images/payment-card/all-card.png" alt="payment-card">
-                            </div>
+                            </div>-->
                             <h5 class="mb-3">4 Great Reason to Buy From Us</h5>
                             <div class="row">
                                 <!-- service item -->
@@ -166,7 +176,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-12">
+                        <div class="col-lg-12 mt-5">
                             <h3 class="mb-3">Product Description</h3>
                             <p class="text-gray mb-4">{{ product.description }}</p>
                             <!--<h4>Product Features</h4>
@@ -257,13 +267,13 @@
             <!-- /testimonial -->
 
             <!-- related products -->
-            <section class="section">
+            <!--<section class="section">
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-12">
                             <h2 class="mb-4">Related Products</h2>
                         </div>
-                        <!-- product -->
+                        &lt;!&ndash; product &ndash;&gt;
                         <div class="col-lg-3 col-sm-6 mb-5 mb-lg-0">
                             <div class="product text-center">
                                 <div class="product-thumb">
@@ -287,15 +297,15 @@
                                     <h3 class="h5"><router-link class="text-color" to="/products">Box Leather Shoulder Bag</router-link></h3>
                                     <span class="h5">$520.79</span>
                                 </div>
-                                <!-- product label badge -->
+                                &lt;!&ndash; product label badge &ndash;&gt;
                                 <div class="product-label new">
                                     new
                                 </div>
                             </div>
                         </div>
-                        <!-- //end of product -->
+                        &lt;!&ndash; //end of product &ndash;&gt;
 
-                        <!-- product -->
+                        &lt;!&ndash; product &ndash;&gt;
                         <div class="col-lg-3 col-sm-6 mb-5 mb-lg-0">
                             <div class="product text-center">
                                 <div class="product-thumb">
@@ -319,15 +329,15 @@
                                     <h3 class="h5"><router-link class="text-color" to="/products">Sneaky Leather Sneakers</router-link></h3>
                                     <span class="h5">$270.79</span>
                                 </div>
-                                <!-- product label badge -->
+                                &lt;!&ndash; product label badge &ndash;&gt;
                                 <div class="product-label sale">
                                     -10%
                                 </div>
                             </div>
                         </div>
-                        <!-- //end of product -->
+                        &lt;!&ndash; //end of product &ndash;&gt;
 
-                        <!-- product -->
+                        &lt;!&ndash; product &ndash;&gt;
                         <div class="col-lg-3 col-sm-6 mb-5 mb-lg-0">
                             <div class="product text-center">
                                 <div class="product-thumb">
@@ -353,14 +363,14 @@
                                     <h3 class="h5"><a class="text-color" href="product-single.html">Puzzle leather shoulder bag</a></h3>
                                     <span class="h5">$400.79</span>
                                 </div>
-                                <!-- product label badge -->
+                                &lt;!&ndash; product label badge &ndash;&gt;
                                 <div class="product-label new">
                                     new
                                 </div>
                             </div>
                         </div>
-                        <!-- //end of product -->
-                        <!-- product -->
+                        &lt;!&ndash; //end of product &ndash;&gt;
+                        &lt;!&ndash; product &ndash;&gt;
                         <div class="col-lg-3 col-sm-6 mb-5 mb-lg-0">
                             <div class="product text-center">
                                 <div class="product-thumb">
@@ -388,10 +398,10 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- //end of product -->
+                        &lt;!&ndash; //end of product &ndash;&gt;
                     </div>
                 </div>
-            </section>
+            </section>-->
             <!-- /related products -->
 
             <Footer/>
@@ -403,6 +413,7 @@
 <script>
     /* eslint-disable */
     import axios from "axios";
+    import { VueAgile } from 'vue-agile';
 
     import Header from "@/components/indexComponents/Header";
     import Navigation from "@/components/indexComponents/Navigation";
@@ -411,7 +422,7 @@
 
     export default {
         name: "ProductView",
-        components: {Footer, Navigation, Header},
+        components: {Footer, Navigation, Header, VueAgile},
         data() {
             return {
                 product: [],
@@ -420,41 +431,6 @@
         },
         mounted() {
             this.getProduct();
-
-            // tooltip
-            $(function () {
-                $('[data-toggle="tooltip"]').tooltip();
-            });
-
-            //  collection item quick view
-            $('.venobox').venobox({
-                framewidth: '80%',
-                frameheight: '100%'
-            });
-
-            // product Slider
-            $('.product-slider').slick({
-                autoplay: false,
-                infinite: true,
-                arrows: true,
-                prevArrow: '<button type=\'button\' class=\'prevArrow\'><i class=\'ti-arrow-left\'></i></button>',
-                nextArrow: '<button type=\'button\' class=\'nextArrow\'><i class=\'ti-arrow-right\'></i></button>',
-                dots: true,
-                customPaging: function (slider, i) {
-                    var image = $(slider.$slides[i]).data('image');
-                    return '<img class="img-fluid" src="' + image + '" alt="product-img">';
-                }
-            });
-
-            // image zoom
-            $('.image-zoom')
-                .wrap('<span></span>')
-                .css('display', 'block')
-                .parent()
-                .zoom({
-                    on: 'click',
-                    url: $(this).find('img').attr('data-zoom')
-                });
         },
         methods: {
             getProduct: function () {

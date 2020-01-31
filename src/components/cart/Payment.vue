@@ -47,38 +47,31 @@
                                                      @error="onError"/>
                                     </div>
                                 </div>
-
-                                <!-- buttons -->
-                                <!--<div class="p-4 bg-gray d-flex justify-content-between">
-                                    <button @click="onBack"
-                                            class="btn btn-dark">Back</button>
-                                    <button class="btn btn-primary">Continue</button>
-                                </div>-->
-
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="border-box p-4">
                                 <h4>Order Summery</h4>
-                                <p>Excepteur sint occaecat cupidat non proi dent sunt.officia.</p>
                                 <ul class="list-unstyled">
                                     <li class="d-flex justify-content-between">
                                         <span>Subtotal</span>
                                         <span>${{ getCartTotalPrice }}</span>
                                     </li>
-                                    <!--<li class="d-flex justify-content-between">
-                                        <span>Shipping & Handling</span>
-                                        <span>$15.00</span>
+
+                                    <li v-if="!this.$store.getters.getterIsAllProductDigital" class="d-flex justify-content-between">
+                                        <span>Shipping Charge</span>
+                                        <span>${{ getDeliveryCharge }}</span>
                                     </li>
-                                    <li class="d-flex justify-content-between">
-                                        <span>Estimated Tax</span>
-                                        <span>$0.00</span>
-                                    </li>-->
+
+                                    <li v-if="this.$store.getters.getterStoreDiscount.type!=='' && this.$store.getters.getterStoreDiscount.amount!==''" class="d-flex justify-content-between">
+                                        <span class="text-capitalize">{{ this.$store.getters.getterStoreDiscount.type.replace('_', ' ') }}</span>
+                                        <span>${{ this.$store.getters.getterStoreDiscount.amount }}</span>
+                                    </li>
                                 </ul>
                                 <hr>
                                 <div class="d-flex justify-content-between">
                                     <span>Total</span>
-                                    <strong>USD ${{ getCartTotalPrice }}</strong>
+                                    <strong>USD ${{ getGrandTotal }}</strong>
                                 </div>
                             </div>
                         </div>
@@ -124,6 +117,12 @@
         computed: {
             getCartTotalPrice() {
                 return this.$store.getters.cartTotalPrice;
+            },
+            getGrandTotal() {
+                return this.$store.getters.getterStoreGrandTotal;
+            },
+            getDeliveryCharge() {
+                return this.$store.getters.getterStoreDeliveryCharge;
             }
         },
         methods: {
@@ -186,9 +185,6 @@
             onError: function (error) {
                 let message = error.message;
                 alert(message)
-            },
-            onBack: function () {
-                this.$router.push('/review');
             },
             onCheckout: function () {
                 console.log('payment_gateway ---> ' + this.order.payment_gateway);

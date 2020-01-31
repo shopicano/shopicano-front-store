@@ -66,29 +66,31 @@
                                 <!-- /review -->
 
                                 <!-- shipping-information -->
-                                <h3 class="mt-5 mb-5 border-bottom pb-2">Shipping Information</h3>
-                                <div class="row mb-5">
-                                    <div class="col-md-6">
-                                        <h4 class="mb-3">Shipping Address</h4>
-                                        <ul class="list-unstyled">
-                                            <li>{{ shippingInfo.firstName + ' ' + shippingInfo.lastName }}</li>
-                                            <li>{{ shippingInfo.address }} </li>
-                                            <li>{{ shippingInfo.phone }} </li>
-                                            <li>{{ shippingInfo.email }}</li>
-                                        </ul>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <h4 class="mb-3">Shipping Method</h4>
-                                        <ul class="list-unstyled">
-                                            <li>{{ getShippingMethod(shippingInfo.shippingMethod) }}</li>
-                                            <li>{{ deliveryTime }}</li>
-                                        </ul>
+                                <div v-if="!this.$store.getters.getterIsAllProductDigital">
+                                    <h3 class="mt-5 mb-5 border-bottom pb-2">Shipping Information</h3>
+                                    <div class="row mb-5">
+                                        <div class="col-md-6">
+                                            <h4 class="mb-3">Shipping Address</h4>
+                                            <ul class="list-unstyled">
+                                                <li>{{ shippingInfo.firstName + ' ' + shippingInfo.lastName }}</li>
+                                                <li>{{ shippingInfo.address }} </li>
+                                                <li>{{ shippingInfo.phone }} </li>
+                                                <li>{{ shippingInfo.email }}</li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h4 class="mb-3">Shipping Method</h4>
+                                            <ul class="list-unstyled">
+                                                <li>{{ getShippingMethod(shippingInfo.shippingMethod) }}</li>
+                                                <li>{{ deliveryTime }}</li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
                                 <!-- @shipping-information -->
 
                                 <!-- billing-information -->
-                                <h3 class="mb-5 border-bottom pb-2">Billing Information</h3>
+                                <h3 class="mb-5 border-bottom pb-2 mt-5">Billing Information</h3>
                                 <div class="row mb-5">
                                     <div class="col">
                                         <h4 class="mb-3">Billing Address</h4>
@@ -102,7 +104,7 @@
                                 </div>
                                 <!-- @billing-information -->
 
-                                <div class="row">
+                                <div v-if="totalPrice !== 0" class="row">
                                     <div class="col-12">
                                         <h3 class="mb-5 border-bottom pb-2">Select A Payment Method</h3>
                                     </div>
@@ -131,7 +133,7 @@
                                         <span>Subtotal</span>
                                         <span>${{ getCartTotalPrice }}</span>
                                     </li>
-                                    <li class="d-flex justify-content-between">
+                                    <li v-if="!this.$store.getters.getterIsAllProductDigital" class="d-flex justify-content-between">
                                         <span>Shipping Charge</span>
                                         <span>${{ shippingMethodDetailed.delivery_charge }}</span>
                                     </li>
@@ -139,14 +141,6 @@
                                         <span class="text-capitalize">{{ discountType.replace('_', ' ') }}</span>
                                         <span>${{ discountAmount }}</span>
                                     </li>
-                                    <!--<li class="d-flex justify-content-between">
-                                        <span>Shipping & Handling</span>
-                                        <span>$15.00</span>
-                                    </li>
-                                    <li class="d-flex justify-content-between">
-                                        <span>Estimated Tax</span>
-                                        <span>$0.00</span>
-                                    </li>-->
                                 </ul>
                                 <hr>
                                 <div class="d-flex justify-content-between">
@@ -191,7 +185,6 @@
                 billingInfo: [],
                 billingAddress_id: '',
                 shippingAddress_id: '',
-                orderID: 'uuuuuu',
                 is_purchase_confirmed: false,
                 nonce: '',
                 gatewayName: '',
@@ -202,8 +195,7 @@
                 paymentMethods: '',
                 shippingMethodDetailed: '',
                 coupon: '',
-                discount: [],
-                discountAmount: '',
+                discountAmount: 0,
                 discountType: '',
                 totalPrice: '',
             };
@@ -223,7 +215,33 @@
             generateTotalPrice: function () {
                 this.totalPrice = this.$store.getters.cartTotalPrice;
 
-                return this.totalPrice = this.totalPrice + this.shippingMethodDetailed.delivery_charge - this.discountAmount;
+                if (this.$store.getters.getterIsAllProductDigital) {
+                    this.totalPrice = this.totalPrice - this.discountAmount;
+
+                    if (this.totalPrice <= 0) {
+                        this.totalPrice = 0;
+                    }
+                    this.$store.dispatch('storeGrandTotalAction', this.totalPrice);
+                    this.$store.dispatch('storeDiscountAction', {
+                        'amount': this.discountAmount,
+                        'type': this.discountType,
+                    });
+
+                    return this.$store.getters.getterStoreGrandTotal;
+                } else if (!this.$store.getters.getterIsAllProductDigital) {
+                    this.totalPrice = this.totalPrice + this.shippingMethodDetailed.delivery_charge - this.discountAmount;
+
+                    if (this.totalPrice <= 0) {
+                        this.totalPrice = 0;
+                    }
+                    this.$store.dispatch('storeGrandTotalAction', this.totalPrice);
+                    this.$store.dispatch('storeDiscountAction', {
+                        'amount': this.discountAmount,
+                        'type': this.discountType,
+                    });
+
+                    return this.$store.getters.getterStoreGrandTotal;
+                }
             },
         },
         methods: {
@@ -235,6 +253,7 @@
                 }).then(resp => {
                     console.log(resp);
                     this.shippingMethodDetailed = resp.data.data;
+                    this.$store.dispatch('storeDeliveryChargeAction', this.shippingMethodDetailed.delivery_charge)
                 }).catch(err => {
                     console.log(err)
                 })
@@ -248,10 +267,6 @@
                     }
                 }).then(resp => {
                     console.log(resp);
-
-                    if (this.discount.length > 0) {
-                        this.discount.push(resp.data.data);
-                    }
 
                     this.discountAmount = resp.data.data.discount_amount;
                     this.discountType = resp.data.data.discount_type;
@@ -287,16 +302,24 @@
                     order = {
                         items: items,
                         billing_address_id: billingAddressId,
-                        payment_method_id: this.payment_method,
                         shipping_address_id: shippingAddressId,
-                        coupon_code: this.coupon,
+                    };
+                    if (this.coupon !== '') {
+                        order['coupon_code'] = this.coupon
+                    }
+                    if (this.totalPrice !== 0) {
+                        order['payment_method_id'] = this.payment_method
                     }
                 } else {
                     order = {
                         items: items,
                         billing_address_id: billingAddressId,
-                        payment_method_id: this.payment_method,
-                        coupon_code: this.coupon,
+                    };
+                    if (this.coupon !== '') {
+                        order['coupon_code'] = this.coupon
+                    }
+                    if (this.totalPrice !== 0) {
+                        order['payment_method_id'] = this.payment_method
                     }
                 }
 
@@ -306,7 +329,12 @@
                     }
                 }).then(resp => {
                     console.log(resp);
-                    return this.$router.push({ path: `/payment/${resp.data.data.id}` });
+
+                    if (this.totalPrice === 0) {
+                        this.$router.push({ path: `/payment/${resp.data.data.id}`});
+                        return
+                    }
+                    this.$router.push({ path: `/payment/${resp.data.data.id}`});
                 }).catch(err => {
                     console.log(err)
                 });
@@ -358,37 +386,7 @@
                     console.log(err)
                 });
             },
-            onSuccess: function(payload) {
-                /*axios.post(Settings.GetApiUrl() + '/orders/' + this.orderID + '/nonce', {},{
-                    headers: {
-                        "Authorization": "Bearer " + SessionStore.GetAccessToken(),
-                    }
-                }).then(resp => {
-                    console.log(resp);
-
-                    this.nonce = '';
-                }).catch(err => [
-                    log(err)
-                ]);*/
-
-                let nonce = payload.nonce;
-                //console.log(payload);
-
-                axios.post(Settings.GetApiUrl() + '/orders/' + this.orderID + '/pay', {nonce: nonce}, {
-                    headers: {
-                        "Authorization": "Bearer " + SessionStore.GetAccessToken(),
-                    }
-                }).then(resp => {
-                    console.log(resp)
-                }).catch(err => {
-                    console.log(err)
-                });
-            },
-            onError: function (error) {
-                let message = error.message;
-                alert(message)
-            },
-            // Checking are shippingInfo & billingInfo stored in state
+            // Checking are the shippingInfo & billingInfo stored in state
             checkRequired : function(){
                 if (Object.keys(this.shippingInfo).length < 1 || Object.keys(this.billingInfo).length < 1) {
                     this.$router.push('/shipping');
@@ -400,7 +398,6 @@
 
                 this.getSippingMethod(this.shippingInfo.shippingMethod);
                 this.getPaymentMethodList();
-                //this.token = localStorage.getItem('client_token');
             },
             getShippingInfo: function() {
                 return this.$store.getters.getterShippingInfo;
@@ -434,11 +431,7 @@
                             this.createBillingAddress('');
                         }
                         console.log(this.shippingAddress_id)
-                        //this.createBillingAddress();
                     }
-                    //this.getOrderId();
-
-                    //this.$router.push({ path: `/payment/${orderID}` });
                 } else {
                     localStorage.setItem('redirect_to', '/review');
                     console.log(localStorage.getItem('redirect_to'));

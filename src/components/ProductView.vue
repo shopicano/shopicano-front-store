@@ -37,7 +37,7 @@
                                 <option value="medium">Medium Size</option>
                                 <option value="large">Large Size</option>
                             </select>-->
-                            <button class="btn btn-primary w-100 mb-lg-4 mb-3">add to cart</button>
+                            <button class="btn btn-primary w-100 mb-lg-4 mb-3 mt-1">add to cart</button>
                         </form>
                         <ul class="list-inline social-icon-alt">
                             <li class="list-inline-item"><a href="#"><i class="ti-facebook"/></a></li>
@@ -70,7 +70,7 @@
                                 </div>
                             </div>-->
 
-                            <VueAgile>
+                            <VueAgile :options="sliderOptions">
                                 <div class="slide">
                                     <img class="img-fluid w-100 image-zoom" v-bind:src="getFullImagePath(product.image)" alt="product-img">
                                 </div>
@@ -131,50 +131,12 @@
                             <div class="syotimer dark">
                                 <div id="sale-timer" data-year="2019" data-month="5" data-day="1" data-hour="1"></div>
                             </div>
-                            <hr>
+
                             <!--<div class="payment-option border border-primary mt-5 mb-4">
                                 <h5 class="bg-white">Guaranted Safe Checkout</h5>
                                 <img class="img-fluid w-100 p-3" src="../../public/images/payment-card/all-card.png" alt="payment-card">
                             </div>-->
-                            <h5 class="mb-3">4 Great Reason to Buy From Us</h5>
-                            <div class="row">
-                                <!-- service item -->
-                                <div class="col-lg-3 col-6 mb-4 mb-lg-0">
-                                    <div class="d-flex">
-                                        <i class="ti-truck icon-md mr-3"/>
-                                        <div class="align-items-center">
-                                            <h6>Free Shipping</h6>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- service item -->
-                                <div class="col-lg-3 col-6 mb-4 mb-lg-0">
-                                    <div class="d-flex">
-                                        <i class="ti-shield icon-md mr-3"/>
-                                        <div class="align-items-center">
-                                            <h6>Secure Payment</h6>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- service item -->
-                                <div class="col-lg-3 col-6 mb-4 mb-lg-0">
-                                    <div class="d-flex">
-                                        <i class="ti-money icon-md mr-3"/>
-                                        <div class="align-items-center">
-                                            <h6>Lowest Price</h6>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- service item -->
-                                <div class="col-lg-3 col-6 mb-4 mb-lg-0">
-                                    <div class="d-flex">
-                                        <i class="ti-reload icon-md mr-3"/>
-                                        <div class="align-items-center">
-                                            <h6>30 Days Return</h6>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+
                         </div>
                         <div class="col-lg-12 mt-5">
                             <h3 class="mb-3">Product Description</h3>
@@ -427,6 +389,9 @@
             return {
                 product: [],
                 quantity: 1,
+                sliderOptions: {
+                    navButtons: false,
+                }
             };
         },
         mounted() {

@@ -78,7 +78,6 @@
                                 <div :key="img.id" class="slide" v-for="img in product.additional_images.split(',')">
                                     <img class="img-fluid w-100 image-zoom" v-bind:src="getFullImagePath(img)" alt="product-img">
                                 </div>
-
                             </VueAgile>
                         </div>
                         <!-- produt details -->

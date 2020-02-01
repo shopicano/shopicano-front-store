@@ -12,7 +12,6 @@ import Login from "@/components/userForms/Login";
 import SignUp from "@/components/userForms/SignUp";
 import Cart from "@/components/cart/Cart";
 import Shipping from "@/components/cart/Shipping";
-import Payment from "@/components/cart/Payment";
 import Review from "@/components/cart/Review";
 import Confirmation from "@/components/cart/Confirmation";
 import ProductView from "@/components/ProductView";
@@ -20,6 +19,8 @@ import ContactUs from "@/components/ContactUs";
 import Dashboard from "@/components/userDetails/Dashboard";
 import Profile from "@/components/userDetails/Profile";
 import Addresses from "@/components/userDetails/Addresses";
+import Billing from "@/components/cart/Billing";
+import Payment from "@/components/cart/Payment";
 
 Vue.config.productionTip = false;
 
@@ -74,6 +75,11 @@ const routes = [
     {
         path: '/shipping',
         component: Shipping,
+    },
+    {
+        /*path: '/payment/:orderID',*/
+        path: '/billing',
+        component: Billing,
     },
     {
         path: '/payment/:orderID',

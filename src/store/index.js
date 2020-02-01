@@ -38,13 +38,17 @@ export const store = new Vuex.Store({
                         state.cartTotal = state.cartTotal + element.subTotal;
                     })
                 }
-
-
-
             } else {
-                Object.assign(payload, {subTotal: payload.itemPrice});
-                state.cartProducts.push(payload);
-                state.cartTotal += payload.itemPrice;
+                if (Object.keys(payload).length === 7) {
+                    Object.assign(payload, {subTotal: payload.itemPrice});
+                    state.cartProducts.push(payload);
+                    state.cartTotal += payload.itemPrice * payload.itemQuantity;
+                } else {
+                    Object.assign(payload, {subTotal: payload.itemPrice});
+                    state.cartProducts.push(payload);
+                    state.cartTotal += payload.itemPrice;
+                }
+
             }
 
 

@@ -124,7 +124,7 @@
                                     <option value="large">Large Size</option>
                                 </select>-->
                             </div>
-                            <button @click="addToCart(product.id, getFullImagePath(product.image), product.name, quantity, product.price)"
+                            <button @click="addToCart(product.id, product.store_id, getFullImagePath(product.image), product.name, quantity, product.price, product.is_digital)"
                                     class="btn btn-primary mb-4">add to cart</button>
                             <!--<h4 class="mb-3"><span class="text-primary">Harry up!</span> Sale ends in</h4>-->
                             <!-- syo-timer -->
@@ -408,9 +408,31 @@
             getFullImagePath(subPath) {
                 return Settings.GetMediaUrl() + subPath;
             },
-            addToCart: function (id, imgUrl, itemName, quantity, price ) {
-                //this.$store.dispatch('changeQuantityAction', {itemId: id, qntt: quantity});
-                this.$store.dispatch('addItemToCartAction', {itemID: id, itemThumbnail: imgUrl, itemName: itemName, itemQuantity: quantity, itemPrice: price, subTotal:price, fromView: true})
+            addToCart: function (id, store_id, imgUrl, itemName, quantity, price, isDigital) {
+                const digital = this.$store.getters.getterIsAllProductDigital;
+                const prevStoreId = this.$store.getters.getterIsFromSameStore;
+
+                if (prevStoreId === '' || store_id === prevStoreId) {
+                    this.$store.dispatch('isFromSameStoreAction', store_id)
+                } else {
+                    return alert('All selected products must be from same store.')
+                }
+
+                if (digital === '' || digital === isDigital) {
+                    this.$store.dispatch('storeIsProductDigitalAction', isDigital);
+                    this.$store.dispatch('addItemToCartAction', {
+                        itemID: id,
+                        itemThumbnail: imgUrl,
+                        itemName: itemName,
+                        itemQuantity: quantity,
+                        itemPrice: price,
+                        subTotal:price,
+                        fromView: true,
+                    });
+                } else if (digital !== isDigital) {
+                    alert('Cart must have all Digital or all Non-Digital products');
+                }
+
             },
             onQuantityUp: function () {
                 this.quantity += 1;

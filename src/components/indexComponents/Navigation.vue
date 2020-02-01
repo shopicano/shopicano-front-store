@@ -55,7 +55,7 @@
                             </div>
                             <div class="text-center">
                                 <router-link to="/cart" class="btn btn-dark btn-mobile rounded-0">view cart</router-link>
-                                <router-link to="/billing" class="btn btn-dark btn-mobile rounded-0">check out</router-link>
+                                <button @click="onCheckout" class="btn btn-dark btn-mobile rounded-0">check out</button>
                             </div>
                         </div>
                     </div>
@@ -67,6 +67,8 @@
 
 <script>
     /* eslint-disable */
+    import SessionStore from "@/common/session_store";
+
     export default {
         name: "Navigation",
         props: {
@@ -113,6 +115,14 @@
             },
             emitToShop: function () {
                 this.$emit('changeValue', false)
+            },
+            onCheckout: function () {
+                if (SessionStore.IsLoggedIn()) {
+                    this.$router.push('/billing')
+                } else {
+                    localStorage.setItem('redirect_to', this.$route.path);
+                    this.$router.push('/login');
+                }
             }
         }
     }

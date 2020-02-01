@@ -21,16 +21,33 @@ export const store = new Vuex.Store({
             if (state.cartProducts.length!==0 && state.cartProducts.some(item => item.itemID === payload.itemID)){
                 const index = state.cartProducts.findIndex(x => x.itemID === payload.itemID);
 
-                state.cartProducts[index].itemQuantity += payload.itemQuantity;
-                const subTotal = state.cartProducts[index].itemPrice * state.cartProducts[index].itemQuantity;
+                if (Object.keys(payload).length === 6) {
+                    state.cartProducts[index].itemQuantity += payload.itemQuantity;
+                    const subTotal = state.cartProducts[index].itemPrice * state.cartProducts[index].itemQuantity;
+                    Object.assign(state.cartProducts[index], {subTotal: subTotal});
 
-                Object.assign(state.cartProducts[index], {subTotal: subTotal});
+                    state.cartTotal += payload.itemPrice;
+                } else if (Object.keys(payload).length === 7) {
+                    state.cartProducts[index].itemQuantity = payload.itemQuantity;
+
+                    const subTotal = state.cartProducts[index].itemPrice * state.cartProducts[index].itemQuantity;
+                    Object.assign(state.cartProducts[index], {subTotal: subTotal});
+
+                    state.cartTotal = 0;
+                    state.cartProducts.forEach( element => {
+                        state.cartTotal = state.cartTotal + element.subTotal;
+                    })
+                }
+
+
+
             } else {
                 Object.assign(payload, {subTotal: payload.itemPrice});
                 state.cartProducts.push(payload);
+                state.cartTotal += payload.itemPrice;
             }
 
-            state.cartTotal += payload.itemPrice;
+
         },
         removeItemFromCart: (state, payloadID) => {
             state.cartProducts.forEach( element => {

@@ -100,7 +100,7 @@
                                     <input id="quantity" class="quantity mr-sm-2 mb-3 mb-sm-0 form-control"
                                            v-model.number="quantity"
                                            @keydown="$event.key === '-' ? $event.preventDefault() : null"
-                                           min="0"
+                                           min="1"
                                            type="number">
 
                                     <span class="input-group-btn-vertical">
@@ -409,13 +409,14 @@
                 return Settings.GetMediaUrl() + subPath;
             },
             addToCart: function (id, imgUrl, itemName, quantity, price ) {
-                this.$store.dispatch('addItemToCartAction', {itemID: id, itemThumbnail: imgUrl, itemName: itemName, itemQuantity: quantity, itemPrice: price, subTotal:price})
+                //this.$store.dispatch('changeQuantityAction', {itemId: id, qntt: quantity});
+                this.$store.dispatch('addItemToCartAction', {itemID: id, itemThumbnail: imgUrl, itemName: itemName, itemQuantity: quantity, itemPrice: price, subTotal:price, fromView: true})
             },
             onQuantityUp: function () {
                 this.quantity += 1;
             },
             onQuantityDown: function () {
-                if (this.quantity > 0) {
+                if (this.quantity > 1) {
                     this.quantity -= 1;
                 }
             }

@@ -124,7 +124,7 @@
                                     <option value="large">Large Size</option>
                                 </select>-->
                             </div>
-                            <button @click="addToCart(product.id, getFullImagePath(product.image), product.name, 1, product.price)"
+                            <button @click="addToCart(product.id, getFullImagePath(product.image), product.name, quantity, product.price)"
                                     class="btn btn-primary mb-4">add to cart</button>
                             <!--<h4 class="mb-3"><span class="text-primary">Harry up!</span> Sale ends in</h4>-->
                             <!-- syo-timer -->

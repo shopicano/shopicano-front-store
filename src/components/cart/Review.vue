@@ -422,7 +422,7 @@
                         } else {
                             this.createBillingAddress('');
                         }
-                        console.log(this.shippingAddress_id)
+                        //console.log(this.shippingAddress_id)
                     }
                 } else {
                     localStorage.setItem('redirect_to', '/review');

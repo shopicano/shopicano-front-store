@@ -21,6 +21,7 @@ import Profile from "@/components/userDetails/Profile";
 import Addresses from "@/components/userDetails/Addresses";
 import Billing from "@/components/cart/Billing";
 import Payment from "@/components/cart/Payment";
+import OrderTrack from "@/components/userDetails/OrderTrack";
 
 Vue.config.productionTip = false;
 
@@ -90,7 +91,7 @@ const routes = [
         component: Review,
     },
     {
-        path: '/confirmation',
+        path: '/confirmation/:id',
         component: Confirmation,
     },
     {
@@ -108,6 +109,10 @@ const routes = [
     {
         path: '/address',
         component: Addresses,
+    },
+    {
+        path: '/ordertrack/:id',
+        component: OrderTrack,
     },
 ];
 

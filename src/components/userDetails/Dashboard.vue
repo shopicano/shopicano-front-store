@@ -205,7 +205,7 @@
             return {
                 rows: 100,
                 currentPage: 1,
-                perPage: 5,
+                perPage: 10,
                 orderList: '',
                 trackClicked: false,
                 trackingHash: '',

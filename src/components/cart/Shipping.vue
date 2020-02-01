@@ -294,7 +294,6 @@
                             zipCode: this.zipCode_shipping,
                             shippingMethod: this.shippingMethod,
                         });
-
                         this.$router.push('/review');
                     }
                 }
@@ -303,15 +302,14 @@
                 if (!this.$store.getters.getterIsAllProductDigital) {
                     this.getShippingMethodList();
                 }
-                this.loadAddressList();
 
+                this.loadAddressList();
                 const billingInstance = this.$store.getters.getterBillingInfo;
                 const shippingInstance = this.$store.getters.getterShippingInfo;
 
-
                 if (Object.keys(billingInstance).length !== 0 && Object.keys(shippingInstance).length !== 0){
                     this.is_shipping_sameAs_billing = this.$store.getters.getterIfShippingSameAsBilling;
-                    
+
                     // Shipping info
                     this.firstName_shipping = shippingInstance.firstName;
                     this.lastName_shipping = shippingInstance.lastName;

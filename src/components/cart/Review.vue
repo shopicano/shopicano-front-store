@@ -332,7 +332,7 @@
                     console.log(resp);
 
                     if (this.totalPrice === 0) {
-                        this.$router.push('/confirmation');
+                        this.$router.push({ path: `/payment/${resp.data.data.id}`});
                         return
                     }
                     this.$router.push({ path: `/payment/${resp.data.data.id}`});
@@ -389,7 +389,9 @@
             },
             // Checking are the shippingInfo & billingInfo stored in state
             checkRequired : function(){
-                if (Object.keys(this.shippingInfo).length < 1 || Object.keys(this.billingInfo).length < 1) {
+                if (this.$store.getters.getterIsAllProductDigital && Object.keys(this.billingInfo).length < 1) {
+                    this.$router.push('/billing');
+                } else if (!this.$store.getters.getterIsAllProductDigital && (Object.keys(this.shippingInfo).length < 1 || Object.keys(this.billingInfo).length < 1)) {
                     this.$router.push('/shipping');
                 }
             },
@@ -397,7 +399,9 @@
                 this.shippingInfo = this.getShippingInfo();
                 this.billingInfo = this.getBillingInfo();
 
-                this.getSippingMethod(this.shippingInfo.shippingMethod);
+                if (!this.$store.getters.getterIsAllProductDigital) {
+                    this.getSippingMethod(this.shippingInfo.shippingMethod);
+                }
                 this.getPaymentMethodList();
             },
             getShippingInfo: function() {

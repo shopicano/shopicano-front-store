@@ -128,7 +128,9 @@
                 return this.$store.getters.getterShippingInfo;
             },
             checkRequired : function(){
-                if (Object.keys(this.shippingInfo).length < 1) {
+                if (!this.$store.getters.getterIsAllProductDigital && Object.keys(this.shippingInfo).length < 1) {
+                    this.$router.push('/review');
+                } else if (this.$store.getters.getterIsAllProductDigital && Object.keys(this.billingInfo).length < 1) {
                     this.$router.push('/review');
                 }
             },

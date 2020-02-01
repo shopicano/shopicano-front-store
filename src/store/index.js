@@ -12,6 +12,9 @@ export const store = new Vuex.Store({
         shippingInfo: {},
         isAllProductDigital: '',
         storeID: '',
+        grandTotal: 0,
+        discount: '',
+        deliveryCharge: '',
     },
     mutations: {
         addItemToCart: (state, payload) => {
@@ -19,9 +22,9 @@ export const store = new Vuex.Store({
                 const index = state.cartProducts.findIndex(x => x.itemID === payload.itemID);
 
                 state.cartProducts[index].itemQuantity += payload.itemQuantity;
-                const subTolat = state.cartProducts[index].itemPrice * state.cartProducts[index].itemQuantity;
+                const subTotal = state.cartProducts[index].itemPrice * state.cartProducts[index].itemQuantity;
 
-                Object.assign(state.cartProducts[index], {subTotal: subTolat});
+                Object.assign(state.cartProducts[index], {subTotal: subTotal});
             } else {
                 Object.assign(payload, {subTotal: payload.itemPrice});
                 state.cartProducts.push(payload);
@@ -60,9 +63,30 @@ export const store = new Vuex.Store({
         storeIsProductDigital(state, payload) {
             state.isAllProductDigital = payload;
         },
-        isFromSameStore(state, payload) {
+        isFromSameStore: (state, payload) => {
             state.storeID = payload;
-        }
+        },
+        storeGrandTotal: (state, payload) => {
+            state.grandTotal = payload;
+        },
+        storeDiscount: (state, payload) => {
+            state.discount = payload;
+        },
+        storeDeliveryCharge: (state, payload) => {
+            state.deliveryCharge = payload;
+        },
+        resetState: (state) => {
+            state.cartProducts = [];
+            state.cartTotal = 0;
+            state.shipping_sameAs_billing = Boolean;
+            state.billingInfo = {};
+            state.shippingInfo = {};
+            state.isAllProductDigital = '';
+            state.storeID = '';
+            state.grandTotal = 0;
+            state.discount = '';
+            state.deliveryCharge = '';
+        },
     },
     actions: {
         addItemToCartAction: (context, payload) => {
@@ -88,6 +112,18 @@ export const store = new Vuex.Store({
         },
         isFromSameStoreAction: (context, payload) => {
             context.commit('isFromSameStore', payload)
+        },
+        storeGrandTotalAction: (context, payload) => {
+            context.commit('storeGrandTotal', payload)
+        },
+        storeDiscountAction: (context, payload) => {
+            context.commit('storeDiscount', payload)
+        },
+        storeDeliveryChargeAction: (context, payload) => {
+            context.commit('storeDeliveryCharge', payload)
+        },
+        resetStateAction: (context) => {
+            context.commit('resetState')
         }
     },
     getters: {
@@ -114,6 +150,15 @@ export const store = new Vuex.Store({
         },
         getterIsFromSameStore: (state) => {
             return state.storeID
+        },
+        getterStoreGrandTotal: (state) => {
+            return state.grandTotal
+        },
+        getterStoreDiscount: (state) => {
+            return state.discount
+        },
+        getterStoreDeliveryCharge: (state) => {
+            return state.deliveryCharge
         }
     },
 });

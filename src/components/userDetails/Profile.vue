@@ -23,7 +23,6 @@
                             <ul class="list-inline dashboard-menu text-center">
                                 <li class="list-inline-item"><router-link class="active" to="/profile-details">Profile Details</router-link></li>
                                 <li class="list-inline-item"><router-link to="/orders">Orders</router-link></li>
-                                <li class="list-inline-item"><router-link to="/address">Address</router-link></li>
                             </ul>
                             <div class="dashboard-wrapper dashboard-user-profile">
                                 <div class="media">

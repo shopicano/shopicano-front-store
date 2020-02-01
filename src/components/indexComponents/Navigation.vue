@@ -2,7 +2,7 @@
     <!-- navigation -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white w-100" id="navbar">
         <a class="navbar-brand order-2 order-lg-1" href="/">
-            <img class="img-fluid" src="images/logo.png" alt="logo">
+            <img class="img-fluid" :src="logo" alt="logo">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -55,7 +55,7 @@
                             </div>
                             <div class="text-center">
                                 <router-link to="/cart" class="btn btn-dark btn-mobile rounded-0">view cart</router-link>
-                                <router-link to="/shipping" class="btn btn-dark btn-mobile rounded-0">check out</router-link>
+                                <router-link to="/billing" class="btn btn-dark btn-mobile rounded-0">check out</router-link>
                             </div>
                         </div>
                     </div>
@@ -69,10 +69,17 @@
     /* eslint-disable */
     export default {
         name: "Navigation",
+        props: {
+            logo: {
+                default: 'images/logo.png',
+                type: String,
+            }
+        },
         data(){
             return {
                 isCartOpen: false,
                 isCartNil: true,
+                logo: 'images/logo.png',
             };
         },
         computed: {

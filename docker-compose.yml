@@ -4,6 +4,6 @@ services:
   shopicano_frontend:
     image: docker.pkg.github.com/shopicano/shopicano-front-store/shopicano-front-store:1.0.5-rc
     environment:
-      - .VUE_APP_SHOPICANO_URL=http://localhost:9090
+      - VUE_APP_SHOPICANO_URL=http://localhost:9090
     ports:
       - 9100:8080

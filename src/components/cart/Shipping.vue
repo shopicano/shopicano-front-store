@@ -30,19 +30,19 @@
                                         <span class="d-block h4">Shipping Method</span>
                                     </span>
                                     <span  class="text-center d-inline-block nav-item">
-                                        <i class="ti-eye d-block mb-2"/>
-                                        <span class="d-block h4">Review</span>
-                                    </span>
-                                    <span  class="text-center d-inline-block nav-item">
                                         <i class="ti-wallet d-block mb-2"/>
                                         <span class="d-block h4">Payment Method</span>
+                                    </span>
+                                    <span  class="text-center d-inline-block nav-item">
+                                        <i class="ti-eye d-block mb-2"/>
+                                        <span class="d-block h4">Review</span>
                                     </span>
                                 </div>
                                 <!-- /navbar -->
 
                                 <!-- Billing-address -->
                                 <h3 class="mb-5 border-bottom pb-2">Billing Address</h3>
-                                <div class="col-sm-12">
+                                <div v-if="addressList.length > 0" class="col-sm-12">
                                     <label>Fill form by Previous Information</label>
                                     <select v-model="selectedBillingAddressID"
                                             @change="fetchAddressInfo(selectedBillingAddressID)" class="form-control" name="city">
@@ -118,7 +118,7 @@
                                         <label class="ml-2" for="sameas">Shipping Address same as Billing Address</label>
                                     </div>
 
-                                    <div v-if="!is_shipping_sameAs_billing" class="col-sm-12">
+                                    <div v-if="!is_shipping_sameAs_billing || addressList.length > 0" class="col-sm-12">
                                         <label>Fill form by Previous Information</label>
                                         <select v-model="selectedShippingAddressID"
                                                 @change="fetchAddressInfo(selectedShippingAddressID)" class="form-control" name="city">
@@ -280,6 +280,7 @@
                 addressList: [],    // List of addresses if there any available - (For drop down)
                 selectedBillingAddressID: '',    // Selected selectedBillingAddressID from the list
                 selectedShippingAddressID: '',
+                selectedAddress: [],
             };
         },
         mounted() {
@@ -315,6 +316,7 @@
                         "Authorization": "Bearer " + SessionStore.GetAccessToken(),
                     }
                 }).then(resp => {
+                    this.selectedAddress = resp.data.data;
                     console.log(resp.data.data)
                 }).catch(err => {
                     console.log(err)

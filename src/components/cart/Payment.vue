@@ -29,16 +29,18 @@
                                         <i class="ti-truck d-block mb-2"/>
                                         <span class="d-block h4">Shipping Method</span>
                                     </span>
-                                    <span  class="text-center d-inline-block nav-item">
-                                        <i class="ti-eye d-block mb-2"/>
-                                        <span class="d-block h4">Review</span>
-                                    </span>
                                     <span  class="text-center d-inline-block nav-item active">
                                         <i class="ti-wallet d-block mb-2"/>
                                         <span class="d-block h4">Payment Method</span>
                                     </span>
+                                    <span  class="text-center d-inline-block nav-item">
+                                        <i class="ti-eye d-block mb-2"/>
+                                        <span class="d-block h4">Review</span>
+                                    </span>
                                 </div>
                                 <!-- /navbar -->
+
+
 
                                 <div v-if="is_gateway_braintree" class="row mb-5">
                                     <div class="col">
@@ -110,9 +112,9 @@
             };
         },
         mounted() {
-            this.setInfo();
+            /*this.setInfo();
             this.checkRequired();
-            this.getOrderDetails();
+            this.getOrderDetails();*/
         },
         computed: {
             getCartTotalPrice() {

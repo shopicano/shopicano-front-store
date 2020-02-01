@@ -25,13 +25,14 @@
                             <div class="inner-wrapper border-box">
                                 <!-- navbar -->
                                 <div class="align-content-between nav mb-5">
-                                    <span class="text-center d-inline-block active nav-item">
-                                        <i class="ti-truck d-block mb-2"/>
-                                        <span class="d-block h4">Shipping Method</span>
-                                    </span>
                                     <span  class="text-center d-inline-block nav-item">
                                         <i class="ti-wallet d-block mb-2"/>
-                                        <span class="d-block h4">Payment Method</span>
+                                        <span class="d-block h4">Billing Info</span>
+                                    </span>
+                                    <span v-if="!this.$store.getters.getterIsAllProductDigital"
+                                          class="text-center d-inline-block active nav-item">
+                                        <i class="ti-truck d-block mb-2"/>
+                                        <span class="d-block h4">Shipping Info</span>
                                     </span>
                                     <span  class="text-center d-inline-block nav-item">
                                         <i class="ti-eye d-block mb-2"/>
@@ -39,74 +40,6 @@
                                     </span>
                                 </div>
                                 <!-- /navbar -->
-
-                                <!-- Billing-address -->
-                                <h3 class="mb-5 border-bottom pb-2">Billing Address</h3>
-                                <div v-if="addressList.length > 0" class="col-sm-12">
-                                    <label>Fill form by Previous Information</label>
-                                    <select v-model="selectedBillingAddressID"
-                                            @change="fetchAddressInfo(selectedBillingAddressID)" class="form-control" name="city">
-                                        <option disabled value="">Select</option>
-                                        <option v-for="addrs in addressList"
-                                                :key="addrs.id"
-                                                :value="addrs.id">{{ addrs.address }}</option>
-                                    </select>
-                                </div>
-                                <form class="row">
-                                    <div class="col-sm-6">
-                                        <label for="firstName">First Name</label>
-                                        <input v-model="firstName" class="form-control" type="text" id="firstName" name="firstName" required>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label for="lastName">Last Name</label>
-                                        <input v-model="lastName" class="form-control" type="text" id="lastName" name="lastName" required>
-                                    </div>
-                                    <div class="col-sm-10">
-                                        <label for="email">Email</label>
-                                        <input v-model="email" class="form-control" type="email" id="email" name="email" required>
-                                    </div>
-                                    <div class="col-sm-12">
-                                        <label for="address">Address</label>
-                                        <input v-model="address" class="form-control" type="text" id="address" name="address" required>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label for="phone">Phone</label>
-                                        <input v-model="phone" class="form-control" type="tel" id="phone" name="phone" required>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label for="zip-code">Zip Code</label>
-                                        <input v-model="zipCode" class="form-control" type="text" id="zip-code" name="zip-code" required>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label >City</label>
-                                        <select v-model="city" class="form-control" name="city">
-                                            <option disabled value="">Your City</option>
-                                            <option value="Dhaka">Dhaka</option>
-                                            <option value="Newyork">Newyork</option>
-                                            <option value="Delhi">Delhi</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label >Country</label>
-                                        <select v-model="country" class="form-control" name="country">
-                                            <option disabled value="">Please select one</option>
-                                            <option value="Armenia">Armenia</option>
-                                            <option value="Aruba">Aruba</option>
-                                            <option value="Australia">Australia</option>
-                                            <option value="Austria">Austria</option>
-                                            <option value="Azerbaijan">Azerbaijan</option>
-                                            <option value="Bahamas">Bahamas</option>
-                                            <option value="Bahrain">Bahrain</option>
-                                            <option value="Bangladesh">Bangladesh</option>
-                                            <option value="Uruguay">Uruguay</option>
-                                            <option value="Virgin Islands, U.S.">Virgin Islands, U.S.</option>
-                                            <option value="Yemen">Yemen</option>
-                                            <option value="Zambia">Zambia</option>
-                                            <option value="Zimbabwe">Zimbabwe</option>
-                                        </select>
-                                    </div>
-                                </form>
-                                <!-- /Billing-address -->
 
 
                                 <!-- shipping-address -->
@@ -122,7 +55,7 @@
                                         <label>Fill form by Previous Information</label>
                                         <select v-model="selectedShippingAddressID"
                                                 @change="fetchAddressInfo(selectedShippingAddressID)" class="form-control" name="city">
-                                            <option disabled value="">Select</option>
+                                            <option disabled value="">Select Address</option>
                                             <option v-for="addrs in addressList"
                                                     :key="addrs.id"
                                                     :value="addrs.id">{{ addrs.address }}</option>
@@ -132,27 +65,27 @@
                                     <form class="row">
                                         <div class="col-sm-6">
                                             <label for="firstName">First Name</label>
-                                            <input v-model="firstName_shipping" class="form-control" type="text" name="firstName" required>
+                                            <input id="firstName" v-model="firstName_shipping" class="form-control" type="text" name="firstName" required>
                                         </div>
                                         <div class="col-sm-6">
                                             <label for="lastName">Last Name</label>
-                                            <input v-model="lastName_shipping" class="form-control" type="text" name="lastName" required>
+                                            <input id="lastName" v-model="lastName_shipping" class="form-control" type="text" name="lastName" required>
                                         </div>
                                         <div class="col-sm-10">
                                             <label for="email">Email</label>
-                                            <input v-model="email_shipping" class="form-control" type="email" name="email" required>
+                                            <input id="email" v-model="email_shipping" class="form-control" type="email" name="email" required>
                                         </div>
                                         <div class="col-sm-12">
                                             <label for="address">Address</label>
-                                            <input v-model="address_shipping" class="form-control" type="text" name="address" required>
+                                            <input id="address" v-model="address_shipping" class="form-control" type="text" name="address" required>
                                         </div>
                                         <div class="col-sm-6">
                                             <label for="phone">Phone</label>
-                                            <input v-model="phone_shipping" class="form-control" type="tel" name="phone" required>
+                                            <input id="phone" v-model="phone_shipping" class="form-control" type="tel" name="phone" required>
                                         </div>
                                         <div class="col-sm-6">
                                             <label for="zip-code">Zip Code</label>
-                                            <input v-model="zipCode_shipping" class="form-control" type="text" name="zip-code" required>
+                                            <input id="zip-code" v-model="zipCode_shipping" class="form-control" type="text" name="zip-code" required>
                                         </div>
                                         <div class="col-sm-6">
                                             <label >City</label>
@@ -196,10 +129,11 @@
                                         <!-- /select shipping method -->
                                     </form>
                                 </div>
-
                                 <!-- /shipping-address -->
-                                <div class="p-4 bg-gray text-right">
+
+                                <div class="p-4 bg-gray d-flex justify-content-between">
                                     <h4 v-if="showErrMsg" class="text-danger">All fields are required</h4>
+                                    <router-link to="/billing" class="btn btn-dark">Back</router-link>
                                     <button @click="storeInfo"
                                             class="btn btn-primary">Continue</button>
                                 </div>
@@ -256,14 +190,6 @@
         components: {Footer, Navigation, Header},
         data() {
             return {
-                firstName: '',
-                lastName: '',
-                email: '',
-                address: '',
-                phone: '',
-                country: '',
-                city: '',
-                zipCode: '',
                 showErrMsg: false,
                 is_shipping_sameAs_billing: false,
                 firstName_shipping: '',
@@ -278,7 +204,6 @@
                 shippingMethod: '',
                 shpMethods: [],     // Shipping Method list
                 addressList: [],    // List of addresses if there any available - (For drop down)
-                selectedBillingAddressID: '',    // Selected selectedBillingAddressID from the list
                 selectedShippingAddressID: '',
                 selectedAddress: [],
             };
@@ -294,8 +219,8 @@
         },
         methods: {
             checkRequired : function(){
-                if (this.$store.getters.cartItemCount < 1) {
-                    this.$router.push('/shop');
+                if (Object.keys(this.$store.getters.getterBillingInfo).length < 1) {
+                    this.$router.push('/billing');
                 }
             },
             loadAddressList: function () {
@@ -317,14 +242,24 @@
                     }
                 }).then(resp => {
                     this.selectedAddress = resp.data.data;
+
+                    this.firstName_shipping = this.selectedAddress.name.split(' ')[0];
+                    this.lastName_shipping = this.selectedAddress.name.split(' ')[1];
+                    this.email_shipping = this.selectedAddress.email;
+                    this.address_shipping = this.selectedAddress.address;
+                    this.phone_shipping = this.selectedAddress.phone;
+                    this.country_shipping = this.selectedAddress.country;
+                    this.city_shipping = this.selectedAddress.city;
+                    this.zipCode_shipping = this.selectedAddress.postcode;
+
+                    this.is_shipping_sameAs_billing = false;
                     console.log(resp.data.data)
                 }).catch(err => {
                     console.log(err)
                 });
             },
             getShippingMethodList: function () {
-                axios.get(Settings.GetApiUrl() + '/platform/shipping-methods?page=' + this.currentPage + '&limit='
-                    + this.perPage, {
+                axios.get(Settings.GetApiUrl() + '/platform/shipping-methods', {
                     headers: {
                         "Authorization": "Bearer " + SessionStore.GetAccessToken(),
                     }
@@ -336,63 +271,13 @@
                 })
             },
             storeInfo: function () {
-                if (this.$store.getters.getterIsAllProductDigital) {
-                    if (this.firstName==='' || this.lastName==='' || this.email==='' || this.address===''
-                        || this.phone==='' || this.country==='' || this.city==='' || this.zipCode==='') {
+                if (!this.$store.getters.getterIsAllProductDigital) {
+                    if (this.shippingMethod==='' || this.firstName_shipping==='' || this.lastName_shipping===''
+                        || this.email_shipping==='' || this.address_shipping==='' || this.phone_shipping===''
+                        || this.country_shipping==='' || this.city_shipping==='' || this.zipCode_shipping==='') {
                         this.showErrMsg = true;
                     } else {
                         this.showErrMsg = false;
-
-                        // Storing Billing info into state
-                        this.$store.dispatch('storeBillingInfoAction', {
-                            firstName: this.firstName,
-                            lastName: this.lastName,
-                            email: this.email,
-                            address: this.address,
-                            phone: this.phone,
-                            country: this.country,
-                            city: this.city,
-                            zipCode: this.zipCode,
-                        });
-
-                        this.$store.dispatch('storeIfShippingSameAsBillingAction', this.is_shipping_sameAs_billing);
-
-                        // Storing Shipping info into state
-                        this.$store.dispatch('storeShippingInfoAction', {
-                            firstName: this.firstName_shipping,
-                            lastName: this.lastName_shipping,
-                            email: this.email_shipping,
-                            address: this.address_shipping,
-                            phone: this.phone_shipping,
-                            country: this.country_shipping,
-                            city: this.city_shipping,
-                            zipCode: this.zipCode_shipping,
-                            shippingMethod: this.shippingMethod,
-                        });
-
-                        this.$router.push('/review');
-                    }
-                } else if (!this.$store.getters.getterIsAllProductDigital) {
-                    if (this.firstName==='' || this.lastName==='' || this.email==='' || this.address===''
-                        || this.phone==='' || this.country==='' || this.city==='' || this.zipCode==='' || this.shippingMethod===''
-                        || this.firstName_shipping==='' || this.lastName_shipping==='' || this.email_shipping===''
-                        || this.address_shipping==='' || this.phone_shipping==='' ||
-                        this.country_shipping==='' || this.city_shipping==='' || this.zipCode_shipping==='') {
-                        this.showErrMsg = true;
-                    } else {
-                        this.showErrMsg = false;
-
-                        // Storing Billing info into state
-                        this.$store.dispatch('storeBillingInfoAction', {
-                            firstName: this.firstName,
-                            lastName: this.lastName,
-                            email: this.email,
-                            address: this.address,
-                            phone: this.phone,
-                            country: this.country,
-                            city: this.city,
-                            zipCode: this.zipCode,
-                        });
 
                         // Storing both address is same flag into state
                         this.$store.dispatch('storeIfShippingSameAsBillingAction', this.is_shipping_sameAs_billing);
@@ -409,7 +294,6 @@
                             zipCode: this.zipCode_shipping,
                             shippingMethod: this.shippingMethod,
                         });
-
                         this.$router.push('/review');
                     }
                 }
@@ -418,25 +302,13 @@
                 if (!this.$store.getters.getterIsAllProductDigital) {
                     this.getShippingMethodList();
                 }
-                this.loadAddressList();
 
+                this.loadAddressList();
                 const billingInstance = this.$store.getters.getterBillingInfo;
                 const shippingInstance = this.$store.getters.getterShippingInfo;
-                const isBothAddressSame = this.$store.getters.getterIfShippingSameAsBilling;
 
                 if (Object.keys(billingInstance).length !== 0 && Object.keys(shippingInstance).length !== 0){
-                    // Billing info
-                    this.firstName = billingInstance.firstName;
-                    this.lastName = billingInstance.lastName;
-                    this.email = billingInstance.email;
-                    this.address = billingInstance.address;
-                    this.phone = billingInstance.phone;
-                    this.country = billingInstance.country;
-                    this.city = billingInstance.city;
-                    this.zipCode = billingInstance.zipCode;
-
-                    // check addresses
-                    this.is_shipping_sameAs_billing = isBothAddressSame;
+                    this.is_shipping_sameAs_billing = this.$store.getters.getterIfShippingSameAsBilling;
 
                     // Shipping info
                     this.firstName_shipping = shippingInstance.firstName;
@@ -451,15 +323,17 @@
                 }
             },
             checkIsSame: function () {
+                const billingInstance = this.$store.getters.getterBillingInfo;
+
                 if (this.is_shipping_sameAs_billing === true) {
-                    this.firstName_shipping = this.firstName;
-                    this.lastName_shipping = this.lastName;
-                    this.email_shipping = this.email;
-                    this.address_shipping = this.address;
-                    this.phone_shipping = this.phone;
-                    this.country_shipping = this.country;
-                    this.city_shipping = this.city;
-                    this.zipCode_shipping = this.zipCode;
+                    this.firstName_shipping = billingInstance.firstName;
+                    this.lastName_shipping = billingInstance.lastName;
+                    this.email_shipping = billingInstance.email;
+                    this.address_shipping = billingInstance.address;
+                    this.phone_shipping = billingInstance.phone;
+                    this.country_shipping = billingInstance.country;
+                    this.city_shipping = billingInstance.city;
+                    this.zipCode_shipping = billingInstance.zipCode;
                 } else {
                     this.firstName_shipping = '';
                     this.lastName_shipping = '';

@@ -55,7 +55,7 @@
                             </div>
                             <div class="text-center">
                                 <router-link to="/cart" class="btn btn-dark btn-mobile rounded-0">view cart</router-link>
-                                <router-link to="/shipping" class="btn btn-dark btn-mobile rounded-0">check out</router-link>
+                                <router-link to="/billing" class="btn btn-dark btn-mobile rounded-0">check out</router-link>
                             </div>
                         </div>
                     </div>

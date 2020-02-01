@@ -25,15 +25,16 @@
                             <div class="inner-wrapper border-box">
                                 <!-- navbar -->
                                 <div class="align-content-between nav mb-5">
-                                    <span class="text-center d-inline-block nav-item">
-                                        <i class="ti-truck d-block mb-2"/>
-                                        <span class="d-block h4">Shipping Method</span>
-                                    </span>
                                     <span  class="text-center d-inline-block nav-item">
                                         <i class="ti-wallet d-block mb-2"/>
-                                        <span class="d-block h4">Payment Method</span>
+                                        <span class="d-block h4">Billing Info</span>
                                     </span>
-                                    <span  class="text-center d-inline-block nav-item active">
+                                    <span v-if="!this.$store.getters.getterIsAllProductDigital"
+                                          class="text-center d-inline-block nav-item">
+                                        <i class="ti-truck d-block mb-2"/>
+                                        <span class="d-block h4">Shipping Info</span>
+                                    </span>
+                                    <span  class="text-center d-inline-block active nav-item">
                                         <i class="ti-eye d-block mb-2"/>
                                         <span class="d-block h4">Review</span>
                                     </span>
@@ -341,7 +342,7 @@
             },
             createShippingAddress: function() {
                 let shipping_address = {
-                    name: this.shippingInfo.firstName + ' ' + this.shippingInfo.lastName,
+                    name: this.shippingInfo.firstName.trim() + ' ' + this.shippingInfo.lastName.trim(),
                     address: this.shippingInfo.address,
                     city: this.shippingInfo.city,
                     country: this.shippingInfo.country,
@@ -365,7 +366,7 @@
             createBillingAddress: function(shippingAddress) {
 
                 let billing_address = {
-                    name: this.billingInfo.firstName + ' ' + this.billingInfo.lastName,
+                    name: this.billingInfo.firstName.trim() + ' ' + this.billingInfo.lastName.trim(),
                     address: this.billingInfo.address,
                     city: this.billingInfo.city,
                     country: this.billingInfo.country,
@@ -388,7 +389,9 @@
             },
             // Checking are the shippingInfo & billingInfo stored in state
             checkRequired : function(){
-                if (Object.keys(this.shippingInfo).length < 1 || Object.keys(this.billingInfo).length < 1) {
+                if (this.$store.getters.getterIsAllProductDigital && Object.keys(this.billingInfo).length < 1) {
+                    this.$router.push('/billing');
+                } else if (!this.$store.getters.getterIsAllProductDigital && (Object.keys(this.shippingInfo).length < 1 || Object.keys(this.billingInfo).length < 1)) {
                     this.$router.push('/shipping');
                 }
             },
@@ -396,7 +399,9 @@
                 this.shippingInfo = this.getShippingInfo();
                 this.billingInfo = this.getBillingInfo();
 
-                this.getSippingMethod(this.shippingInfo.shippingMethod);
+                if (!this.$store.getters.getterIsAllProductDigital) {
+                    this.getSippingMethod(this.shippingInfo.shippingMethod);
+                }
                 this.getPaymentMethodList();
             },
             getShippingInfo: function() {
@@ -406,19 +411,6 @@
                 return this.$store.getters.getterBillingInfo;
             },
             getShippingMethod: function(method) {
-                if (method === 'standard') {
-                    method = 'Standard Ground (USPS) - $7.50';
-                    this.deliveryTime = 'Delivered in 8-12 business days.';
-                } else if (method === 'premium') {
-                    method = 'Premium Ground (UPS) - $12.50';
-                    this.deliveryTime = 'Delivered in 4-7 business days.';
-                } else if (method === 'ups2') {
-                    method = 'UPS 2 Business Day - $15.00';
-                    this.deliveryTime = 'Orders placed by 9:45AM PST will ship same day.';
-                }else if (method === 'ups1') {
-                    method = 'UPS 1 Business Day - $35.00';
-                    this.deliveryTime = 'Orders placed by 9:45AM PST will ship same day.';
-                }
 
                 return method;
             },
@@ -430,7 +422,7 @@
                         } else {
                             this.createBillingAddress('');
                         }
-                        console.log(this.shippingAddress_id)
+                        //console.log(this.shippingAddress_id)
                     }
                 } else {
                     localStorage.setItem('redirect_to', '/review');

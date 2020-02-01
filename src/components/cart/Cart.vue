@@ -73,9 +73,10 @@
                                                 </div>
                                             </div>
                                             <hr>
-                                            <router-link to="/shipping" tag="button"
-                                                         :disabled="isCartNil"
-                                                         class="btn btn-primary float-right">Checkout</router-link>
+                                            <button
+                                                    :disabled="isCartNil"
+                                                    @click="onClickCheckout"
+                                                    class="btn btn-primary float-right">Checkout</button>
                                         </form>
                                     </div>
                                 </div>
@@ -133,6 +134,12 @@
                 }
                 this.$store.dispatch('changeQuantityAction', {itemId, qntt});
                 console.log(itemId, qntt);
+            },
+            onClickCheckout: function () {
+                /*if (!this.$store.getters.getterIsAllProductDigital) {
+                    this.$router.push('/payment')
+                }*/
+                this.$router.push('/billing')
             }
         }
     }

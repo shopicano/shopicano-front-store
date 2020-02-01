@@ -25,22 +25,12 @@
                             <div class="inner-wrapper border-box">
                                 <!-- navbar -->
                                 <div class="justify-content-between nav mb-5">
-                                    <span class="text-center d-inline-block nav-item">
-                                        <i class="ti-truck d-block mb-2"/>
-                                        <span class="d-block h4">Shipping Method</span>
-                                    </span>
-                                    <span  class="text-center d-inline-block nav-item active">
+                                    <span  class="text-center d-inline-block active nav-item">
                                         <i class="ti-wallet d-block mb-2"/>
-                                        <span class="d-block h4">Payment Method</span>
-                                    </span>
-                                    <span  class="text-center d-inline-block nav-item">
-                                        <i class="ti-eye d-block mb-2"/>
-                                        <span class="d-block h4">Review</span>
+                                        <span class="d-block h4">Payment</span>
                                     </span>
                                 </div>
                                 <!-- /navbar -->
-
-
 
                                 <div v-if="is_gateway_braintree" class="row mb-5">
                                     <div class="col">
@@ -105,6 +95,7 @@
                 orderID: '',
                 order: '',
                 shippingInfo: [],
+                billingInfo: [],
                 transaction_id: '',
                 public_key: '',
                 is_gateway_braintree: false,
@@ -112,9 +103,9 @@
             };
         },
         mounted() {
-            /*this.setInfo();
+            this.setInfo();
             this.checkRequired();
-            this.getOrderDetails();*/
+            this.getOrderDetails();
         },
         computed: {
             getCartTotalPrice() {
@@ -130,7 +121,13 @@
         methods: {
             setInfo: function () {
                 this.orderID = this.$route.params.orderID;
-                this.shippingInfo = this.getShippingInfo();
+
+                if (!this.$store.getters.getterIsAllProductDigital) {
+                    this.shippingInfo = this.getShippingInfo();
+                }
+
+                this.billingInfo = this.$store.getters.getterBillingInfo;
+
                 this.public_key = localStorage.getItem('payment_public_key');
                 this.clientToken = localStorage.getItem('client_token');
             },
@@ -138,8 +135,11 @@
                 return this.$store.getters.getterShippingInfo;
             },
             checkRequired : function(){
-                if (Object.keys(this.shippingInfo).length < 1) {
-                    this.$router.push('/review');
+                console.log(Object.keys(this.billingInfo).length + '  -->  ' + this.$store.getters.getterIsAllProductDigital)
+                if (this.$store.getters.getterIsAllProductDigital && Object.keys(this.billingInfo).length < 1) {
+                    return this.$router.push('/review');
+                } else if (!this.$store.getters.getterIsAllProductDigital && Object.keys(this.shippingInfo).length < 1) {
+                    return this.$router.push('/review');
                 }
             },
             getOrderDetails: function () {
@@ -179,7 +179,11 @@
                 }).then(resp => {
                     console.log('onSuccess ---> ' + resp);
                     SessionStore.CleanPaymentMethodGatewayConfig();
-                    return this.$router.push('/confirmation');
+                    return this.$router.push('/confirmation/' + this.orderID);
+                    /*return this.$router.push({
+                        path: '/confirmation/',
+                        query: {id: resp.data.data.id, hash: resp.data.data.hash}
+                    });*/
                 }).catch(err => {
                     console.log(err)
                 });
@@ -205,7 +209,7 @@
                 } else if (this.order.payment_gateway === 'brain_tree') {
                     this.is_gateway_braintree = true;
                 } else if (this.order.payment_gateway === 'cash') {
-                    this.$router.push('/confirmation');
+                    this.$router.push('/confirmation/' + this.orderID);
                 } else {
                     alert("Error happened")
                 }

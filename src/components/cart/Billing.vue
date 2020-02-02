@@ -119,6 +119,16 @@
                                         <label class="ml-2" :for="method.id">{{ method.name }}</label>
                                     </div>
                                 </div>-->
+                                <div v-if="this.$store.getters.cartTotalPrice !== 0" class="row">
+                                    <div class="col-12">
+                                        <h3 class="mb-5 border-bottom pb-2">Select A Payment Method</h3>
+                                    </div>
+
+                                    <div v-for="method in paymentMethods" :key="method.id" class="col-sm-6 mb-4">
+                                        <input v-model="payment_method" :id="method.id" class="custom-checkbox" :value="method.id" type="radio">
+                                        <label class="ml-2" :for="method.id">{{ method.name }}</label>
+                                    </div>
+                                </div>
 
 
                                 <div class="p-4 bg-gray text-right">
@@ -138,14 +148,6 @@
                                         <span>Subtotal</span>
                                         <span>${{ getCartTotalPrice }}</span>
                                     </li>
-                                    <!--<li class="d-flex justify-content-between">
-                                        <span>Shipping & Handling</span>
-                                        <span>$15.00</span>
-                                    </li>
-                                    <li class="d-flex justify-content-between">
-                                        <span>Estimated Tax</span>
-                                        <span>$0.00</span>
-                                    </li>-->
                                 </ul>
                                 <hr>
                                 <div class="d-flex justify-content-between">
@@ -244,9 +246,9 @@
                 });
             },
             storeInfo: function () {
-
                 if (this.firstName==='' || this.lastName==='' || this.email==='' || this.address===''
-                    || this.phone==='' || this.country==='' || this.city==='' || this.zipCode==='') {
+                    || this.phone==='' || this.country==='' || this.city==='' || this.zipCode===''
+                    || this.payment_method === '') {
                     this.showErrMsg = true;
                 } else {
                     this.showErrMsg = false;
@@ -261,6 +263,7 @@
                         country: this.country,
                         city: this.city,
                         zipCode: this.zipCode,
+                        paymentMethod: this.payment_method,
                     });
 
                     if (this.$store.getters.getterIsAllProductDigital) {
@@ -273,7 +276,7 @@
             },
             onFieldLoad: function () {
                 this.loadAddressList();
-                //this.getPaymentMethodList();
+                this.getPaymentMethodList();
 
                 const billingInstance = this.$store.getters.getterBillingInfo;
 

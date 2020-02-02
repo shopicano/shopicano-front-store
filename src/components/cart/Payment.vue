@@ -163,7 +163,15 @@
                     }
                 }).then(resp => {
                     console.log(resp);
-                    this.transaction_id = resp.data.data.nonce;
+
+                    let stripe = Stripe(this.public_key);
+                    stripe.redirectToCheckout({
+                        sessionId: resp.data.data.nonce
+                    }).then(resp => {
+                        console.log(resp);
+                    }).catch(err => {
+                        console.log(err.response);
+                    })
                 }).catch(err => {
                     console.log(err)
                 })
@@ -198,14 +206,7 @@
                     // Generating Nonce for stripe
                     this.generateNonce();
 
-                    let stripe = Stripe(this.public_key);
-                    stripe.redirectToCheckout({
-                        sessionId: this.transaction_id
-                    }).then(resp => {
-                        console.log(resp);
-                    }).catch(err => {
-                        console.log(err.response);
-                    })
+
                 } else if (this.order.payment_gateway === 'brain_tree') {
                     this.is_gateway_braintree = true;
                 } else if (this.order.payment_gateway === 'cash') {

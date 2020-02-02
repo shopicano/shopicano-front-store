@@ -48,6 +48,7 @@ class SessionStore {
 
     static SetPaymentMethodGatewayConfig() {
         axios.get(Settings.GetApiUrl() + '/payments/configs').then(resp => {
+            //console.log(resp)
             localStorage.setItem('client_token', resp.data.data.client_token);
             localStorage.setItem('failure_callback_url', resp.data.data.failure_callback_url);
             localStorage.setItem('payment_public_key', resp.data.data.public_key);

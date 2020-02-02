@@ -58,21 +58,21 @@
                         <p class="text-white mb-0">Logo &copy; 2018 all right reserved</p>
                     </div>
                     <div class="col-md-2 text-center text-md-left mb-4 mb-md-0">
-                        <img src="images/logo-alt.png" alt="logo">
+                        <img :src="logo" alt="logo">
                     </div>
                     <div class="col-md-5 text-center text-md-right mb-4 mb-md-0">
                         <ul class="list-inline">
                             <li class="list-inline-item"><img class="img-fluid rounded atm-card-img"
-                                                              src="images/payment-card/card-1.jpg" alt="card">
+                                                              :src="card1" alt="card">
                             </li>
                             <li class="list-inline-item"><img class="img-fluid rounded atm-card-img"
-                                                              src="images/payment-card/card-2.jpg" alt="card">
+                                                              :src="card2" alt="card">
                             </li>
                             <li class="list-inline-item"><img class="img-fluid rounded atm-card-img"
-                                                              src="images/payment-card/card-3.jpg" alt="card">
+                                                              :src="card3" alt="card">
                             </li>
                             <li class="list-inline-item"><img class="img-fluid rounded atm-card-img"
-                                                              src="images/payment-card/card-4.jpg" alt="card">
+                                                              :src="card4" alt="card">
                             </li>
                         </ul>
                     </div>
@@ -85,6 +85,28 @@
 
 <script>
     export default {
-        name: "Footer"
+        name: "Footer",
+        props: {
+            logo: {
+                default: '../images/logo.png',
+                type: String
+            },
+            card1: {
+                default: '../images/payment-card/card-1.jpg',
+                type: String
+            },
+            card2: {
+                default: '../images/payment-card/card-2.jpg',
+                type: String
+            },
+            card3: {
+                default: '../images/payment-card/card-3.jpg',
+                type: String
+            },
+            card4: {
+                default: '../images/payment-card/card-4.jpg',
+                type: String
+            },
+        },
     }
 </script>

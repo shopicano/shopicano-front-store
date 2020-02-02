@@ -55,7 +55,7 @@
                             </div>
                             <div class="text-center">
                                 <router-link to="/cart" class="btn btn-dark btn-mobile rounded-0">view cart</router-link>
-                                <router-link to="/billing" class="btn btn-dark btn-mobile rounded-0">check out</router-link>
+                                <button @click="onCheckout" class="btn btn-dark btn-mobile rounded-0">check out</button>
                             </div>
                         </div>
                     </div>
@@ -67,19 +67,20 @@
 
 <script>
     /* eslint-disable */
+    import SessionStore from "@/common/session_store";
+
     export default {
         name: "Navigation",
         props: {
             logo: {
-                default: 'images/logo.png',
-                type: String,
+                default: '../images/logo.png',
+                type: String
             }
         },
         data(){
             return {
                 isCartOpen: false,
                 isCartNil: true,
-                logo: 'images/logo.png',
             };
         },
         computed: {
@@ -99,7 +100,6 @@
         },
         methods: {
             onCartClicked: function () {
-                //this.$router.push("/cart")
                 this.isCartOpen = true;
             },
             onClickRemoveItem: function (id) {
@@ -113,6 +113,14 @@
             },
             emitToShop: function () {
                 this.$emit('changeValue', false)
+            },
+            onCheckout: function () {
+                if (SessionStore.IsLoggedIn()) {
+                    this.$router.push('/billing')
+                } else {
+                    localStorage.setItem('redirect_to', this.$route.path);
+                    this.$router.push('/login');
+                }
             }
         }
     }

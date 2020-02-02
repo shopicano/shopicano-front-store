@@ -59,75 +59,102 @@
                             </div>
                         </div>
 
-                        <div class="table-responsive mt-5">
-                            <h4 class="mt-5">Order Summery</h4>
+                        <div class="table-responsive">
+                            <div class="container">
+                                <div class="row mt-4">
+                                    <div class="col-md-7">
+                                        <h4 class="mt-5">Order Summery</h4>
+                                        <table class="table mt-5">
+                                            <thead>
+                                            <tr class="text-center">
+                                                <td>Item</td>
+                                                <td>Quantity</td>
+                                                <td>Price</td>
+                                                <td></td>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr class="text-center"
+                                                v-for="item in orderDetails.items"
+                                                v-bind:key="item.id">
+                                                <td class="align-middle">
+                                                    <img class="img-fluid img-thumbnail img-width" :src="getFullImagePath(item.image)" alt="product-img"/>
+                                                    <p>{{ item.name }}</p>
+                                                </td>
+                                                <td class="align-middle">{{ item.quantity }}</td>
+                                                <td class="align-middle">${{ item.price }}</td>
+                                                <td class="align-middle"
+                                                    v-if="item.is_digital && orderDetails.payment_status == 'payment_completed'">
+                                                    <button @click="downloadFile" class="btn btn-dark btn-download">Download</button>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <hr>
 
-                            <div class="row mt-4">
-                                <div class="col-md-8">
-                                    <table class="table">
-                                        <thead>
-                                        <tr class="text-center">
-                                            <td>Item</td>
-                                            <td>Quantity</td>
-                                            <td>Price</td>
-                                            <td></td>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr class="text-center"
-                                            v-for="item in orderDetails.items"
-                                            v-bind:key="item.id">
-                                            <td class="align-middle">
-                                                <img class="img-fluid img-thumbnail img-width" :src="getFullImagePath(item.image)" alt="product-img"/>
-                                                <p>{{ item.name }}</p>
-                                            </td>
-                                            <td class="align-middle">{{ item.quantity }}</td>
-                                            <td class="align-middle">${{ item.price }}</td>
-                                            <td class="align-middle"
-                                                v-if="item.is_digital">
-                                                <button @click="downloadFile" class="btn btn-dark btn-download">Download</button>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                    <hr>
+                                        <ul class="list-group">
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                Payment Method
+                                                <span class="text-dark">{{ orderDetails.payment_method_name }}</span>
+                                            </li>
 
-                                    <ul class="list-group">
-                                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            Payment Method
-                                            <span class="text-dark">{{ orderDetails.payment_method_name }}</span>
-                                        </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                Payment Status
+                                                <span class="badge badge-dark text-capitalize p-1">{{ orderDetails.payment_status.replace('_', ' ') }}</span>
+                                            </li>
 
-                                        <li v-if="orderDetails.shipping_charge > 0" class="list-group-item d-flex justify-content-between align-items-center">
-                                            Shipping Charge
-                                            <span class="badge badge-dark">$ {{ orderDetails.shipping_charge }}</span>
-                                        </li>
+                                            <li v-if="orderDetails.shipping_charge > 0" class="list-group-item d-flex justify-content-between align-items-center">
+                                                Shipping Charge
+                                                <span class="badge badge-dark">$ {{ orderDetails.shipping_charge }}</span>
+                                            </li>
 
-                                        <li v-if="orderDetails.discounted_amount > 0" class="list-group-item d-flex justify-content-between align-items-center">
-                                            Discount
-                                            <span class="badge badge-dark">$ {{ orderDetails.discounted_amount }}</span>
-                                        </li>
+                                            <li v-if="orderDetails.discounted_amount > 0" class="list-group-item d-flex justify-content-between align-items-center">
+                                                Discount
+                                                <span class="badge badge-dark">$ {{ orderDetails.discounted_amount }}</span>
+                                            </li>
 
-                                        <li v-if="orderDetails.payment_processing_fee > 0" class="list-group-item d-flex justify-content-between align-items-center">
-                                            Payment Processing Fee
-                                            <span class="badge badge-dark">$ {{ orderDetails.payment_processing_fee }}</span>
-                                        </li>
+                                            <li v-if="orderDetails.payment_processing_fee > 0" class="list-group-item d-flex justify-content-between align-items-center">
+                                                Payment Processing Fee
+                                                <span class="badge badge-dark">$ {{ orderDetails.payment_processing_fee }}</span>
+                                            </li>
 
-                                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            Subtotal
-                                            <span class="badge badge-dark">$ {{ orderDetails.sub_total }}</span>
-                                        </li>
-                                    </ul>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                Subtotal
+                                                <span class="badge badge-dark">$ {{ orderDetails.sub_total }}</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <div v-if="!orderDetails.is_all_digital_products" class="col-md-5">
+                                        <h4 class="mt-5">Shipping Address</h4>
+
+                                        <div class="mt-5">
+                                            <hr>
+                                            <ul class="list-group">
+                                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <span class="text-dark">{{ orderDetails.shipping_name }}</span>
+                                                </li>
+
+                                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <span class="text-dark small">{{ orderDetails.shipping_address }}</span>
+                                                </li>
+
+                                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <span class="text-dark small">{{ orderDetails.shipping_phone }}</span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
-
-                                <div class="col-md-4"></div>
                             </div>
+
                         </div>
                     </div>
                 </div>
             </section>
             <!-- /track -->
         </div>
+        <Footer/>
     </div>
 </template>
 
@@ -139,10 +166,11 @@
     import Navigation from "@/components/indexComponents/Navigation";
     import Settings from "@/common/settings";
     import SessionStore from "@/common/session_store";
+    import Footer from "@/components/indexComponents/Footer";
 
     export default {
         name: "OrderTrack",
-        components: {Navigation, Header},
+        components: {Footer, Navigation, Header},
         data() {
             return {
                 trackingHash: '',

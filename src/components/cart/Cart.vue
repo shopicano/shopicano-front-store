@@ -97,6 +97,7 @@
     import Header from "@/components/indexComponents/Header";
     import Navigation from "@/components/indexComponents/Navigation";
     import Footer from "@/components/indexComponents/Footer";
+    import SessionStore from "@/common/session_store";
 
     export default {
         name: "Cart",
@@ -139,7 +140,12 @@
                 /*if (!this.$store.getters.getterIsAllProductDigital) {
                     this.$router.push('/payment')
                 }*/
-                this.$router.push('/billing')
+                if (SessionStore.IsLoggedIn()) {
+                    this.$router.push('/billing')
+                } else {
+                    localStorage.setItem('redirect_to', this.$route.path);
+                    this.$router.push('/login');
+                }
             }
         }
     }

@@ -78,12 +78,19 @@
                     console.log(data);
                     SessionStore.SetSession(data);
 
-                    if (localStorage.getItem('redirect_to') === undefined) {
+                    /*if (localStorage.getItem('redirect_to') === undefined) {
                         localStorage.removeItem('redirect_to');
                         return this.$router.push("/review");
-                    }
+                    }*/
+                    let route = localStorage.getItem('redirect_to').toString();
 
-                    this.$router.push("/");
+                    if (route !== undefined) {
+                        console.log(route);
+                        localStorage.removeItem('redirect_to');
+                        this.$router.push(route)
+                    } else {
+                        this.$router.push("/")
+                    }
                 }).catch(err => {
                     this.toggleLoading(false);
                     let result = err.response;

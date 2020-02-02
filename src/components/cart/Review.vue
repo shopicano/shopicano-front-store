@@ -105,17 +105,6 @@
                                 </div>
                                 <!-- @billing-information -->
 
-                                <div v-if="totalPrice !== 0" class="row">
-                                    <div class="col-12">
-                                        <h3 class="mb-5 border-bottom pb-2">Select A Payment Method</h3>
-                                    </div>
-
-                                    <div v-for="method in paymentMethods" :key="method.id" class="col-sm-6 mb-4">
-                                        <input v-model="payment_method" :id="method.id" class="custom-checkbox" :value="method.id" type="radio">
-                                        <label class="ml-2" :for="method.id">{{ method.name }}</label>
-                                    </div>
-                                </div>
-
                                 <!-- buttons -->
                                 <div class="p-4 bg-gray d-flex justify-content-between">
                                     <router-link to="/shipping" class="btn btn-dark">Back</router-link>
@@ -140,7 +129,7 @@
                                     </li>
                                     <li v-if="discountType!=='' && discountAmount!==''" class="d-flex justify-content-between">
                                         <span class="text-capitalize">{{ discountType.replace('_', ' ') }}</span>
-                                        <span>${{ discountAmount }}</span>
+                                        <span>- ${{ discountAmount }}</span>
                                     </li>
                                 </ul>
                                 <hr>
@@ -309,7 +298,7 @@
                         order['coupon_code'] = this.coupon
                     }
                     if (this.totalPrice !== 0) {
-                        order['payment_method_id'] = this.payment_method
+                        order['payment_method_id'] = this.$store.getters.getterBillingInfo.paymentMethod
                     }
                 } else {
                     order = {
@@ -320,7 +309,7 @@
                         order['coupon_code'] = this.coupon
                     }
                     if (this.totalPrice !== 0) {
-                        order['payment_method_id'] = this.payment_method
+                        order['payment_method_id'] = this.$store.getters.getterBillingInfo.paymentMethod
                     }
                 }
 

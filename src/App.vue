@@ -9,7 +9,7 @@
     export default {
         name: 'app',
         mounted() {
-            //SessionStore.CleanPaymentMethodGatewayConfig();
+            SessionStore.CleanPaymentMethodGatewayConfig();
             SessionStore.SetPaymentMethodGatewayConfig();
         },
     }

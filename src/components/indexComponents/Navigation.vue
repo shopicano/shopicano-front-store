@@ -73,15 +73,14 @@
         name: "Navigation",
         props: {
             logo: {
-                default: 'images/logo.png',
-                type: String,
+                default: '../images/logo.png',
+                type: String
             }
         },
         data(){
             return {
                 isCartOpen: false,
                 isCartNil: true,
-                logo: 'images/logo.png',
             };
         },
         computed: {
@@ -101,7 +100,6 @@
         },
         methods: {
             onCartClicked: function () {
-                //this.$router.push("/cart")
                 this.isCartOpen = true;
             },
             onClickRemoveItem: function (id) {

@@ -128,7 +128,6 @@
                                     <div v-if="!orderDetails.is_all_digital_products" class="col-md-5">
                                         <h4 class="mt-5">Shipping Address</h4>
 
-
                                         <div class="mt-5">
                                             <hr>
                                             <ul class="list-group">
@@ -145,8 +144,6 @@
                                                 </li>
                                             </ul>
                                         </div>
-
-
                                     </div>
                                 </div>
                             </div>
@@ -157,6 +154,7 @@
             </section>
             <!-- /track -->
         </div>
+        <Footer/>
     </div>
 </template>
 
@@ -168,10 +166,11 @@
     import Navigation from "@/components/indexComponents/Navigation";
     import Settings from "@/common/settings";
     import SessionStore from "@/common/session_store";
+    import Footer from "@/components/indexComponents/Footer";
 
     export default {
         name: "OrderTrack",
-        components: {Navigation, Header},
+        components: {Footer, Navigation, Header},
         data() {
             return {
                 trackingHash: '',

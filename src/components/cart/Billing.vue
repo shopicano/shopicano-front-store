@@ -247,7 +247,8 @@
             },
             storeInfo: function () {
                 if (this.firstName==='' || this.lastName==='' || this.email==='' || this.address===''
-                    || this.phone==='' || this.country==='' || this.city==='' || this.zipCode==='') {
+                    || this.phone==='' || this.country==='' || this.city==='' || this.zipCode===''
+                    || this.payment_method === '') {
                     this.showErrMsg = true;
                 } else {
                     this.showErrMsg = false;

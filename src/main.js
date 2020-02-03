@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from "vue-router";
 import Vuex from 'vuex'
-import { store } from './store'
+import {store} from './store'
 import * as VueGoogleMaps from 'vue2-google-maps'
 import VueBraintree from 'vue-braintree';
 
@@ -117,7 +117,8 @@ const routes = [
 ];
 
 const router = new VueRouter({
-    mode: 'history',
+    // mode: 'history',
+    mode: 'hash',
     routes,
 });
 

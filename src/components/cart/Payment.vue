@@ -10,7 +10,9 @@
             <nav class="bg-gray py-3">
                 <div class="container">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><router-link to="/">Home</router-link></li>
+                        <li class="breadcrumb-item">
+                            <router-link to="/">Home</router-link>
+                        </li>
                         <li class="breadcrumb-item active" aria-current="page">Shipping Information</li>
                     </ol>
                 </div>
@@ -25,7 +27,7 @@
                             <div class="inner-wrapper border-box">
                                 <!-- navbar -->
                                 <div class="justify-content-between nav mb-5">
-                                    <span  class="text-center d-inline-block active nav-item">
+                                    <span class="text-center d-inline-block active nav-item">
                                         <i class="ti-wallet d-block mb-2"/>
                                         <span class="d-block h4">Payment</span>
                                     </span>
@@ -50,12 +52,14 @@
                                         <span>${{ getCartTotalPrice }}</span>
                                     </li>
 
-                                    <li v-if="!this.$store.getters.getterIsAllProductDigital" class="d-flex justify-content-between">
+                                    <li v-if="!this.$store.getters.getterIsAllProductDigital"
+                                        class="d-flex justify-content-between">
                                         <span>Shipping Charge</span>
                                         <span>${{ getDeliveryCharge }}</span>
                                     </li>
 
-                                    <li v-if="this.$store.getters.getterStoreDiscount.type!=='' && this.$store.getters.getterStoreDiscount.amount!==''" class="d-flex justify-content-between">
+                                    <li v-if="this.$store.getters.getterStoreDiscount.type!=='' && this.$store.getters.getterStoreDiscount.amount!==''"
+                                        class="d-flex justify-content-between">
                                         <span class="text-capitalize">{{ this.$store.getters.getterStoreDiscount.type.replace('_', ' ') }}</span>
                                         <span>${{ this.$store.getters.getterStoreDiscount.amount }}</span>
                                     </li>
@@ -131,10 +135,10 @@
                 this.public_key = localStorage.getItem('payment_public_key');
                 this.clientToken = localStorage.getItem('client_token');
             },
-            getShippingInfo: function() {
+            getShippingInfo: function () {
                 return this.$store.getters.getterShippingInfo;
             },
-            checkRequired : function(){
+            checkRequired: function () {
                 console.log(Object.keys(this.billingInfo).length + '  -->  ' + this.$store.getters.getterIsAllProductDigital)
                 if (this.$store.getters.getterIsAllProductDigital && Object.keys(this.billingInfo).length < 1) {
                     return this.$router.push('/review');
@@ -157,7 +161,7 @@
                 })
             },
             generateNonce: function () {
-                axios.post(Settings.GetApiUrl() + '/orders/' + this.orderID + '/nonce', null,{
+                axios.post(Settings.GetApiUrl() + '/orders/' + this.orderID + '/nonce', null, {
                     headers: {
                         "Authorization": "Bearer " + SessionStore.GetAccessToken(),
                     }
@@ -176,7 +180,7 @@
                     console.log(err)
                 })
             },
-            onSuccess: function(payload) {
+            onSuccess: function (payload) {
                 let nonce = payload.nonce;
                 //console.log(payload);
 
@@ -205,10 +209,10 @@
                 if (this.order.payment_gateway === 'stripe') {
                     // Generating Nonce for stripe
                     this.generateNonce();
-
-
                 } else if (this.order.payment_gateway === 'brain_tree') {
                     this.is_gateway_braintree = true;
+                } else if (this.order.payment_gateway === '2co') {
+                    window.location.replace(Settings.GetApiUrl() + '/orders/' + this.orderID + '/nonce?token=' + SessionStore.GetAccessToken());
                 } else if (this.order.payment_gateway === 'cash') {
                     this.$router.push('/confirmation/' + this.orderID);
                 } else {

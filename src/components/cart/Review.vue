@@ -82,8 +82,8 @@
                                         <div class="col-md-6">
                                             <h4 class="mb-3">Shipping Method</h4>
                                             <ul class="list-unstyled">
-                                                <li>{{ getShippingMethod(shippingInfo.shippingMethod) }}</li>
-                                                <li>{{ deliveryTime }}</li>
+                                                <li>{{ shippingMethodDetailed.name }}</li>
+                                                <li class="small">Delivery in {{ shippingMethodDetailed.approximate_delivery_time }} days</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -93,13 +93,19 @@
                                 <!-- billing-information -->
                                 <h3 class="mb-5 border-bottom pb-2 mt-5">Billing Information</h3>
                                 <div class="row mb-5">
-                                    <div class="col">
+                                    <div class="col-md-6">
                                         <h4 class="mb-3">Billing Address</h4>
                                         <ul class="list-unstyled">
                                             <li>{{ billingInfo.firstName + ' ' + billingInfo.lastName }}</li>
                                             <li>{{ billingInfo.address }} </li>
                                             <li>{{ billingInfo.phone }} </li>
                                             <li>{{ billingInfo.email }}</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h4 class="mb-3">Payment Method</h4>
+                                        <ul class="list-unstyled">
+                                            <li>{{ payment_method.name }}</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -126,6 +132,10 @@
                                     <li v-if="!this.$store.getters.getterIsAllProductDigital" class="d-flex justify-content-between">
                                         <span>Shipping Charge</span>
                                         <span>${{ shippingMethodDetailed.delivery_charge }}</span>
+                                    </li>
+                                    <li class="d-flex justify-content-between">
+                                        <span>Payment Processing Fee</span>
+                                        <span>${{ payment_method.processing_fee }}</span>
                                     </li>
                                     <li v-if="discountType!=='' && discountAmount!==''" class="d-flex justify-content-between">
                                         <span class="text-capitalize">{{ discountType.replace('_', ' ') }}</span>
@@ -203,10 +213,11 @@
                 return this.$store.getters.cartTotalPrice;
             },
             generateTotalPrice: function () {
+                // `this.$store.getters.cartTotalPrice` returns Total price of products selected in cart
                 this.totalPrice = this.$store.getters.cartTotalPrice;
 
                 if (this.$store.getters.getterIsAllProductDigital) {
-                    this.totalPrice = this.totalPrice - this.discountAmount;
+                    this.totalPrice = this.totalPrice + this.payment_method.processing_fee - this.discountAmount;
 
                     if (this.totalPrice <= 0) {
                         this.totalPrice = 0;
@@ -219,7 +230,7 @@
 
                     return this.$store.getters.getterStoreGrandTotal;
                 } else if (!this.$store.getters.getterIsAllProductDigital) {
-                    this.totalPrice = this.totalPrice + this.shippingMethodDetailed.delivery_charge - this.discountAmount;
+                    this.totalPrice = this.totalPrice + this.payment_method.processing_fee + this.shippingMethodDetailed.delivery_charge - this.discountAmount;
 
                     if (this.totalPrice <= 0) {
                         this.totalPrice = 0;
@@ -265,13 +276,13 @@
                 })
             },
             getPaymentMethodList: function () {
-                axios.get(Settings.GetApiUrl() + '/platform/payment-methods', {
+                axios.get(Settings.GetApiUrl() + '/platform/payment-methods/' + this.billingInfo.paymentMethod, {
                     headers: {
                         "Authorization": "Bearer " + SessionStore.GetAccessToken(),
                     }
                 }).then(resp => {
                     console.log(resp);
-                    this.paymentMethods = resp.data.data;
+                    this.payment_method = resp.data.data;
                 }).catch(err => {
                     console.log(err)
                 })

@@ -1,5 +1,10 @@
 <template>
     <div>
+        <!--    Loader  -->
+        <loading :active.sync="isLoading"
+                 :can-cancel="canCancel"
+                 :is-full-page="fullPage"></loading>
+
         <Header/>
         <Navigation @changeValue="categorySelected=false"/>
 
@@ -186,6 +191,8 @@
     /* eslint-disable */
     import { BPagination } from 'bootstrap-vue';
     import axios from 'axios';
+    import Loading from 'vue-loading-overlay';
+    import 'vue-loading-overlay/dist/vue-loading.css';
 
     import Header from "@/components/indexComponents/Header";
     import Navigation from "@/components/indexComponents/Navigation";
@@ -197,7 +204,7 @@
 
     export default {
         name: "Shop",
-        components: {Services, NewsLetter, Footer, Navigation, Header, BPagination},
+        components: {Services, NewsLetter, Footer, Navigation, Header, BPagination, Loading},
         data() {
             return{
                 rows: 100,
@@ -210,6 +217,9 @@
                 categorySelected: false,
                 fetchIsEmpty: false,
                 query: '',
+                isLoading: false,
+                fullPage: true,
+                canCancel: false,
             }
         },
         mounted() {
@@ -228,11 +238,14 @@
         },
         methods: {
             getProducts: function () {
+                this.isLoading = true;
                 axios.get( Settings.GetApiUrl() + "/products?page=" + this.currentPage + "&limit="
                     + this.perPage,).then(resp => {
                     this.productsList = resp.data.data;
                     this.categorySelected = false;
+                    this.isLoading = false;
                 }).catch(err => {
+                    this.canCancel = true;
                     console.log(err);
                 })
             },

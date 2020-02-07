@@ -95,6 +95,9 @@
                     this.toggleLoading(false);
                     let result = err.response;
                     console.log(result);
+                    if (result === undefined) {
+                        this.$router.push("/")
+                    }
                     /*if (result === undefined) {
                         alert("Server seems busy!");
                         return;

@@ -10,7 +10,9 @@
             <nav class="bg-gray py-3">
                 <div class="container">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><router-link to="/">Home</router-link></li>
+                        <li class="breadcrumb-item">
+                            <router-link to="/">Home</router-link>
+                        </li>
                         <li class="breadcrumb-item active" aria-current="page">Product Single</li>
                     </ol>
                 </div>
@@ -25,7 +27,9 @@
                     <div class="col-lg-5 col-md-6 text-center text-md-left align-self-center pl-5">
                         <h3 class="mb-lg-2 mb-2">Woven Crop Cami</h3>
                         <span class="mb-lg-4 mb-3 h5">$90.00</span>
-                        <p class="mb-lg-4 mb-3 text-gray">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. sed ut perspic atis unde omnis iste natus</p>
+                        <p class="mb-lg-4 mb-3 text-gray">Excepteur sint occaecat cupidatat non proident, sunt in culpa
+                            qui officia deserunt mollit anim id est laborum. sed ut perspic atis unde omnis iste
+                            natus</p>
                         <form action="#">
                             <!--<select class="form-control w-100 mb-2" name="color">
                                 <option value="brown">Brown Color</option>
@@ -72,19 +76,20 @@
 
                             <VueAgile :options="sliderOptions">
                                 <div class="slide">
-                                    <img class="img-fluid w-100 image-zoom" v-bind:src="getFullImagePath(product.image)" alt="product-img">
+                                    <img class="img-fluid w-100 image-zoom" v-bind:src="getFullImagePath(product.image)"
+                                         alt="product-img">
                                 </div>
 
                                 <div :key="img.id" class="slide" v-for="img in product.additional_images.split(',')">
-                                    <img class="img-fluid w-100 image-zoom" v-bind:src="getFullImagePath(img)" alt="product-img">
+                                    <img class="img-fluid w-100 image-zoom" v-bind:src="getFullImagePath(img)"
+                                         alt="product-img">
                                 </div>
                             </VueAgile>
                         </div>
                         <!-- produt details -->
                         <div class="col-lg-6 mb-100">
                             <h2>{{ product.name }}</h2>
-                            <i class="ti-check-box text-success"/>
-                            <span class="text-success">Instock</span>
+                            <span v-bind:class="[product.stock === 0 ? 'text-danger':'text-success']">{{ product.stock === 0 ? "Out Of Stock":"In Stock" }}</span>
                             <!--<ul class="list-inline mb-4">
                                 <li class="list-inline-item mx-0"><a href="#" class="rated"><i class="ti-star"/></a></li>
                                 <li class="list-inline-item mx-0"><a href="#" class="rated"><i class="ti-star"/></a></li>
@@ -93,7 +98,8 @@
                                 <li class="list-inline-item mx-0"><a href="#" class="rated"><i class="ti-star"/></a></li>
                                 <li class="list-inline-item"><a href="#" class="text-gray ml-3">( 3 Reviews )</a></li>
                             </ul>-->
-                            <h4 class="text-primary h3 mt-2">${{ product.price }} <!--<s class="text-color ml-2">$90.00</s>--></h4>
+                            <h4 class="text-primary h3 mt-2">${{ product.price }}
+                                <!--<s class="text-color ml-2">$90.00</s>--></h4>
                             <!--<h6 class="mb-4">You save: <span class="text-primary">$25.00 USD (30%)</span></h6>-->
                             <div class="d-flex flex-column flex-sm-row justify-content-between mt-5 mb-4">
                                 <div class="input-group  bootstrap-touchspin bootstrap-touchspin-injected w-25">
@@ -125,7 +131,8 @@
                                 </select>-->
                             </div>
                             <button @click="addToCart(product.id, product.store_id, getFullImagePath(product.image), product.name, quantity, product.price, product.is_digital)"
-                                    class="btn btn-primary mb-4">add to cart</button>
+                                    class="btn btn-primary mb-4">add to cart
+                            </button>
                             <!--<h4 class="mb-3"><span class="text-primary">Harry up!</span> Sale ends in</h4>-->
                             <!-- syo-timer -->
                             <div class="syotimer dark">
@@ -375,7 +382,7 @@
 <script>
     /* eslint-disable */
     import axios from "axios";
-    import { VueAgile } from 'vue-agile';
+    import {VueAgile} from 'vue-agile';
 
     import Header from "@/components/indexComponents/Header";
     import Navigation from "@/components/indexComponents/Navigation";
@@ -426,7 +433,7 @@
                         itemName: itemName,
                         itemQuantity: quantity,
                         itemPrice: price,
-                        subTotal:price,
+                        subTotal: price,
                         fromView: true,
                     });
                 } else if (digital !== isDigital) {

@@ -10,7 +10,9 @@
             <nav class="bg-gray py-3">
                 <div class="container">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><router-link to="/">Home</router-link></li>
+                        <li class="breadcrumb-item">
+                            <router-link to="/">Home</router-link>
+                        </li>
                         <li class="breadcrumb-item active" aria-current="page">Shipping Information</li>
                     </ol>
                 </div>
@@ -25,7 +27,7 @@
                             <div class="inner-wrapper border-box">
                                 <!-- navbar -->
                                 <div class="align-content-between nav mb-5">
-                                    <span  class="text-center d-inline-block nav-item">
+                                    <span class="text-center d-inline-block nav-item">
                                         <i class="ti-wallet d-block mb-2"/>
                                         <span class="d-block h4">Billing Info</span>
                                     </span>
@@ -34,7 +36,7 @@
                                         <i class="ti-truck d-block mb-2"/>
                                         <span class="d-block h4">Shipping Info</span>
                                     </span>
-                                    <span  class="text-center d-inline-block active nav-item">
+                                    <span class="text-center d-inline-block active nav-item">
                                         <i class="ti-eye d-block mb-2"/>
                                         <span class="d-block h4">Review</span>
                                     </span>
@@ -55,7 +57,9 @@
                                         </thead>
                                         <tbody>
                                         <tr class="text-center" v-for="item in getFullCart" v-bind:key="item.id">
-                                            <td class="align-middle"><img class="img-fluid img-thumbnail img-width" :src="item.itemThumbnail" alt="product-img" /></td>
+                                            <td class="align-middle"><img class="img-fluid img-thumbnail img-width"
+                                                                          :src="item.itemThumbnail" alt="product-img"/>
+                                            </td>
                                             <td class="align-middle">{{ item.itemName }}</td>
                                             <td class="align-middle">{{ item.itemQuantity }}</td>
                                             <td class="align-middle">${{ item.subTotal }}</td>
@@ -74,8 +78,8 @@
                                             <h4 class="mb-3">Shipping Address</h4>
                                             <ul class="list-unstyled">
                                                 <li>{{ shippingInfo.firstName + ' ' + shippingInfo.lastName }}</li>
-                                                <li>{{ shippingInfo.address }} </li>
-                                                <li>{{ shippingInfo.phone }} </li>
+                                                <li>{{ shippingInfo.address }}</li>
+                                                <li>{{ shippingInfo.phone }}</li>
                                                 <li>{{ shippingInfo.email }}</li>
                                             </ul>
                                         </div>
@@ -83,7 +87,9 @@
                                             <h4 class="mb-3">Shipping Method</h4>
                                             <ul class="list-unstyled">
                                                 <li>{{ shippingMethodDetailed.name }}</li>
-                                                <li class="small">Delivery in {{ shippingMethodDetailed.approximate_delivery_time }} days</li>
+                                                <li class="small">Delivery in {{
+                                                    shippingMethodDetailed.approximate_delivery_time }} days
+                                                </li>
                                             </ul>
                                         </div>
                                     </div>
@@ -97,8 +103,8 @@
                                         <h4 class="mb-3">Billing Address</h4>
                                         <ul class="list-unstyled">
                                             <li>{{ billingInfo.firstName + ' ' + billingInfo.lastName }}</li>
-                                            <li>{{ billingInfo.address }} </li>
-                                            <li>{{ billingInfo.phone }} </li>
+                                            <li>{{ billingInfo.address }}</li>
+                                            <li>{{ billingInfo.phone }}</li>
                                             <li>{{ billingInfo.email }}</li>
                                         </ul>
                                     </div>
@@ -129,7 +135,8 @@
                                         <span>Subtotal</span>
                                         <span>${{ getCartTotalPrice }}</span>
                                     </li>
-                                    <li v-if="!this.$store.getters.getterIsAllProductDigital" class="d-flex justify-content-between">
+                                    <li v-if="!this.$store.getters.getterIsAllProductDigital"
+                                        class="d-flex justify-content-between">
                                         <span>Shipping Charge</span>
                                         <span>${{ shippingMethodDetailed.delivery_charge }}</span>
                                     </li>
@@ -137,7 +144,8 @@
                                         <span>Payment Processing Fee</span>
                                         <span>${{ payment_method.processing_fee }}</span>
                                     </li>
-                                    <li v-if="discountType!=='' && discountAmount!==''" class="d-flex justify-content-between">
+                                    <li v-if="discountType!=='' && discountAmount!==''"
+                                        class="d-flex justify-content-between">
                                         <span class="text-capitalize">{{ discountType.replace('_', ' ') }}</span>
                                         <span>- ${{ discountAmount }}</span>
                                     </li>
@@ -149,7 +157,9 @@
                                 </div>
                             </div>
                             <div class="d-flex flex-column flex-md-row align-items-center mt-5">
-                                <input v-model="coupon" type="text" class="form-control text-md-left text-center mb-3 mb-md-0 d-block" id="coupon" placeholder="I have a discount coupon">
+                                <input v-model="coupon" type="text"
+                                       class="form-control text-md-left text-center mb-3 mb-md-0 d-block" id="coupon"
+                                       placeholder="I have a discount coupon">
                                 <a @click="onApplyCoupon" class="btn btn-outline-primary ">Apply</a>
                             </div>
                         </div>
@@ -177,7 +187,7 @@
     export default {
         name: "Review",
         components: {Footer, Navigation, Header},
-        data(){
+        data() {
             return {
                 isCartNil: true,
                 shippingInfo: [],
@@ -205,7 +215,7 @@
             this.checkRequired();
         },
         computed: {
-            getFullCart(){
+            getFullCart() {
                 this.isCartNil = this.$store.getters.cartItemCount < 1;
                 return this.$store.getters.getCart;
             },
@@ -287,7 +297,7 @@
                     console.log(err)
                 })
             },
-            createOrder: function(shippingAddressId, billingAddressId) {
+            createOrder: function (shippingAddressId, billingAddressId) {
                 let items = [];
                 let order = {};
                 let cart_items = this.$store.getters.getCart;
@@ -304,6 +314,7 @@
                         items: items,
                         billing_address_id: billingAddressId,
                         shipping_address_id: shippingAddressId,
+                        shipping_method_id: this.shippingMethodDetailed.id,
                     };
                     if (this.coupon !== '') {
                         order['coupon_code'] = this.coupon
@@ -332,15 +343,15 @@
                     console.log(resp);
 
                     if (this.totalPrice === 0) {
-                        this.$router.push({ path: `/payment/${resp.data.data.id}`});
+                        this.$router.push({path: `/payment/${resp.data.data.id}`});
                         return
                     }
-                    this.$router.push({ path: `/payment/${resp.data.data.id}`});
+                    this.$router.push({path: `/payment/${resp.data.data.id}`});
                 }).catch(err => {
                     console.log(err)
                 });
             },
-            createShippingAddress: function() {
+            createShippingAddress: function () {
                 let shipping_address = {
                     name: this.shippingInfo.firstName.trim() + ' ' + this.shippingInfo.lastName.trim(),
                     address: this.shippingInfo.address,
@@ -363,7 +374,7 @@
                     console.log(err)
                 });
             },
-            createBillingAddress: function(shippingAddress) {
+            createBillingAddress: function (shippingAddress) {
 
                 let billing_address = {
                     name: this.billingInfo.firstName.trim() + ' ' + this.billingInfo.lastName.trim(),
@@ -388,7 +399,7 @@
                 });
             },
             // Checking are the shippingInfo & billingInfo stored in state
-            checkRequired : function(){
+            checkRequired: function () {
                 if (this.$store.getters.getterIsAllProductDigital && Object.keys(this.billingInfo).length < 1) {
                     this.$router.push('/billing');
                 } else if (!this.$store.getters.getterIsAllProductDigital && (Object.keys(this.shippingInfo).length < 1 || Object.keys(this.billingInfo).length < 1)) {
@@ -404,13 +415,13 @@
                 }
                 this.getPaymentMethodList();
             },
-            getShippingInfo: function() {
+            getShippingInfo: function () {
                 return this.$store.getters.getterShippingInfo;
             },
-            getBillingInfo: function() {
+            getBillingInfo: function () {
                 return this.$store.getters.getterBillingInfo;
             },
-            getShippingMethod: function(method) {
+            getShippingMethod: function (method) {
 
                 return method;
             },
@@ -435,7 +446,7 @@
 </script>
 
 <style scoped>
-    .img-width{
-        width: 80px!important;
+    .img-width {
+        width: 80px !important;
     }
 </style>

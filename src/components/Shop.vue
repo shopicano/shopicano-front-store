@@ -19,7 +19,9 @@
                     <div class="col-lg-5 col-md-6 text-center text-md-left align-self-center pl-5">
                         <h3 class="mb-lg-2 mb-2">Woven Crop Cami</h3>
                         <span class="mb-lg-4 mb-3 h5">$90.00</span>
-                        <p class="mb-lg-4 mb-3 text-gray">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. sed ut perspic atis unde omnis iste natus</p>
+                        <p class="mb-lg-4 mb-3 text-gray">Excepteur sint occaecat cupidatat non proident, sunt in culpa
+                            qui officia deserunt mollit anim id est laborum. sed ut perspic atis unde omnis iste
+                            natus</p>
                         <form action="#">
                             <select class="form-control w-100 mb-2" name="color">
                                 <option value="brown">Brown Color</option>
@@ -92,9 +94,10 @@
                             <div class="mb-30">
                                 <h4 class="mb-3">Shop by Categories</h4>
                                 <ul class="pl-0 shop-list list-unstyled">
-                                    <li v-for="category in categories.slice(0,10)" :key="category.id" v-on:click="setCategoryId(category.id)">
+                                    <li v-for="category in categories.slice(0,10)" :key="category.id"
+                                        v-on:click="setCategoryId(category.id)">
                                         <a class="d-flex py-2 text-gray justify-content-between">
-                                            <span>{{ category.name }}</span><span>9</span>
+                                            <span>{{ category.name }}</span><span>{{ category.count }}</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -114,7 +117,8 @@
                                 </div>
                                 <div class="col-lg-4 col-sm-6 mb-4"></div>
 
-                                <div v-for="product in productsList" v-bind:key="product.id" class="col-lg-4 col-sm-6 mb-4">
+                                <div v-for="product in productsList" v-bind:key="product.id"
+                                     class="col-lg-4 col-sm-6 mb-4">
                                     <div class="product text-center">
                                         <div class="product-thumb">
                                             <div class="overflow-hidden position-relative">
@@ -126,7 +130,8 @@
                                                 </router-link>
                                                 <div class="btn-cart">
                                                     <button @click="addToCart(product.id, product.store_id, getFullImagePath(product.image), product.name, 1, product.price, product.is_digital)"
-                                                            class="btn btn-primary btn-sm">Add To Cart</button>
+                                                            class="btn btn-primary btn-sm">Add To Cart
+                                                    </button>
                                                 </div>
                                             </div>
                                             <!--<div class="product-hover-overlay">
@@ -143,7 +148,11 @@
                                             </div>-->
                                         </div>
                                         <div class="product-info">
-                                            <h3 class="h5"><router-link class="text-color" :to="`/products/${product.id}`">{{ product.name }}</router-link></h3>
+                                            <h3 class="h5">
+                                                <router-link class="text-color" :to="`/products/${product.id}`">{{
+                                                    product.name }}
+                                                </router-link>
+                                            </h3>
                                             <span class="h5">${{ product.price }}</span>
                                             <span class="d-block">Seller: <span class="text-primary">{{ product.store_name }}</span></span>
                                         </div>
@@ -189,7 +198,7 @@
 
 <script>
     /* eslint-disable */
-    import { BPagination } from 'bootstrap-vue';
+    import {BPagination} from 'bootstrap-vue';
     import axios from 'axios';
     import Loading from 'vue-loading-overlay';
     import 'vue-loading-overlay/dist/vue-loading.css';
@@ -206,7 +215,7 @@
         name: "Shop",
         components: {Services, NewsLetter, Footer, Navigation, Header, BPagination, Loading},
         data() {
-            return{
+            return {
                 rows: 100,
                 currentPage: 1,
                 perPage: 20,
@@ -239,7 +248,7 @@
         methods: {
             getProducts: function () {
                 this.isLoading = true;
-                axios.get( Settings.GetApiUrl() + "/products?page=" + this.currentPage + "&limit="
+                axios.get(Settings.GetApiUrl() + "/products?page=" + this.currentPage + "&limit="
                     + this.perPage,).then(resp => {
                     this.productsList = resp.data.data;
                     this.categorySelected = false;
@@ -256,7 +265,7 @@
                 this.getCategoryItems();
             },
             getCategoryItems: function () {
-                axios.get( Settings.GetApiUrl() + "/products?page=" + this.currentPage + "&limit="
+                axios.get(Settings.GetApiUrl() + "/products?page=" + this.currentPage + "&limit="
                     + this.perPage,).then(resp => {
 
                     this.categoryItems = [];
@@ -275,7 +284,7 @@
                 })
             },
             getCategories: function () {
-                axios.get( Settings.GetApiUrl() + '/stats/categories').then(resp => {
+                axios.get(Settings.GetApiUrl() + '/stats/categories').then(resp => {
                     this.categories = resp.data.data;
                 }).catch(err => {
                     console.log(err);
@@ -284,7 +293,7 @@
             getFullImagePath(subPath) {
                 return Settings.GetMediaUrl() + subPath;
             },
-            onSearchProducts: function() {
+            onSearchProducts: function () {
                 axios.get(Settings.GetApiUrl() + '/products?query=' + this.query).then(resp => {
                     this.fetchIsEmpty = resp.data.data.length === 0;
                     this.productsList = resp.data.data;
@@ -303,7 +312,7 @@
                     return alert('All selected products must be from same store.')
                 }
 
-                if (digital === '' || digital===isDigital) {
+                if (digital === '' || digital === isDigital) {
                     this.$store.dispatch('storeIsProductDigitalAction', isDigital);
                     this.$store.dispatch('addItemToCartAction', {
                         itemID: id,
@@ -338,7 +347,8 @@
 
 <style scoped>
     @import '~bootstrap-vue/dist/bootstrap-vue.css';
+
     .imageDim {
-        height: 330px!important;
+        height: 330px !important;
     }
 </style>

@@ -9,7 +9,9 @@
             <nav class="bg-gray py-3">
                 <div class="container">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><router-link to="/">Home</router-link></li>
+                        <li class="breadcrumb-item">
+                            <router-link to="/">Home</router-link>
+                        </li>
                         <li class="breadcrumb-item active" aria-current="page">Order Track</li>
                     </ol>
                 </div>
@@ -22,16 +24,19 @@
                     <div class="row bg-dark">
                         <div class="col-lg-12 text-center">
                             <div class="p-4">
-                                <h5 class="text-white">TRACKING ORDER NO - <span class="text-primary">{{ trackingHash }}</span></h5>
+                                <h5 class="text-white">TRACKING ORDER NO - <span
+                                        class="text-primary">{{ trackingHash }}</span></h5>
                             </div>
                         </div>
                     </div>
                     <div class="row bg-gray px-3 py-5">
                         <div class="col-md-4 text-center">
-                            <p><strong>Shipped Via: </strong>Standard Delivery</p>
+                            <p class="text-capitalize p-1"><strong>Shipping Via: </strong>{{
+                                orderDetails.status.replace('_', ' ') }}</p>
                         </div>
                         <div class="col-md-4 text-center">
-                            <p><strong>Status: </strong>Processing Order</p>
+                            <p class="text-capitalize p-1"><strong>Status: </strong> {{ orderDetails.status.replace('_',
+                                ' ') }} </p>
                         </div>
                         <div class="col-md-4 text-center">
                             <p><strong>Expected Date: </strong>Sep 1, 2019</p>
@@ -78,14 +83,17 @@
                                                 v-for="item in orderDetails.items"
                                                 v-bind:key="item.id">
                                                 <td class="align-middle">
-                                                    <img class="img-fluid img-thumbnail img-width" :src="getFullImagePath(item.image)" alt="product-img"/>
+                                                    <img class="img-fluid img-thumbnail img-width"
+                                                         :src="getFullImagePath(item.image)" alt="product-img"/>
                                                     <p>{{ item.name }}</p>
                                                 </td>
                                                 <td class="align-middle">{{ item.quantity }}</td>
                                                 <td class="align-middle">${{ item.price }}</td>
                                                 <td class="align-middle"
                                                     v-if="item.is_digital && orderDetails.payment_status == 'payment_completed'">
-                                                    <button @click="downloadFile" class="btn btn-dark btn-download">Download</button>
+                                                    <button @click="downloadFile" class="btn btn-dark btn-download">
+                                                        Download
+                                                    </button>
                                                 </td>
                                             </tr>
                                             </tbody>
@@ -103,24 +111,32 @@
                                                 <span class="badge badge-dark text-capitalize p-1">{{ orderDetails.payment_status.replace('_', ' ') }}</span>
                                             </li>
 
-                                            <li v-if="orderDetails.shipping_charge > 0" class="list-group-item d-flex justify-content-between align-items-center">
+                                            <li v-if="orderDetails.shipping_charge > 0"
+                                                class="list-group-item d-flex justify-content-between align-items-center">
                                                 Shipping Charge
                                                 <span class="badge badge-dark">$ {{ orderDetails.shipping_charge }}</span>
                                             </li>
 
-                                            <li v-if="orderDetails.discounted_amount > 0" class="list-group-item d-flex justify-content-between align-items-center">
+                                            <li v-if="orderDetails.discounted_amount > 0"
+                                                class="list-group-item d-flex justify-content-between align-items-center">
                                                 Discount
                                                 <span class="badge badge-dark">$ {{ orderDetails.discounted_amount }}</span>
                                             </li>
 
-                                            <li v-if="orderDetails.payment_processing_fee > 0" class="list-group-item d-flex justify-content-between align-items-center">
+                                            <li v-if="orderDetails.payment_processing_fee > 0"
+                                                class="list-group-item d-flex justify-content-between align-items-center">
                                                 Payment Processing Fee
                                                 <span class="badge badge-dark">$ {{ orderDetails.payment_processing_fee }}</span>
                                             </li>
 
                                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                Subtotal
+                                                Sub Total
                                                 <span class="badge badge-dark">$ {{ orderDetails.sub_total }}</span>
+                                            </li>
+
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                Grand Total
+                                                <span class="badge badge-dark">$ {{ orderDetails.grand_total }}</span>
                                             </li>
                                         </ul>
                                     </div>
@@ -181,7 +197,7 @@
             this.loadOrderInfo();
         },
         methods: {
-            loadOrderInfo: function() {
+            loadOrderInfo: function () {
                 axios.get(Settings.GetApiUrl() + '/orders/' + this.$route.params.id, {
                     headers: {
                         "Authorization": "Bearer " + SessionStore.GetAccessToken(),
@@ -205,13 +221,15 @@
 </script>
 
 <style scoped>
-    .txt-green{
+    .txt-green {
         color: #00cc00;
     }
-    .img-width{
-        width: 80px!important;
+
+    .img-width {
+        width: 80px !important;
     }
-    .btn-download{
+
+    .btn-download {
         padding: 10px 30px;
         font-size: 12px;
     }

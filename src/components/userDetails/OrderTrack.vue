@@ -149,7 +149,7 @@
                                             <li v-if="orderDetails.discounted_amount > 0"
                                                 class="list-group-item d-flex justify-content-between align-items-center">
                                                 Coupon Code
-                                                <span class="">$ {{ orderDetails.coupon_code }}</span>
+                                                <span class="">{{ orderDetails.coupon_code }}</span>
                                             </li>
 
                                             <li class="list-group-item d-flex justify-content-between align-items-center">

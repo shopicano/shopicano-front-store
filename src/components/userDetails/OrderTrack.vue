@@ -30,39 +30,39 @@
                         </div>
                     </div>
                     <div class="row bg-gray px-3 py-5">
-                        <div class="col-md-4 text-center">
-                            <p class="text-capitalize p-1"><strong>Shipping Via: </strong>{{
-                                orderDetails.status.replace('_', ' ') }}</p>
-                        </div>
-                        <div class="col-md-4 text-center">
-                            <p class="text-capitalize p-1"><strong>Status: </strong> {{ orderDetails.status.replace('_',
-                                ' ') }} </p>
-                        </div>
-                        <div class="col-md-4 text-center">
-                            <p><strong>Expected Date: </strong>Sep 1, 2019</p>
-                        </div>
-                        <div class="d-flex justify-content-between w-100 mt-5 flex-column flex-sm-row">
-                            <div class="border mx-1 mb-2 border-primary p-2 p-md-4 text-center">
-                                <i class="ti-bag icon-md mb-3 d-inline-block"></i>
-                                <h5>Confirmed Order</h5>
-                            </div>
-                            <div class="border mx-1 mb-2 border-primary p-2 p-md-4 text-center">
-                                <i class="ti-settings icon-md mb-3 d-inline-block"></i>
-                                <h5>Processing Order</h5>
-                            </div>
-                            <div class="border mx-1 mb-2 p-2 p-md-4 text-center">
-                                <i class="ti-crown icon-md mb-3 d-inline-block"></i>
-                                <h5>Quality Check</h5>
-                            </div>
-                            <div class="border mx-1 mb-2 p-2 p-md-4 text-center">
-                                <i class="ti-truck icon-md mb-3 d-inline-block"></i>
-                                <h5>Product Dispatched</h5>
-                            </div>
-                            <div class="border mx-1 mb-2 p-2 p-md-4 text-center">
-                                <i class="ti-home icon-md mb-3 d-inline-block"></i>
-                                <h5>Product Delivered</h5>
-                            </div>
-                        </div>
+                        <!--                        <div class="col-md-4 text-center" v-if="orderDetails.shipping_charge > 0">-->
+                        <!--                            <p class="text-capitalize p-1"><strong>Shipping Via: </strong>{{-->
+                        <!--                                orderDetails.shipping_method_name }}</p>-->
+                        <!--                        </div>-->
+                        <!--                        <div class="col-md-4 text-center">-->
+                        <!--                            <p class="text-capitalize p-1"><strong>Status: </strong> {{ orderDetails.status.replace('_',-->
+                        <!--                                ' ') }} </p>-->
+                        <!--                        </div>-->
+                        <!--                        <div class="col-md-4 text-center">-->
+                        <!--                            <p><strong>Expected Delivery Date: </strong>{{ this.deliveryDate }}</p>-->
+                        <!--                        </div>-->
+                        <!--                        <div class="d-flex justify-content-between w-100 mt-5 flex-column flex-sm-row">-->
+                        <!--                            <div class="border mx-1 mb-2 border-primary p-2 p-md-4 text-center">-->
+                        <!--                                <i class="ti-bag icon-md mb-3 d-inline-block"></i>-->
+                        <!--                                <h5>Confirmed Order</h5>-->
+                        <!--                            </div>-->
+                        <!--                            <div class="border mx-1 mb-2 border-primary p-2 p-md-4 text-center">-->
+                        <!--                                <i class="ti-settings icon-md mb-3 d-inline-block"></i>-->
+                        <!--                                <h5>Processing Order</h5>-->
+                        <!--                            </div>-->
+                        <!--                            <div class="border mx-1 mb-2 p-2 p-md-4 text-center">-->
+                        <!--                                <i class="ti-crown icon-md mb-3 d-inline-block"></i>-->
+                        <!--                                <h5>Quality Check</h5>-->
+                        <!--                            </div>-->
+                        <!--                            <div class="border mx-1 mb-2 p-2 p-md-4 text-center">-->
+                        <!--                                <i class="ti-truck icon-md mb-3 d-inline-block"></i>-->
+                        <!--                                <h5>Product Dispatched</h5>-->
+                        <!--                            </div>-->
+                        <!--                            <div class="border mx-1 mb-2 p-2 p-md-4 text-center">-->
+                        <!--                                <i class="ti-home icon-md mb-3 d-inline-block"></i>-->
+                        <!--                                <h5>Product Delivered</h5>-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
 
                         <div class="table-responsive">
                             <div class="container">
@@ -102,36 +102,59 @@
 
                                         <ul class="list-group">
                                             <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                Status
+                                                <span class="text-dark text-capitalize p-1">{{ orderDetails.status.replace('_', ' ') }}</span>
+                                            </li>
+
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
                                                 Payment Method
                                                 <span class="text-dark">{{ orderDetails.payment_method_name }}</span>
                                             </li>
 
                                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                                 Payment Status
-                                                <span class="badge badge-dark text-capitalize p-1">{{ orderDetails.payment_status.replace('_', ' ') }}</span>
-                                            </li>
-
-                                            <li v-if="orderDetails.shipping_charge > 0"
-                                                class="list-group-item d-flex justify-content-between align-items-center">
-                                                Shipping Charge
-                                                <span class="badge badge-dark">$ {{ orderDetails.shipping_charge }}</span>
-                                            </li>
-
-                                            <li v-if="orderDetails.discounted_amount > 0"
-                                                class="list-group-item d-flex justify-content-between align-items-center">
-                                                Discount
-                                                <span class="badge badge-dark">$ {{ orderDetails.discounted_amount }}</span>
+                                                <span class="text-capitalize p-1">{{ orderDetails.payment_status.replace('_', ' ') }}</span>
                                             </li>
 
                                             <li v-if="orderDetails.payment_processing_fee > 0"
                                                 class="list-group-item d-flex justify-content-between align-items-center">
                                                 Payment Processing Fee
-                                                <span class="badge badge-dark">$ {{ orderDetails.payment_processing_fee }}</span>
+                                                <span class="">$ {{ orderDetails.payment_processing_fee }}</span>
+                                            </li>
+
+                                            <li v-if="orderDetails.shipping_charge > 0"
+                                                class="list-group-item d-flex justify-content-between align-items-center">
+                                                Shipping Charge
+                                                <span class="">$ {{ orderDetails.shipping_charge }}</span>
+                                            </li>
+
+                                            <li v-if="orderDetails.shipping_charge > 0"
+                                                class="list-group-item d-flex justify-content-between align-items-center">
+                                                Shipping Via
+                                                <span class="">{{ orderDetails.shipping_method_name }}</span>
+                                            </li>
+
+                                            <li v-if="orderDetails.shipping_charge > 0"
+                                                class="list-group-item d-flex justify-content-between align-items-center">
+                                                Expected Delivery Date
+                                                <span class="">{{ deliveryDate.toDateString() }}</span>
+                                            </li>
+
+                                            <li v-if="orderDetails.discounted_amount > 0"
+                                                class="list-group-item d-flex justify-content-between align-items-center">
+                                                Discount
+                                                <span class="">$ {{ orderDetails.discounted_amount }}</span>
+                                            </li>
+
+                                            <li v-if="orderDetails.discounted_amount > 0"
+                                                class="list-group-item d-flex justify-content-between align-items-center">
+                                                Coupon Code
+                                                <span class="">$ {{ orderDetails.coupon_code }}</span>
                                             </li>
 
                                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                                 Sub Total
-                                                <span class="badge badge-dark">$ {{ orderDetails.sub_total }}</span>
+                                                <span class="">$ {{ orderDetails.sub_total }}</span>
                                             </li>
 
                                             <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -191,6 +214,7 @@
             return {
                 trackingHash: '',
                 orderDetails: '',
+                deliveryDate: Date
             };
         },
         mounted() {
@@ -206,6 +230,10 @@
                     console.log(resp);
                     this.orderDetails = resp.data.data;
                     this.trackingHash = this.orderDetails.hash;
+
+                    let deliveryDate = new Date(this.orderDetails.created_at);
+                    deliveryDate.setDate(deliveryDate.getDate() + this.orderDetails.approximate_delivery_time);
+                    this.deliveryDate = deliveryDate;
                 }).catch(err => {
                     console.log(err)
                 })
@@ -215,7 +243,7 @@
             },
             getFullImagePath: function (subPath) {
                 return Settings.GetMediaUrl() + subPath;
-            },
+            }
         }
     }
 </script>

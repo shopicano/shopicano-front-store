@@ -10,7 +10,8 @@
                         <h2 class="text-center">Welcome Back</h2>
                         <form class="text-left clearfix">
                             <div class="form-group">
-                                <input v-model="email" type="email" autocomplete="off" class="form-control"  placeholder="Email">
+                                <input v-model="email" type="email" autocomplete="off" class="form-control"
+                                       placeholder="Email">
                             </div>
                             <div class="form-group">
                                 <input v-model="password" type="password" class="form-control" placeholder="Password">
@@ -18,10 +19,17 @@
                             <div class="text-center">
                                 <button v-on:click="onLogin"
                                         :disabled="is_loading"
-                                        type="submit" class="btn btn-primary">Login</button>
+                                        type="submit" class="btn btn-primary">Login
+                                </button>
                             </div>
                         </form>
-                        <p class="mt-3">New in this site?<router-link to="/signup" class="font-weight-bold"> Create New Account</router-link></p>
+                        <p class="mt-3">
+                            <router-link to="/signup" class="font-weight-bold"> Create New Account</router-link>
+                        </p>
+                        <p class="mt-3">
+                            <router-link to="/reset-password-request" class="font-weight-bold"> Reset Password
+                            </router-link>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -98,11 +106,7 @@
                     if (result === undefined) {
                         this.$router.push("/")
                     }
-                    /*if (result === undefined) {
-                        alert("Server seems busy!");
-                        return;
-                    }
-                    alert(result.data.title);*/
+                    alert(result.data.title);
                 })
             },
             onRegister: function () {

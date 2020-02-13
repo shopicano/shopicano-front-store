@@ -5,12 +5,12 @@
         <div class="top-header">
             <div class="row">
                 <div class="col-lg-6 text-center text-lg-left">
-                    <p class="text-white mb-lg-0 mb-1">Free shipping • Free 30 days return • Express delivery</p>
+                    <p class="text-white mb-lg-0 mb-1"></p>
                 </div>
                 <div class="col-lg-6 text-center text-lg-right">
                     <ul class="list-inline">
                         <li class="list-inline-item">
-                            <span class="myaccount" @click="onCheckLoggedIn">My Accounts</span>
+                            <span class="myaccount" @click="onCheckLoggedIn">My Account</span>
                         </li>
                         <li class="list-inline-item">
                             <select class="country" name="country">
@@ -43,7 +43,7 @@
 </script>
 
 <style scoped>
-    .myaccount{
+    .myaccount {
         color: white;
         cursor: pointer;
         font-size: 12px;

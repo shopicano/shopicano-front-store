@@ -22,6 +22,8 @@ import Addresses from "@/components/userDetails/Addresses";
 import Billing from "@/components/cart/Billing";
 import Payment from "@/components/cart/Payment";
 import OrderTrack from "@/components/userDetails/OrderTrack";
+import ResetPassword from "./components/userForms/ResetPassword";
+import ResetPasswordRequest from "./components/userForms/ResetPasswordRequest";
 
 Vue.config.productionTip = false;
 
@@ -60,6 +62,14 @@ const routes = [
     {
         path: '/signup',
         component: SignUp,
+    },
+    {
+        path: '/reset-password',
+        component: ResetPassword,
+    },
+    {
+        path: '/reset-password-request',
+        component: ResetPasswordRequest,
     },
     {
         path: '/cart',

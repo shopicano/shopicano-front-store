@@ -64,8 +64,9 @@
                                 <li class="list-inline-item mx-0"><a href="#" class="rated"><i class="ti-star"/></a></li>
                                 <li class="list-inline-item"><a href="#" class="text-gray ml-3">( 3 Reviews )</a></li>
                             </ul>-->
-                            <h4 class="text-primary h3 mt-2">${{ formatPrice(product.price) }}
-                                <!--<s class="text-color ml-2">$90.00</s>--></h4>
+                            <h4 v-if="product.price === 0" class="text-primary h3 mt-2">Free</h4>
+                            <h4 v-if="product.price !== 0" class="text-primary h3 mt-2">${{ formatPrice(product.price)
+                                }}</h4>
                             <!--<h6 class="mb-4">You save: <span class="text-primary">$25.00 USD (30%)</span></h6>-->
                             <div class="d-flex flex-column flex-sm-row justify-content-between mt-5 mb-4">
                                 <div v-if="!isOutOfStock(this.product)"

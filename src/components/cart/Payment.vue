@@ -13,7 +13,7 @@
                         <li class="breadcrumb-item">
                             <router-link to="/">Home</router-link>
                         </li>
-                        <li class="breadcrumb-item active" aria-current="page">Shipping Information</li>
+                        <li class="breadcrumb-item active" aria-current="page">Pay</li>
                     </ol>
                 </div>
             </nav>
@@ -49,25 +49,25 @@
                                 <ul class="list-unstyled">
                                     <li class="d-flex justify-content-between">
                                         <span>Subtotal</span>
-                                        <span>${{ getCartTotalPrice }}</span>
+                                        <span>${{ formatPrice(getCartTotalPrice) }}</span>
                                     </li>
 
                                     <li v-if="!this.$store.getters.getterIsAllProductDigital"
                                         class="d-flex justify-content-between">
                                         <span>Shipping Charge</span>
-                                        <span>${{ getDeliveryCharge }}</span>
+                                        <span>${{ formatPrice(getDeliveryCharge) }}</span>
                                     </li>
 
                                     <li v-if="this.$store.getters.getterStoreDiscount.type!=='' && this.$store.getters.getterStoreDiscount.amount!==''"
                                         class="d-flex justify-content-between">
                                         <span class="text-capitalize">{{ this.$store.getters.getterStoreDiscount.type.replace('_', ' ') }}</span>
-                                        <span>${{ this.$store.getters.getterStoreDiscount.amount }}</span>
+                                        <span>${{ formatPrice(this.$store.getters.getterStoreDiscount.amount) }}</span>
                                     </li>
                                 </ul>
                                 <hr>
                                 <div class="d-flex justify-content-between">
                                     <span>Total</span>
-                                    <strong>USD ${{ getGrandTotal }}</strong>
+                                    <strong>USD ${{ formatPrice(getGrandTotal) }}</strong>
                                 </div>
                             </div>
                         </div>
@@ -90,6 +90,7 @@
     import axios from "axios";
     import Settings from "@/common/settings";
     import SessionStore from "@/common/session_store";
+    import NumberUtil from "../../common/number";
 
     export default {
         name: "Payment",
@@ -180,6 +181,19 @@
                     console.log(err)
                 })
             },
+            generateNonceForTwoCheckout: function () {
+                axios.get(Settings.GetApiUrl() + '/orders/' + this.orderID + '/nonce', {
+                    headers: {
+                        "Authorization": "Bearer " + SessionStore.GetAccessToken(),
+                    }
+                }).then(resp => {
+                    console.log(resp);
+                    let url = resp.data.data.url;
+                    window.location = url;
+                }).catch(err => {
+                    console.log(err)
+                })
+            },
             onSuccess: function (payload) {
                 let nonce = payload.nonce;
                 //console.log(payload);
@@ -212,12 +226,15 @@
                 } else if (this.order.payment_gateway === 'brain_tree') {
                     this.is_gateway_braintree = true;
                 } else if (this.order.payment_gateway === '2co') {
-                    window.location.replace(Settings.GetApiUrl() + '/orders/' + this.orderID + '/nonce?token=' + SessionStore.GetAccessToken());
+                    this.generateNonceForTwoCheckout();
                 } else if (this.order.payment_gateway === 'cash') {
                     this.$router.push('/confirmation/' + this.orderID);
                 } else {
                     alert("Error happened")
                 }
+            },
+            formatPrice: function (v) {
+                return NumberUtil.toDisplayUnit(v);
             },
         }
     }

@@ -107,7 +107,9 @@
                                                     product.name }}
                                                 </router-link>
                                             </h3>
-                                            <span class="h5">${{ formatPrice(product.price) }}</span>
+                                            <span v-if="product.price !==0"
+                                                  class="h5">${{ formatPrice(product.price) }}</span>
+                                            <span v-if="product.price ===0" class="h5">Free</span>
                                             <span class="d-block">Seller: <span class="text-primary">{{ product.store_name }}</span></span>
                                         </div>
                                         <!-- product label badge -->

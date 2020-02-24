@@ -12,7 +12,7 @@
                         <li class="breadcrumb-item">
                             <router-link to="/">Home</router-link>
                         </li>
-                        <li class="breadcrumb-item active" aria-current="page">Order Track</li>
+                        <li class="breadcrumb-item active" aria-current="page">Order Details</li>
                     </ol>
                 </div>
             </nav>
@@ -24,7 +24,7 @@
                     <div class="row bg-dark">
                         <div class="col-lg-12 text-center">
                             <div class="p-4">
-                                <h5 class="text-white">TRACKING ORDER NO - <span
+                                <h5 class="text-white">ORDER HASH - <span
                                         class="text-primary">{{ trackingHash }}</span></h5>
                             </div>
                         </div>
@@ -94,7 +94,8 @@
                                                 <td class="align-middle">${{ formatPrice(item.sub_total) }}</td>
                                                 <td class="align-middle"
                                                     v-if="item.is_digital && orderDetails.payment_status == 'payment_completed'">
-                                                    <button @click="downloadFile" class="btn btn-dark btn-download">
+                                                    <button @click="downloadFile(item)"
+                                                            class="btn btn-dark btn-download">
                                                         Download
                                                     </button>
                                                 </td>
@@ -242,8 +243,9 @@
                     console.log(err)
                 })
             },
-            downloadFile: function () {
-
+            downloadFile: function (item) {
+                let url = Settings.GetApiUrl() + "/orders/" + item.order_id + "/products/" + item.product_id + "/download?Authorization=" + SessionStore.GetAccessToken();
+                window.open(url, '_blank');
             },
             getFullImagePath: function (subPath) {
                 return Settings.GetMediaUrl() + subPath;

@@ -124,7 +124,7 @@ const routes = [
         component: Addresses,
     },
     {
-        path: '/ordertrack/:id',
+        path: '/order-history/:id',
         component: OrderTrack,
     },
 ];

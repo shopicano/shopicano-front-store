@@ -132,7 +132,7 @@
                 })
             },
             onClickTract: function (id) {
-                this.$router.push('/ordertrack/' + id);
+                this.$router.push('/order-history/' + id);
             },
             formatPrice: function (v) {
                 return NumberUtil.toDisplayUnit(v);

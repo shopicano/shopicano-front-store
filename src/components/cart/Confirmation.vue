@@ -13,7 +13,10 @@
                         <div class="col-md-6 mx-auto">
                             <div v-if="is_payment_done === 'payment_completed'" class="block text-center">
                                 <h3 class="text-center mb-3">Thank you! For your payment</h3>
-                                <p class="text-color">Your order has been placed and will be processed as soon as possible. Make sure you make note of your order number, which is <span class="text-primary">{{ trackingHash }}</span> You will be receiving an email shortly with confirmation of your order. You can now:</p>
+                                <p class="text-color">Your order has been placed and will be processed as soon as
+                                    possible. Make sure you make note of your order number, which is <span
+                                            class="text-primary">{{ trackingHash }}</span> You will be receiving an
+                                    email shortly with confirmation of your order. You can now:</p>
                                 <router-link to="/shop" class="btn btn-primary mt-3 mx-2">Go To Shopping</router-link>
                                 <button @click="onOrderTrack" class="btn btn-dark mt-3 mx-2">Track order</button>
                             </div>
@@ -50,7 +53,7 @@
         name: "Confirmation",
         components: {Footer, Navigation, Header},
         data() {
-            return{
+            return {
                 orderDetails: '',
                 trackingHash: '',
                 is_payment_done: '',
@@ -61,7 +64,7 @@
             this.loadOrderInfo();
         },
         methods: {
-            checkRequired : function(orderId){
+            checkRequired: function (orderId) {
                 /*if (Object.keys(this.$store.getters.getterPaymentInfo) < 1) {
                     this.$router.push('/review');
                 } else {
@@ -74,7 +77,7 @@
                     this.$router.push('/review');
                 }
             },
-            loadOrderInfo: function() {
+            loadOrderInfo: function () {
                 axios.get(Settings.GetApiUrl() + '/orders/' + this.$route.params.id, {
                     headers: {
                         "Authorization": "Bearer " + SessionStore.GetAccessToken(),
@@ -93,7 +96,7 @@
                 })
             },
             onOrderTrack: function () {
-                this.$router.push('/ordertrack/' + this.$route.params.id);
+                this.$router.push('/order-history/' + this.$route.params.id);
             }
         }
     }

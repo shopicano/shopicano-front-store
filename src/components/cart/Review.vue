@@ -62,7 +62,7 @@
                                             </td>
                                             <td class="align-middle">{{ item.itemName }}</td>
                                             <td class="align-middle">{{ item.itemQuantity }}</td>
-                                            <td class="align-middle">${{ item.subTotal }}</td>
+                                            <td class="align-middle">${{ formatPrice(item.subTotal) }}</td>
                                         </tr>
 
                                         </tbody>
@@ -133,27 +133,27 @@
                                 <ul class="list-unstyled mt-5">
                                     <li class="d-flex justify-content-between">
                                         <span>Subtotal</span>
-                                        <span>${{ getCartTotalPrice }}</span>
+                                        <span>${{ formatPrice(getCartTotalPrice) }}</span>
                                     </li>
                                     <li v-if="!this.$store.getters.getterIsAllProductDigital"
                                         class="d-flex justify-content-between">
                                         <span>Shipping Charge</span>
-                                        <span>${{ shippingMethodDetailed.delivery_charge }}</span>
+                                        <span>${{ formatPrice(getShippingFee()) }}</span>
                                     </li>
                                     <li class="d-flex justify-content-between">
                                         <span>Payment Processing Fee</span>
-                                        <span>${{ payment_method.processing_fee }}</span>
+                                        <span>${{ formatPrice(getPaymentProcessingFee()) }}</span>
                                     </li>
                                     <li v-if="discountType!=='' && discountAmount!==''"
                                         class="d-flex justify-content-between">
                                         <span class="text-capitalize">{{ discountType.replace('_', ' ') }}</span>
-                                        <span>- ${{ discountAmount }}</span>
+                                        <span>- ${{ formatPrice(discountAmount) }}</span>
                                     </li>
                                 </ul>
                                 <hr>
                                 <div class="d-flex justify-content-between">
                                     <span>Total</span>
-                                    <strong>USD ${{ generateTotalPrice }}</strong>
+                                    <strong>${{ formatPrice(generateTotalPrice) }}</strong>
                                 </div>
                             </div>
                             <div class="d-flex flex-column flex-md-row align-items-center mt-5">
@@ -183,6 +183,7 @@
     import Footer from "@/components/indexComponents/Footer";
     import SessionStore from "@/common/session_store";
     import Settings from "@/common/settings";
+    import NumberUtil from "../../common/number";
 
     export default {
         name: "Review",
@@ -227,7 +228,7 @@
                 this.totalPrice = this.$store.getters.cartTotalPrice;
 
                 if (this.$store.getters.getterIsAllProductDigital) {
-                    this.totalPrice = this.totalPrice + this.payment_method.processing_fee - this.discountAmount;
+                    this.totalPrice = (this.totalPrice + this.getPaymentProcessingFee()) - this.discountAmount;
 
                     if (this.totalPrice <= 0) {
                         this.totalPrice = 0;
@@ -240,7 +241,7 @@
 
                     return this.$store.getters.getterStoreGrandTotal;
                 } else if (!this.$store.getters.getterIsAllProductDigital) {
-                    this.totalPrice = this.totalPrice + this.payment_method.processing_fee + this.shippingMethodDetailed.delivery_charge - this.discountAmount;
+                    this.totalPrice = this.totalPrice + this.getPaymentProcessingFee() + this.getShippingFee() - this.discountAmount;
 
                     if (this.totalPrice <= 0) {
                         this.totalPrice = 0;
@@ -257,7 +258,7 @@
         },
         methods: {
             getSippingMethod: function (id) {
-                axios.get(Settings.GetApiUrl() + '/platform/shipping-methods/' + id, {
+                axios.get(Settings.GetApiUrl() + '/shipping-methods/' + id, {
                     headers: {
                         "Authorization": "Bearer " + SessionStore.GetAccessToken(),
                     }
@@ -286,7 +287,7 @@
                 })
             },
             getPaymentMethodList: function () {
-                axios.get(Settings.GetApiUrl() + '/platform/payment-methods/' + this.billingInfo.paymentMethod, {
+                axios.get(Settings.GetApiUrl() + '/payment-methods/' + this.billingInfo.paymentMethod, {
                     headers: {
                         "Authorization": "Bearer " + SessionStore.GetAccessToken(),
                     }
@@ -341,8 +342,9 @@
                     }
                 }).then(resp => {
                     console.log(resp);
+                    let data = resp.data;
 
-                    if (this.totalPrice === 0) {
+                    if (data.grand_total === 0) {
                         this.$router.push({path: `/payment/${resp.data.data.id}`});
                         return
                     }
@@ -440,7 +442,35 @@
                     console.log(localStorage.getItem('redirect_to'));
                     this.$router.push('/login');
                 }
-            }
+            },
+            getPaymentProcessingFee: function () {
+                if (this.getCartTotalPrice === 0) {
+                    return 0
+                }
+
+                let totalPrice = this.getCartTotalPrice + this.getShippingFee();
+
+                let processingFee = this.payment_method.processing_fee;
+                if (!this.payment_method.is_flat) {
+                    processingFee = (totalPrice * processingFee) / 100;
+                }
+
+                if (this.payment_method.min_processing_fee !== 0 && processingFee < this.payment_method.min_processing_fee) {
+                    return this.payment_method.min_processing_fee;
+                } else if (this.payment_method.max_processing_fee !== 0 && processingFee > this.payment_method.max_processing_fee) {
+                    return this.payment_method.max_processing_fee;
+                }
+                return processingFee
+            },
+            getShippingFee: function () {
+                if (this.shippingMethodDetailed === '') {
+                    return 0;
+                }
+                return this.shippingMethodDetailed.delivery_charge;
+            },
+            formatPrice: function (v) {
+                return NumberUtil.toDisplayUnit(v);
+            },
         }
     }
 </script>

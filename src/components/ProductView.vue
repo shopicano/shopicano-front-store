@@ -19,40 +19,6 @@
             </nav>
             <!-- /breadcrumb -->
 
-            <div id="quickView" class="quickview">
-                <div class="row w-100">
-                    <div class="col-lg-6 col-md-6 mb-5 mb-md-0 pl-5 pt-4 pt-lg-0 pl-lg-0">
-                        <img src="images/feature/product.png" alt="product-img" class="img-fluid">
-                    </div>
-                    <div class="col-lg-5 col-md-6 text-center text-md-left align-self-center pl-5">
-                        <h3 class="mb-lg-2 mb-2">Woven Crop Cami</h3>
-                        <span class="mb-lg-4 mb-3 h5">$90.00</span>
-                        <p class="mb-lg-4 mb-3 text-gray">Excepteur sint occaecat cupidatat non proident, sunt in culpa
-                            qui officia deserunt mollit anim id est laborum. sed ut perspic atis unde omnis iste
-                            natus</p>
-                        <form action="#">
-                            <!--<select class="form-control w-100 mb-2" name="color">
-                                <option value="brown">Brown Color</option>
-                                <option value="gray">Gray Color</option>
-                                <option value="black">Black Color</option>
-                            </select>
-                            <select class="form-control w-100 mb-3" name="size">
-                                <option value="small">Small Size</option>
-                                <option value="medium">Medium Size</option>
-                                <option value="large">Large Size</option>
-                            </select>-->
-                            <button class="btn btn-primary w-100 mb-lg-4 mb-3 mt-1">add to cart</button>
-                        </form>
-                        <ul class="list-inline social-icon-alt">
-                            <li class="list-inline-item"><a href="#"><i class="ti-facebook"/></a></li>
-                            <li class="list-inline-item"><a href="#"><i class="ti-twitter-alt"/></a></li>
-                            <li class="list-inline-item"><a href="#"><i class="ti-vimeo-alt"/></a></li>
-                            <li class="list-inline-item"><a href="#"><i class="ti-google"/></a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
             <!-- product-single -->
             <section class="section">
                 <div class="container">
@@ -89,7 +55,7 @@
                         <!-- produt details -->
                         <div class="col-lg-6 mb-100">
                             <h2>{{ product.name }}</h2>
-                            <span v-bind:class="[product.stock === 0 ? 'text-danger':'text-success']">{{ product.stock === 0 ? "Out Of Stock":"In Stock" }}</span>
+                            <span v-bind:class="[isOutOfStock(this.product) ? 'text-danger':'text-success']">{{ isOutOfStock(this.product) ? "Out Of Stock":"In Stock" }}</span>
                             <!--<ul class="list-inline mb-4">
                                 <li class="list-inline-item mx-0"><a href="#" class="rated"><i class="ti-star"/></a></li>
                                 <li class="list-inline-item mx-0"><a href="#" class="rated"><i class="ti-star"/></a></li>
@@ -98,11 +64,12 @@
                                 <li class="list-inline-item mx-0"><a href="#" class="rated"><i class="ti-star"/></a></li>
                                 <li class="list-inline-item"><a href="#" class="text-gray ml-3">( 3 Reviews )</a></li>
                             </ul>-->
-                            <h4 class="text-primary h3 mt-2">${{ product.price }}
+                            <h4 class="text-primary h3 mt-2">${{ formatPrice(product.price) }}
                                 <!--<s class="text-color ml-2">$90.00</s>--></h4>
                             <!--<h6 class="mb-4">You save: <span class="text-primary">$25.00 USD (30%)</span></h6>-->
                             <div class="d-flex flex-column flex-sm-row justify-content-between mt-5 mb-4">
-                                <div class="input-group  bootstrap-touchspin bootstrap-touchspin-injected w-25">
+                                <div v-if="!isOutOfStock(this.product)"
+                                     class="input-group  bootstrap-touchspin bootstrap-touchspin-injected w-25">
                                     <input id="quantity" class="quantity mr-sm-2 mb-3 mb-sm-0 form-control"
                                            v-model.number="quantity"
                                            @keydown="$event.key === '-' ? $event.preventDefault() : null"
@@ -130,7 +97,8 @@
                                     <option value="large">Large Size</option>
                                 </select>-->
                             </div>
-                            <button @click="addToCart(product.id, product.store_id, getFullImagePath(product.image), product.name, quantity, product.price, product.is_digital)"
+                            <button v-if="!isOutOfStock(this.product)"
+                                    @click="addToCart(product.id, product.store_id, getFullImagePath(product.image), product.name, quantity, product.price, product.is_digital)"
                                     class="btn btn-primary mb-4">add to cart
                             </button>
                             <!--<h4 class="mb-3"><span class="text-primary">Harry up!</span> Sale ends in</h4>-->
@@ -147,7 +115,9 @@
                         </div>
                         <div class="col-lg-12 mt-5">
                             <h3 class="mb-3">Product Description</h3>
-                            <p class="text-gray mb-4">{{ product.description }}</p>
+                            <p class="text-gray mb-4">
+                                <vue-simple-markdown :source="product.description"></vue-simple-markdown>
+                            </p>
                             <!--<h4>Product Features</h4>
                             <ul class="features-list">
                                 <li>Mapped with 3M™ Thinsulate™ Insulation [40G Body / Sleeves / Hood]</li>
@@ -388,6 +358,7 @@
     import Navigation from "@/components/indexComponents/Navigation";
     import Footer from "@/components/indexComponents/Footer";
     import Settings from "@/common/settings";
+    import NumberUtil from "../common/number";
 
     export default {
         name: "ProductView",
@@ -442,12 +413,28 @@
 
             },
             onQuantityUp: function () {
-                this.quantity += 1;
+                if (this.isInLimit(this.quantity, this.product)) {
+                    this.quantity += 1;
+                }
+            },
+            isInLimit: function (q, p) {
+                return q < p.max_quantity_count && q < p.stock;
             },
             onQuantityDown: function () {
                 if (this.quantity > 1) {
                     this.quantity -= 1;
                 }
+            },
+            formatPrice: function (v) {
+                return NumberUtil.toDisplayUnit(v);
+            },
+            isOutOfStock: function (product) {
+                console.log(product);
+
+                if (product.is_digital) {
+                    return false;
+                }
+                return product.stock <= 0
             }
         }
     }

@@ -24,12 +24,15 @@ import Payment from "@/components/cart/Payment";
 import OrderTrack from "@/components/userDetails/OrderTrack";
 import ResetPassword from "./components/userForms/ResetPassword";
 import ResetPasswordRequest from "./components/userForms/ResetPasswordRequest";
+import VueSimpleMarkdown from 'vue-simple-markdown'
+import 'vue-simple-markdown/dist/vue-simple-markdown.css'
 
 Vue.config.productionTip = false;
 
 Vue.use(VueRouter);
 Vue.use(Vuex);
 Vue.use(VueBraintree);
+Vue.use(VueSimpleMarkdown);
 
 // For map in contact us page
 Vue.use(VueGoogleMaps, {

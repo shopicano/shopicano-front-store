@@ -87,8 +87,11 @@
                                                          :src="getFullImagePath(item.image)" alt="product-img"/>
                                                     <p>{{ item.name }}</p>
                                                 </td>
-                                                <td class="align-middle">{{ item.quantity }}</td>
-                                                <td class="align-middle">${{ item.price }}</td>
+                                                <td class="align-middle">{{ item.quantity }} x ${{
+                                                    formatPrice(item.price)
+                                                    }}
+                                                </td>
+                                                <td class="align-middle">${{ formatPrice(item.sub_total) }}</td>
                                                 <td class="align-middle"
                                                     v-if="item.is_digital && orderDetails.payment_status == 'payment_completed'">
                                                     <button @click="downloadFile" class="btn btn-dark btn-download">
@@ -119,13 +122,13 @@
                                             <li v-if="orderDetails.payment_processing_fee > 0"
                                                 class="list-group-item d-flex justify-content-between align-items-center">
                                                 Payment Processing Fee
-                                                <span class="">$ {{ orderDetails.payment_processing_fee }}</span>
+                                                <span class="">${{ formatPrice(orderDetails.payment_processing_fee) }}</span>
                                             </li>
 
                                             <li v-if="orderDetails.shipping_charge > 0"
                                                 class="list-group-item d-flex justify-content-between align-items-center">
                                                 Shipping Charge
-                                                <span class="">$ {{ orderDetails.shipping_charge }}</span>
+                                                <span class="">${{ formatPrice(orderDetails.shipping_charge) }}</span>
                                             </li>
 
                                             <li v-if="orderDetails.shipping_charge > 0"
@@ -142,8 +145,8 @@
 
                                             <li v-if="orderDetails.discounted_amount > 0"
                                                 class="list-group-item d-flex justify-content-between align-items-center">
-                                                Discount
-                                                <span class="">$ {{ orderDetails.discounted_amount }}</span>
+                                                Discount (-)
+                                                <span class="">${{ formatPrice(orderDetails.discounted_amount) }}</span>
                                             </li>
 
                                             <li v-if="orderDetails.discounted_amount > 0"
@@ -154,12 +157,12 @@
 
                                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                                 Sub Total
-                                                <span class="">$ {{ orderDetails.sub_total }}</span>
+                                                <span class="">${{ formatPrice(orderDetails.sub_total) }}</span>
                                             </li>
 
                                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                                 Grand Total
-                                                <span class="badge badge-dark">$ {{ orderDetails.grand_total }}</span>
+                                                <span class="badge badge-dark">${{formatPrice( orderDetails.grand_total) }}</span>
                                             </li>
                                         </ul>
                                     </div>
@@ -206,6 +209,7 @@
     import Settings from "@/common/settings";
     import SessionStore from "@/common/session_store";
     import Footer from "@/components/indexComponents/Footer";
+    import NumberUtil from "../../common/number";
 
     export default {
         name: "OrderTrack",
@@ -243,7 +247,10 @@
             },
             getFullImagePath: function (subPath) {
                 return Settings.GetMediaUrl() + subPath;
-            }
+            },
+            formatPrice: function (v) {
+                return NumberUtil.toDisplayUnit(v);
+            },
         }
     }
 </script>

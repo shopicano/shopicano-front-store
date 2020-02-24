@@ -39,7 +39,8 @@
                                 <img :src="item.itemThumbnail" class="cart-imgsize" alt="product-img">
                                 <div class="mx-3">
                                     <h6>{{ item.itemName }}</h6>
-                                    <span>{{ item.itemQuantity }}</span> X <span>${{ item.itemPrice }}</span>
+                                    <span>{{ item.itemQuantity }}</span> X
+                                    <span>${{ formatPrice(item.itemPrice) }}</span>
                                 </div>
                                 <i @click="onClickRemoveItem(item.itemID)" class="ti-close"/>
                             </li>
@@ -51,10 +52,11 @@
                         <div v-else>
                             <div class="mb-3">
                                 <span>Cart Total</span>
-                                <span class="float-right">${{ getTotalPrice }}</span>
+                                <span class="float-right">${{ formatPrice(getTotalPrice) }}</span>
                             </div>
                             <div class="text-center">
-                                <router-link to="/cart" class="btn btn-dark btn-mobile rounded-0">view cart</router-link>
+                                <router-link to="/cart" class="btn btn-dark btn-mobile rounded-0">view cart
+                                </router-link>
                                 <button @click="onCheckout" class="btn btn-dark btn-mobile rounded-0">check out</button>
                             </div>
                         </div>
@@ -68,6 +70,7 @@
 <script>
     /* eslint-disable */
     import SessionStore from "@/common/session_store";
+    import NumberUtil from "../../common/number";
 
     export default {
         name: "Navigation",
@@ -77,14 +80,14 @@
                 type: String
             }
         },
-        data(){
+        data() {
             return {
                 isCartOpen: false,
                 isCartNil: true,
             };
         },
         computed: {
-            getFullCart(){
+            getFullCart() {
                 return this.$store.getters.getCart;
             },
             itemCount() {
@@ -121,17 +124,29 @@
                     localStorage.setItem('redirect_to', this.$route.path);
                     this.$router.push('/login');
                 }
+            },
+            formatPrice: function (v) {
+                return NumberUtil.toDisplayUnit(v);
+            },
+            isOutOfStock: function (product) {
+                console.log(product);
+
+                if (product.is_digital) {
+                    return false;
+                }
+                return product.stock <= 0
             }
         }
     }
 </script>
 
 <style scoped>
-    .cart-dimension{
+    .cart-dimension {
         max-height: 235px;
         overflow: auto;
     }
-    .cart-imgsize{
+
+    .cart-imgsize {
         width: 63px;
         height: 85px;
     }

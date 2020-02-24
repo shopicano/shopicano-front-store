@@ -10,7 +10,9 @@
             <nav class="bg-gray py-3">
                 <div class="container">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><router-link to="/">Home</router-link></li>
+                        <li class="breadcrumb-item">
+                            <router-link to="/">Home</router-link>
+                        </li>
                         <li class="breadcrumb-item active" aria-current="page">Shipping Information</li>
                     </ol>
                 </div>
@@ -25,7 +27,7 @@
                             <div class="inner-wrapper border-box">
                                 <!-- navbar -->
                                 <div class="align-content-between nav mb-5">
-                                    <span  class="text-center d-inline-block nav-item">
+                                    <span class="text-center d-inline-block nav-item">
                                         <i class="ti-wallet d-block mb-2"/>
                                         <span class="d-block h4">Billing Info</span>
                                     </span>
@@ -34,7 +36,7 @@
                                         <i class="ti-truck d-block mb-2"/>
                                         <span class="d-block h4">Shipping Info</span>
                                     </span>
-                                    <span  class="text-center d-inline-block nav-item">
+                                    <span class="text-center d-inline-block nav-item">
                                         <i class="ti-eye d-block mb-2"/>
                                         <span class="d-block h4">Review</span>
                                     </span>
@@ -47,49 +49,59 @@
                                     <h3 class="mb-5 mt-5 border-bottom pb-2">Shipping Address</h3>
 
                                     <div class="col-sm-6 mb-4">
-                                        <input type="checkbox" v-on:change="checkIsSame" id="sameas" v-model="is_shipping_sameAs_billing">
-                                        <label class="ml-2" for="sameas">Shipping Address same as Billing Address</label>
+                                        <input type="checkbox" v-on:change="checkIsSame" id="sameas"
+                                               v-model="is_shipping_sameAs_billing">
+                                        <label class="ml-2" for="sameas">Shipping Address same as Billing
+                                            Address</label>
                                     </div>
 
                                     <div v-if="!is_shipping_sameAs_billing || addressList.length > 0" class="col-sm-12">
                                         <label>Fill form by Previous Information</label>
                                         <select v-model="selectedShippingAddressID"
-                                                @change="fetchAddressInfo(selectedShippingAddressID)" class="form-control" name="city">
+                                                @change="fetchAddressInfo(selectedShippingAddressID)"
+                                                class="form-control" name="city">
                                             <option disabled value="">Select Address</option>
                                             <option v-for="addrs in addressList"
                                                     :key="addrs.id"
-                                                    :value="addrs.id">{{ addrs.address }}</option>
+                                                    :value="addrs.id">{{ addrs.address }}
+                                            </option>
                                         </select>
                                     </div>
 
                                     <form class="row">
                                         <div class="col-sm-6">
                                             <label for="firstName">First Name</label>
-                                            <input id="firstName" v-model="firstName_shipping" class="form-control" type="text" name="firstName" required>
+                                            <input id="firstName" v-model="firstName_shipping" class="form-control"
+                                                   type="text" name="firstName" required>
                                         </div>
                                         <div class="col-sm-6">
                                             <label for="lastName">Last Name</label>
-                                            <input id="lastName" v-model="lastName_shipping" class="form-control" type="text" name="lastName" required>
+                                            <input id="lastName" v-model="lastName_shipping" class="form-control"
+                                                   type="text" name="lastName" required>
                                         </div>
                                         <div class="col-sm-10">
                                             <label for="email">Email</label>
-                                            <input id="email" v-model="email_shipping" class="form-control" type="email" name="email" required>
+                                            <input id="email" v-model="email_shipping" class="form-control" type="email"
+                                                   name="email" required>
                                         </div>
                                         <div class="col-sm-12">
                                             <label for="address">Address</label>
-                                            <input id="address" v-model="address_shipping" class="form-control" type="text" name="address" required>
+                                            <input id="address" v-model="address_shipping" class="form-control"
+                                                   type="text" name="address" required>
                                         </div>
                                         <div class="col-sm-6">
                                             <label for="phone">Phone</label>
-                                            <input id="phone" v-model="phone_shipping" class="form-control" type="tel" name="phone" required>
+                                            <input id="phone" v-model="phone_shipping" class="form-control" type="tel"
+                                                   name="phone" required>
                                         </div>
                                         <div class="col-sm-6">
                                             <label for="zip-code">Zip Code</label>
-                                            <input id="zip-code" v-model="zipCode_shipping" class="form-control" type="text" name="zip-code" required>
+                                            <input id="zip-code" v-model="zipCode_shipping" class="form-control"
+                                                   type="text" name="zip-code" required>
                                         </div>
                                         <div class="col-sm-6">
-                                            <label >City</label>
-                                            <select v-model="city_shipping" class="form-control" >
+                                            <label>City</label>
+                                            <select v-model="city_shipping" class="form-control">
                                                 <option disabled value="">Your City</option>
                                                 <option value="Dhaka">Dhaka</option>
                                                 <option value="Newyork">Newyork</option>
@@ -97,7 +109,7 @@
                                             </select>
                                         </div>
                                         <div class="col-sm-6">
-                                            <label >Country</label>
+                                            <label>Country</label>
                                             <select v-model="country_shipping" class="form-control" name="country">
                                                 <option disabled value="">Please select one</option>
                                                 <option value="Armenia">Armenia</option>
@@ -121,10 +133,13 @@
                                             <h3 class="mb-5 border-bottom pb-2">Select A Shipping Method</h3>
                                         </div>
                                         <div v-for="method in shpMethods" :key="method.id" class="col-sm-6 mb-4">
-                                            <input v-model="shippingMethod" :id="method.id" class="custom-checkbox" type="radio"
+                                            <input v-model="shippingMethod" :id="method.id" class="custom-checkbox"
+                                                   type="radio"
                                                    :value="method.id">
-                                            <label class="ml-2" :for="method.id">{{ method.name }} - ${{ method.delivery_charge }}</label>
-                                            <small class="d-block ml-3">Delivered in {{ method.approximate_delivery_time }} business days.</small>
+                                            <label class="ml-2" :for="method.id">{{ method.name }} - ${{
+                                                formatPrice(method.delivery_charge) }}</label>
+                                            <small class="d-block ml-3">Delivered in {{ method.approximate_delivery_time
+                                                }} business days.</small>
                                         </div>
                                         <!-- /select shipping method -->
                                     </form>
@@ -135,7 +150,8 @@
                                     <h4 v-if="showErrMsg" class="text-danger">All fields are required</h4>
                                     <router-link to="/billing" class="btn btn-dark">Back</router-link>
                                     <button @click="storeInfo"
-                                            class="btn btn-primary">Continue</button>
+                                            class="btn btn-primary">Continue
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -147,7 +163,7 @@
                                 <ul class="list-unstyled mt-5">
                                     <li class="d-flex justify-content-between">
                                         <span>Subtotal</span>
-                                        <span>${{ getCartTotalPrice }}</span>
+                                        <span>${{ formatPrice(getCartTotalPrice) }}</span>
                                     </li>
                                     <!--<li class="d-flex justify-content-between">
                                         <span>Shipping & Handling</span>
@@ -161,7 +177,7 @@
                                 <hr>
                                 <div class="d-flex justify-content-between">
                                     <span>Total</span>
-                                    <strong>USD ${{ getCartTotalPrice }}</strong>
+                                    <strong>${{ formatPrice(getCartTotalPrice) }}</strong>
                                 </div>
                             </div>
                         </div>
@@ -184,6 +200,7 @@
     import Footer from "@/components/indexComponents/Footer";
     import Settings from "@/common/settings";
     import SessionStore from "@/common/session_store";
+    import NumberUtil from "../../common/number";
 
     export default {
         name: "Shipping",
@@ -218,7 +235,7 @@
             },
         },
         methods: {
-            checkRequired : function(){
+            checkRequired: function () {
                 if (Object.keys(this.$store.getters.getterBillingInfo).length < 1) {
                     this.$router.push('/billing');
                 }
@@ -259,7 +276,7 @@
                 });
             },
             getShippingMethodList: function () {
-                axios.get(Settings.GetApiUrl() + '/platform/shipping-methods', {
+                axios.get(Settings.GetApiUrl() + '/shipping-methods', {
                     headers: {
                         "Authorization": "Bearer " + SessionStore.GetAccessToken(),
                     }
@@ -272,9 +289,9 @@
             },
             storeInfo: function () {
                 if (!this.$store.getters.getterIsAllProductDigital) {
-                    if (this.shippingMethod==='' || this.firstName_shipping==='' || this.lastName_shipping===''
-                        || this.email_shipping==='' || this.address_shipping==='' || this.phone_shipping===''
-                        || this.country_shipping==='' || this.city_shipping==='' || this.zipCode_shipping==='') {
+                    if (this.shippingMethod === '' || this.firstName_shipping === '' || this.lastName_shipping === ''
+                        || this.email_shipping === '' || this.address_shipping === '' || this.phone_shipping === ''
+                        || this.country_shipping === '' || this.city_shipping === '' || this.zipCode_shipping === '') {
                         this.showErrMsg = true;
                     } else {
                         this.showErrMsg = false;
@@ -307,7 +324,7 @@
                 const billingInstance = this.$store.getters.getterBillingInfo;
                 const shippingInstance = this.$store.getters.getterShippingInfo;
 
-                if (Object.keys(billingInstance).length !== 0 && Object.keys(shippingInstance).length !== 0){
+                if (Object.keys(billingInstance).length !== 0 && Object.keys(shippingInstance).length !== 0) {
                     this.is_shipping_sameAs_billing = this.$store.getters.getterIfShippingSameAsBilling;
 
                     // Shipping info
@@ -346,13 +363,16 @@
                     this.zipCode_shipping = '';
                 }
             },
+            formatPrice: function (v) {
+                return NumberUtil.toDisplayUnit(v);
+            },
         }
     }
 </script>
 
 <style scoped>
-.btn-fade{
-    opacity: .6;
-    cursor: default!important;
-}
+    .btn-fade {
+        opacity: .6;
+        cursor: default !important;
+    }
 </style>

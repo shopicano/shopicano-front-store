@@ -10,41 +10,6 @@
 
         <!-- main wrapper -->
         <div class="main-wrapper">
-
-            <div id="quickView" class="quickview">
-                <div class="row w-100">
-                    <div class="col-lg-6 col-md-6 mb-5 mb-md-0 pl-5 pt-4 pt-lg-0 pl-lg-0">
-                        <img src="images/feature/product.png" alt="product-img" class="img-fluid">
-                    </div>
-                    <div class="col-lg-5 col-md-6 text-center text-md-left align-self-center pl-5">
-                        <h3 class="mb-lg-2 mb-2">Woven Crop Cami</h3>
-                        <span class="mb-lg-4 mb-3 h5">$90.00</span>
-                        <p class="mb-lg-4 mb-3 text-gray">Excepteur sint occaecat cupidatat non proident, sunt in culpa
-                            qui officia deserunt mollit anim id est laborum. sed ut perspic atis unde omnis iste
-                            natus</p>
-                        <form action="#">
-                            <select class="form-control w-100 mb-2" name="color">
-                                <option value="brown">Brown Color</option>
-                                <option value="gray">Gray Color</option>
-                                <option value="black">Black Color</option>
-                            </select>
-                            <select class="form-control w-100 mb-3" name="size">
-                                <option value="small">Small Size</option>
-                                <option value="medium">Medium Size</option>
-                                <option value="large">Large Size</option>
-                            </select>
-                            <button class="btn btn-primary w-100 mb-lg-4 mb-3">add to cart</button>
-                        </form>
-                        <ul class="list-inline social-icon-alt">
-                            <li class="list-inline-item"><a href="#"><i class="ti-facebook"/></a></li>
-                            <li class="list-inline-item"><a href="#"><i class="ti-twitter-alt"/></a></li>
-                            <li class="list-inline-item"><a href="#"><i class="ti-vimeo-alt"/></a></li>
-                            <li class="list-inline-item"><a href="#"><i class="ti-google"/></a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
             <!-- shop -->
             <section class="section">
                 <div class="container">
@@ -129,23 +94,12 @@
                                                          v-bind:src="getFullImagePath(product.image)" alt="product-img">
                                                 </router-link>
                                                 <div class="btn-cart">
-                                                    <button @click="addToCart(product.id, product.store_id, getFullImagePath(product.image), product.name, 1, product.price, product.is_digital)"
-                                                            class="btn btn-primary btn-sm">Add To Cart
+                                                    <button @click="addToCart(product,product.id, product.store_id, getFullImagePath(product.image), product.name, 1, product.price, product.is_digital)"
+                                                            class="btn btn-primary btn-sm">{{
+                                                        isOutOfStock(product)?"out of stock":"Add to cart" }}
                                                     </button>
                                                 </div>
                                             </div>
-                                            <!--<div class="product-hover-overlay">
-                                                <a href="#" class="product-icon favorite" data-toggle="tooltip"
-                                                   data-placement="left" title="Wishlist">
-                                                    <i class="ti-heart"/>
-                                                </a>
-                                                <a data-vbtype="inline" href="#quickView"
-                                                   v-on:click="onClikView"
-                                                   class="product-icon view venobox" data-toggle="tooltip"
-                                                   data-placement="left" title="Quick View">
-                                                    <i class="ti-search"/>
-                                                </a>
-                                            </div>-->
                                         </div>
                                         <div class="product-info">
                                             <h3 class="h5">
@@ -153,7 +107,7 @@
                                                     product.name }}
                                                 </router-link>
                                             </h3>
-                                            <span class="h5">${{ product.price }}</span>
+                                            <span class="h5">${{ formatPrice(product.price) }}</span>
                                             <span class="d-block">Seller: <span class="text-primary">{{ product.store_name }}</span></span>
                                         </div>
                                         <!-- product label badge -->
@@ -210,6 +164,7 @@
     import Services from "@/components/indexComponents/Services";
     import Settings from "@/common/settings";
     import SessionStore from "@/common/session_store";
+    import NumberUtil from "../common/number";
 
     export default {
         name: "Shop",
@@ -302,7 +257,11 @@
                     console.log(err);
                 })
             },
-            addToCart: function (id, store_id, imgUrl, itemName, quantity, price, isDigital) {
+            addToCart: function (p, id, store_id, imgUrl, itemName, quantity, price, isDigital) {
+                if (this.isOutOfStock(p)) {
+                    return
+                }
+
                 const digital = this.$store.getters.getterIsAllProductDigital;
                 const prevStoreId = this.$store.getters.getterIsFromSameStore;
 
@@ -341,6 +300,17 @@
                     frameheight: '100%'
                 });
             },
+            formatPrice: function (v) {
+                return NumberUtil.toDisplayUnit(v);
+            },
+            isOutOfStock: function (product) {
+                console.log(product);
+
+                if (product.is_digital) {
+                    return false;
+                }
+                return product.stock <= 0
+            }
         },
     }
 </script>

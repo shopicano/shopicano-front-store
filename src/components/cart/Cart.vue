@@ -9,7 +9,9 @@
             <nav class="bg-gray py-3">
                 <div class="container">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><router-link to="/">Home</router-link></li>
+                        <li class="breadcrumb-item">
+                            <router-link to="/">Home</router-link>
+                        </li>
                         <li class="breadcrumb-item active" aria-current="page">Cart</li>
                     </ol>
                 </div>
@@ -37,29 +39,32 @@
                                                     </thead>
 
                                                     <div v-if="isCartNil">
-                                                        <h4 class="my-3 text-center text-danger">You have no selected item in cart.</h4>
+                                                        <h4 class="my-3 text-center text-danger">You have no selected
+                                                            item in cart.</h4>
                                                     </div>
 
                                                     <tbody>
                                                     <tr v-for="item in getFullCart" v-bind:key="item.itemID">
                                                         <td>
-                                                            <a @click="onClickRemoveItem(item.itemID)" class="product-remove">&times;</a>
+                                                            <a @click="onClickRemoveItem(item.itemID)"
+                                                               class="product-remove">&times;</a>
                                                         </td>
                                                         <td>
                                                             <div class="product-info">
-                                                                <img class="img-fluid w-25" :src="item.itemThumbnail" alt="product-img" />
+                                                                <img class="img-fluid w-25" :src="item.itemThumbnail"
+                                                                     alt="product-img"/>
                                                                 <a class="ml-4">{{ item.itemName }}</a>
                                                             </div>
                                                         </td>
-                                                        <td>${{ item.itemPrice }}</td>
+                                                        <td>${{ formatPrice(item.itemPrice) }}</td>
                                                         <td>
                                                             <input type="number"
                                                                    v-bind:value="item.itemQuantity"
                                                                    @keydown="$event.key === '-' ? $event.preventDefault() : null"
-                                                                   @keyup="changeQuantity(item.itemID, $event.target.value)"
+                                                                   @keyup="changeQuantity(item,item.itemID, $event.target.value)"
                                                                    min="0">
                                                         </td>
-                                                        <td>${{ item.subTotal }}</td>
+                                                        <td>${{ formatPrice(item.subTotal) }}</td>
                                                     </tr>
                                                     </tbody>
                                                 </table>
@@ -68,7 +73,8 @@
                                             <div class="row">
                                                 <div class="col-12">
                                                     <ul class="list-unstyled text-right">
-                                                        <li>Grand Total <span class="d-inline-block w-100px">${{ grandTotalPrice }}</span></li>
+                                                        <li>Grand Total <span class="d-inline-block w-100px">${{ formatPrice(grandTotalPrice) }}</span>
+                                                        </li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -76,7 +82,8 @@
                                             <button
                                                     :disabled="isCartNil"
                                                     @click="onClickCheckout"
-                                                    class="btn btn-primary float-right">Checkout</button>
+                                                    class="btn btn-primary float-right">Checkout
+                                            </button>
                                         </form>
                                     </div>
                                 </div>
@@ -98,18 +105,19 @@
     import Navigation from "@/components/indexComponents/Navigation";
     import Footer from "@/components/indexComponents/Footer";
     import SessionStore from "@/common/session_store";
+    import NumberUtil from "../../common/number";
 
     export default {
         name: "Cart",
         components: {Footer, Navigation, Header},
-        data(){
+        data() {
             return {
                 isCartNil: true,
                 quantity: []
             };
         },
         computed: {
-            getFullCart(){
+            getFullCart() {
                 this.isCartNil = this.$store.getters.cartItemCount < 1;
                 if (this.isCartNil) {
                     this.$store.dispatch('storeIsProductDigitalAction', '');
@@ -128,8 +136,9 @@
             removeFromCart: function (itemId) {
                 this.$store.dispatch('removeItemFromAction', itemId)
             },
-            changeQuantity: function (itemId, qntt) {
+            changeQuantity: function (item, itemId, qntt) {
                 console.log(itemId, qntt);
+
                 if (qntt === "") {
                     qntt = 0;
                 }
@@ -146,6 +155,20 @@
                     localStorage.setItem('redirect_to', this.$route.path);
                     this.$router.push('/login');
                 }
+            },
+            formatPrice: function (v) {
+                return NumberUtil.toDisplayUnit(v);
+            },
+            isOutOfStock: function (product) {
+                console.log(product);
+
+                if (product.is_digital) {
+                    return false;
+                }
+                return product.stock <= 0
+            },
+            isInLimit: function (q, p) {
+                return q < p.max_quantity_count && q < p.stock;
             }
         }
     }

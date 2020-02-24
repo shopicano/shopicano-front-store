@@ -9,7 +9,9 @@
             <nav class="bg-gray py-3">
                 <div class="container">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><router-link to="/">Home</router-link></li>
+                        <li class="breadcrumb-item">
+                            <router-link to="/">Home</router-link>
+                        </li>
                         <li class="breadcrumb-item active" aria-current="page">My Accounts</li>
                     </ol>
                 </div>
@@ -21,8 +23,12 @@
                     <div class="row">
                         <div class="col-md-12">
                             <ul class="list-inline dashboard-menu text-center">
-                                <li class="list-inline-item"><router-link to="/profile-details">Profile Details</router-link></li>
-                                <li class="list-inline-item"><router-link class="active" to="/orders">Orders</router-link></li>
+                                <li class="list-inline-item">
+                                    <router-link to="/profile-details">Profile Details</router-link>
+                                </li>
+                                <li class="list-inline-item">
+                                    <router-link class="active" to="/orders">Orders</router-link>
+                                </li>
                             </ul>
                             <div class="dashboard-wrapper user-dashboard">
                                 <div class="total-order mt-4">
@@ -40,10 +46,11 @@
                                             </thead>
                                             <tbody>
                                             <tr v-for="order in orderList" :key="order.id">
-                                                <td><a @click="onClickTract(order.id)" class="text-primary">{{ order.hash }}</a></td>
+                                                <td><a @click="onClickTract(order.id)" class="text-primary">{{
+                                                    order.hash }}</a></td>
                                                 <td>{{ order.created_at.replace('T', ', ') }}</td>
                                                 <td>{{ order.items.length }}</td>
-                                                <td>$ {{ order.grand_total }}</td>
+                                                <td>$ {{ formatPrice(order.grand_total) }}</td>
                                             </tr>
                                             </tbody>
                                         </table>
@@ -82,6 +89,7 @@
     import Footer from "@/components/indexComponents/Footer";
     import Settings from "@/common/settings";
     import SessionStore from "@/common/session_store";
+    import NumberUtil from "../../common/number";
 
     export default {
         name: "Dashboard",
@@ -125,6 +133,9 @@
             },
             onClickTract: function (id) {
                 this.$router.push('/ordertrack/' + id);
+            },
+            formatPrice: function (v) {
+                return NumberUtil.toDisplayUnit(v);
             },
         }
     }

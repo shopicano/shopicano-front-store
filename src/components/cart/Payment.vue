@@ -194,6 +194,19 @@
                     console.log(err)
                 })
             },
+            generateNonceForSSLCommerz: function () {
+                axios.get(Settings.GetApiUrl() + '/orders/' + this.orderID + '/nonce', {
+                    headers: {
+                        "Authorization": "Bearer " + SessionStore.GetAccessToken(),
+                    }
+                }).then(resp => {
+                    console.log(resp);
+                    let url = resp.data.data.url;
+                    window.location = url;
+                }).catch(err => {
+                    console.log(err)
+                })
+            },
             onSuccess: function (payload) {
                 let nonce = payload.nonce;
                 //console.log(payload);
@@ -220,13 +233,18 @@
             },
             onCheckout: function () {
                 console.log('payment_gateway ---> ' + this.order.payment_gateway);
-                if (this.order.payment_gateway === 'stripe') {
+
+                if (this.order.grand_total === 0) {
+                    this.$router.push('/confirmation/' + this.orderID);
+                } else if (this.order.payment_gateway === 'stripe') {
                     // Generating Nonce for stripe
                     this.generateNonce();
                 } else if (this.order.payment_gateway === 'brain_tree') {
                     this.is_gateway_braintree = true;
                 } else if (this.order.payment_gateway === '2co') {
                     this.generateNonceForTwoCheckout();
+                } else if (this.order.payment_gateway === 'ssl') {
+                    this.generateNonceForSSLCommerz();
                 } else if (this.order.payment_gateway === 'cash') {
                     this.$router.push('/confirmation/' + this.orderID);
                 } else {

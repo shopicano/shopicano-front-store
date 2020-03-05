@@ -243,7 +243,7 @@
                     this.is_gateway_braintree = true;
                 } else if (this.order.payment_gateway === '2co') {
                     this.generateNonceForTwoCheckout();
-                } else if (this.order.payment_gateway === 'ssl') {
+                } else if (this.order.payment_gateway === 'ssl' || this.order.payment_gateway === 'paddle') {
                     this.generateNonceForSSLCommerz();
                 } else if (this.order.payment_gateway === 'cash') {
                     this.$router.push('/confirmation/' + this.orderID);

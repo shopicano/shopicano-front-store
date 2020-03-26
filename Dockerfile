@@ -14,10 +14,9 @@ COPY run.sh run.sh
 RUN npm install
 RUN npm run build
 
-FROM node:lts-alpine
 
+FROM nginx:alpine
 RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
-RUN npm install -g http-server
 
 WORKDIR /app
 
@@ -25,5 +24,7 @@ COPY --from=builder /app/dist/ /app/dist/
 COPY --from=builder /app/value-replacer /app/value-replacer
 COPY --from=builder /app/run.sh /app/run.sh
 
-EXPOSE 8080
+RUN rm /etc/nginx/conf.d/default.conf
+COPY default.conf /etc/nginx/conf.d/default.conf
+
 CMD [ "./run.sh" ]
